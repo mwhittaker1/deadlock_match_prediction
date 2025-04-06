@@ -3,7 +3,11 @@ import pandas as pd
 import numpy as np
 
 #Fetches data and returns DF
-def fetch_hero_data(url):
+def fetch_hero_data():
+    site = "https://assets.deadlock-api.com"
+    endpoint = "/v2/heroes/"
+    url = site+endpoint
+    
     response = requests.get(url)
     
     # Check if the request was successful
@@ -15,7 +19,10 @@ def fetch_hero_data(url):
     df = pd.DataFrame(heroes_data)
     return df
 
-def filter_hero_data(filters, df):
+def filter_hero_data(df):
+    #columns to fetch
+    filters = ["id", "classname", "name", "description", "player_selectable", "disabled", "starting_stats", "level_info", "scaling_stats", "standard_level_up_upgrades"]
+
     filtered_data = []
     for _, item in df.iterrows():
         filtered_item = {key: item[key] for key in filters if key in item}
@@ -26,8 +33,6 @@ def filter_hero_data(filters, df):
 def format_hero_data(df):
     df.rename(columns={'id' : 'hero_id'}, inplace=True)
     return df
-
-
 
 def insert_hero_data_to_db(df,db):
     import sqlite3
@@ -75,13 +80,6 @@ def insert_hero_data_to_db(df,db):
         print(rows_matched_str)
     else:
         print(rows_not_matched_str)
-
-
-site = "https://assets.deadlock-api.com"
-endpoint = "/v2/heroes/"
-url = site+endpoint
-#columns to fetch
-filters = ["id", "classname", "name", "description", "player_selectable", "disabled", "starting_stats", "level_info", "scaling_stats", "standard_level_up_upgrades"]
 
 #fetch
 heroes_df = fetch_hero_data(url)
