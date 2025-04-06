@@ -44,17 +44,17 @@ def insert_hero_data_to_db(df,db):
     cursor = conn.cursor()
 
     def count_rows():
-        cursor.execute('SELECT COUNT(*) FROM match_data')
+        cursor.execute('SELECT COUNT(*) FROM heroes')
         return cursor.fetchone()[0]  # Get the count (first item in the result)
 
     initial_count = count_rows()
 
-    for hero in df:
+    for index, hero in df.iterrows():
         cursor.execute("""
             INSERT INTO heroes (hero_id, name, player_selectable, disabled)
             VALUES (?, ?, ?, ?)
         """, (
-                 hero['hero_id'], 
+            hero['hero_id'], 
             hero['name'],
             hero['player_selectable'], 
             hero['disabled'], 
@@ -82,9 +82,9 @@ def insert_hero_data_to_db(df,db):
         print(rows_not_matched_str)
 
 #fetch
-heroes_df = fetch_hero_data(url)
+#heroes_df = fetch_hero_data(url)
 #filter
-heroes_df = filter_hero_data(filters, heroes_df)
+#heroes_df = filter_hero_data(filters, heroes_df)
 #format names
-heroes_df = format_hero_data(heroes_df)
+#heroes_df = format_hero_data(heroes_df)
 
