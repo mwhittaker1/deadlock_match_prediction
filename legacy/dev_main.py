@@ -1,8 +1,8 @@
 import requests
 import pandas as pd
 import numpy as np
-from Deadlock_Hero_Data import fetch_hero_data, filter_hero_data, format_hero_data, insert_hero_data_to_db
-from Deadlock_Match_Data import fetch_match_data, filter_match_data
+from legacy.Deadlock_Hero_Data import fetch_hero_data, filter_hero_data, format_hero_data, insert_hero_data_to_db
+from legacy.Deadlock_Match_Data import fetch_match_data, filter_match_data
 
 def handle_hero_data():
     site = "https://assets.deadlock-api.com"
