@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 import numpy as np
+import json
 
 from config import MATCH_FILTERS, HERO_FILTERS
 
@@ -41,4 +42,6 @@ def filter_data(df,*args):
             result['matches'] = filtered_active_matches
     else:
         print("Filter Data failed, expected 'hero' or 'match'")
+    with open('output.txt', 'w') as file:
+        json.dump(result, file, indent=4)
     return result
