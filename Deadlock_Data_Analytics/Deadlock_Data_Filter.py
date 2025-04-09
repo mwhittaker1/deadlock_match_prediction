@@ -5,10 +5,9 @@ import json
 
 from config import MATCH_FILTERS, HERO_FILTERS
 
-def filter_data(df,*args):
+def filter_data(df):
     result = {}
-
-    if "hero" in args:
+    if "hero" in df:
         filtered_data = []
         for _, item in df.iterrows():
             filtered_item = {key: item[key] for key in HERO_FILTERS if key in item}
@@ -16,7 +15,8 @@ def filter_data(df,*args):
         
         result["hero"] = filtered_data
 
-    if "match" in args:
+    #splits match DF into a match_players dict and matches dic
+    if "match" in df:
         #columns to fetch
         filtered_active_matches = []
         match_players = []
@@ -35,13 +35,15 @@ def filter_data(df,*args):
                     'account_id': account_id,
                     'hero_id': hero_id
                     })
+                
 
             #if not player column,    
             filtered_item = {key: item[key] for key in MATCH_FILTERS if key in item}
             filtered_active_matches.append(filtered_item)
-            result['matches'] = filtered_active_matches
+        result['matches'] = filtered_active_matches
+        result['match_players'] = match_players
+
     else:
         print("Filter Data failed, expected 'hero' or 'match'")
-    with open('output.txt', 'w') as file:
-        json.dump(result, file, indent=4)
+    
     return result
