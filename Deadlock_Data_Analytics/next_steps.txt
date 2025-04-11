@@ -1,1 +1,3 @@
-filter data is not sending match_players, only matches
+Need to review data formats throughout program- too many conversions to different types when not needed.
+
+Specifically, check Fetch and format for match data- converting to DataFrames increases complexity instead of formatting the json data directly.
