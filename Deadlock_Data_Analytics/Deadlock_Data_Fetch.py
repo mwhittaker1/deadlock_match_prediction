@@ -27,7 +27,7 @@ def fetch_match_data():
 
 def main():
     match_data = fetch_match_data()
-    print(match_data)
+    #print(match_data)
 
 if __name__ == main():
     main()
