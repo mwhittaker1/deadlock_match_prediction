@@ -34,13 +34,19 @@ def split_data(df):
     
     return match_data, players
 
-def filter_match_data(df):
+"""def filter_match_data(df):
     filtered_match_data = {key: df[key] for key in MATCH_FILTERS}
     return filtered_match_data
 
 def filter_account_data(df):
     filtered_account_data = {key: df[key] for key in PLAYER_FILTERS}
-    return filtered_account_data
+    return filtered_account_data"""
+
+def filter_match_data(df):
+    return df[MATCH_FILTERS]
+
+def filter_account_data(df):
+    return df[PLAYER_FILTERS]
 
 debug = True
 
