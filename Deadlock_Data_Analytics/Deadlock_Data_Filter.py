@@ -1,49 +1,52 @@
-import requests
 import pandas as pd
-import numpy as np
-import json
+import random
 
-from config import MATCH_FILTERS, HERO_FILTERS
+from config import MATCH_FILTERS
 
-def filter_data(df):
-    result = {}
-    if "hero" in df:
-        filtered_data = []
-        for _, item in df.iterrows():
-            filtered_item = {key: item[key] for key in HERO_FILTERS if key in item}
-            filtered_data.append(filtered_item)
-        
-        result["hero"] = filtered_data
+#receive raw_match_data
+def split_data(df):
+    match_data = pd.DataFrame
+    account_data = pd.DataFrame
 
-    #splits match DF into a match_players dict and matches dic
-    if "match" in df:
-        #columns to fetch
-        filtered_active_matches = []
-        match_players = []
-        
-        for _, item in df.iterrows():
-            if 'players' in item:
-                #player becomes dict
-                player = item["players"]
-                #extract the player information
-                for player in item["players"]:
-                    account_id = player.get('account_id', None) 
-                    hero_id = player.get('hero_id', None) 
-                    #append to new dict
-                    match_players.append({
-                    'match_id': item['match_id'],
-                    'account_id': account_id,
-                    'hero_id': hero_id
-                    })
-                
-
-            #if not player column,    
-            filtered_item = {key: item[key] for key in MATCH_FILTERS if key in item}
-            filtered_active_matches.append(filtered_item)
-        result['matches'] = filtered_active_matches
-        result['match_players'] = match_players
-
-    else:
-        print("Filter Data failed, expected 'hero' or 'match'")
+    #Extract nested dictionary from df
+    account_data = df[['players']]
     
-    return result
+    if debug ==True:
+        for i, (key, value) in enumerate(account_data.items()):
+            if i < 5:
+                print(f"player data: \n\nKey= {key} value= {value}\n")
+
+    #drop nested dictionary from df
+    match_data = df.drop(columns=['players'])
+
+    if debug ==True:
+        print(f"unfiltered match data: \n")
+        for i, (key, value) in enumerate(match_data.items()):
+            if i < 15:
+                print(f"Key= {key}")
+    
+    return match_data, account_data
+
+def filter_match_data(match_dict):
+    filtered_match_data = {key: match_dict[key] for key in MATCH_FILTERS}
+    return filtered_match_data
+
+debug = True
+
+def main():
+    from Deadlock_Data_Fetch import fetch_match_data
+    raw_match_data = fetch_match_data()
+    match_data, account_data = split_data(raw_match_data)
+    match_data = filter_match_data(match_data)
+    if debug ==True:
+        print(f"\nPost filtered match data: \n")
+        for i, (key, value) in enumerate(match_data.items()):
+            if i < 15:
+                print(f"Key= {key}")
+
+
+if __name__ == main():
+    main()
+
+
+
