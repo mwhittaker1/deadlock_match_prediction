@@ -5,7 +5,7 @@ from Deadlock_Data_Filter import split_data,filter_match_data, filter_account_da
 from output_to_file import to_xlsx
 
 #Configuration flags
-print_status = True #prints to console different steps and debugging
+print_status = False #prints to console different steps and debugging
 toxlsx = True #enables saving to .xlsx when formatting is complete.
 
 #Fetches match data from DeadlockAPI, splits player data from match data, and filters based on MATCH_FILTERS from .cfg
