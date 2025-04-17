@@ -5,6 +5,7 @@ import time
 import os
 from xlsx_output import to_xlsx
 from datetime import timedelta
+from Deadlock_Active_Matches.Deadlock_Data_Fetch import fetch_match_data
 
 ## Author : Mickey Whittaker
 ## Last Edit Date : 4/16/2025, 10:15am
@@ -40,7 +41,6 @@ def get_time_delta(days):
     min_unix_time = f"min_unix_timestamp={x_days_ago}"
     return min_unix_time
 
-
 #Fetch hero data
 def get_match_hero_data(min_unix_time, min_average_badge):
     #API connection information
@@ -66,8 +66,7 @@ def get_match_hero_data(min_unix_time, min_average_badge):
     #return DataFrame
     return m_hero_data
 
-
-##Accepts DataFrame
+## Accepts DataFrame - finds 'matches' key for total matches, hero pickrate, and hero win/loss %
 def hero_stats(m_hero_df):
     #returns total matches
     def get_total_matches(df):
@@ -91,30 +90,37 @@ def hero_stats(m_hero_df):
     m_hero_df = hero_win_percentage(m_hero_df)
     return m_hero_df
 
+def get_hero_trends(): #Creates two data dfs, one for 7 day hero trends, one for 30 day hero trends.
+    min_average_badge = "min_average_badge=100"
+    hero_trends_7d = get_match_hero_data(get_time_delta(7), min_average_badge)
+    hero_trends_7d = hero_stats(hero_trends_7d)
+    hero_trends_30d = get_match_hero_data(get_time_delta(30), min_average_badge)
+    hero_trends_30d = hero_stats(hero_trends_30d)
+
 def main():
     days = "2" #number of days to fetch hero_match data from today.
     min_average_badge = "min_average_badge=100" #filters matches by msinimum average match rank
-    min_unix_time = get_time_delta(days)
+    min_unix_time = get_time_delta(days) #converts current time - days to unix_time, sets boundary to fetch data.
 
     logging.info(f"Starting scrpt...")
     logging.info(f"Fetchin match_hero data...")
+
     raw_match_hero_data = get_match_hero_data(min_unix_time, min_average_badge) #Returns Dataframe of hero data over x_days, above min_average_badge
+    
     logging.info(f"match_hero data fetched.")
     logging.debug(f"raw_m_h_data has been received.")
 
     match_hero_stats = hero_stats(raw_match_hero_data)
+
     logging.info(f"hero_stats added! :\n {match_hero_stats}")
     return
 
 if __name__ == main():
     main()
 
+
 #Collect match data
 #[players],"start_time", "winning_team", "match_id", "lobby_id", "duration_s","match_mode", "game_mode","region_mode_parsed" 
-
-## Hero pickrate for high ranked games over past 7 days
-## Hero w/l for high ranked games over past month
-## Hero w/l short term trend, past 7 days
 
 #Collect match players
 ## Expecting DataFrame of 12 account_id, hero_id pairs as pd.DataFrame[match_players]

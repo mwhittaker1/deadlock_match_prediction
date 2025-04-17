@@ -28,8 +28,9 @@ def main():
 
     print(f"\n******data to csv****")
     #print(f"\nmatch_data is type {type(match_data)} and account_data is type {type(account_data)}")
-    to_xlsx(match_data)
-    to_xlsx(account_data)
+    to_xlsx(match_data, "match")
+    to_xlsx(account_data, "account")
+    
 
 
 if __name__ == main():
