@@ -17,5 +17,5 @@ def main():
     df = pd.DataFrame(data)
     #to_xlsx(df)
 
-if __name__ == main():
-    main()
+#if __name__ == main():
+#    main()
