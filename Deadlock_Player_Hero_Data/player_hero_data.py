@@ -1,57 +1,92 @@
 import pandas as pd
 import requests
 import logging
-import time
-import os
-from xlsx_output import to_xlsx
-from datetime import timedelta
-from Deadlock_Active_Matches.Deadlock_Data_Fetch import fetch_active_match_data
-from match_hero_data import get_hero_trends
+import openpyxl
 
+
+def setup_logging(verbose: bool):
+    level = logging.DEBUG if verbose else logging.WARNING
+
+    logging.basicConfig(
+        level=level,
+        format="%(asctime)s [%(levelname)s] %(message)s",
+        handlers=[
+            logging.FileHandler("script.log"),
+            logging.StreamHandler()
+        ]
+    )
+    logging.debug("This is a debug message")
+    logging.info("This is an info message")
+    logging.warning("This is a warning")
+    logging.error("This is an error")
+    logging.critical("This is critical")
+
+setup_logging(verbose=True)
+logger = logging.getLogger(__name__)
+logger.debug("Debug mode on")
 
 ## Fetch player data from player_id
-def get_player_data(p_id):
-    # fetch data from API on player_id
+def get_player_hero_data(p_id,h_id):
+
+    # fetch player_hero from API on player_id
     site = "https://api.deadlock-api.com"
     endpoint = f"v1/players/{p_id}/hero-stats'"
     url = site+endpoint
     
+    logging.info(f"sending request for response")
     response = requests.get(url)
 
     # Check if the request was successful
     if response.status_code == 200:
-        match_data = pd.DataFrame(response.json())
-        #match_data = response.json()
+        p_all_h_data = response.json() #player all hero data
+        print(f" found player data, here it is!: \n {p_all_h_data}")    
     else:
         print(f"Failed to retrieve match data: {response.status_code}")
     
-    return match_data #Returns JSON of match data.
-    return
+    p_h_data = next((item for item in p_all_h_data if item == h_id), None)
+    
+    if p_all_h_data:
+        logging.info(f"found player_hero data for hero: {h_id} printing data \n {p_h_data}")
+    else:
+        logging.error(f"get_player_hero_data, find h_id in player data did not find match")
+
+    return p_h_data #Returns JSON of match data.
 
 def main():
-    test_data = pd.read_csv(f'test_account_data.xlsx')
+    logging.info(f"Starting... reading .csv")
+    test_data = pd.read_excel(f'single_account_data.xlsx')
+    i=0
+    for index in test_data:
+        logging.info(f"iteration through player_ids, count {i}")
+        p_id = index['player_id']
+        h_id = index['hero_id']
+        logging.info(f"getting player data....")
+        p_hero_data = get_player_hero_data(p_id, h_id)
+        print(f"player hero data is: {p_hero_data}")
+        i+=1
 
-## p_hero total games played as p_hero_total_games (int)
+if __name__ == main():
+    main()
 
-## p_hero w/l over last 1 months as p_hero_1m_wl (int)
+def player_hero_format(df):
+    ## p_hero total games played as p_hero_total_games (int)
+    ## p_hero w/l over last 1 months as p_hero_1m_wl (int)
+    ## p_hero w/l over last week as p_hero_1w_wl (int)
 
-## p_hero w/l over last week as p_hero_1w_wl (int)
+    return
 
-## player w/l over last 3 games as player_3g_wl (int)
+def get_player_stats():
+    ## player w/l over last 3 games as player_3g_wl (int)
+    ## player w/l over last month as player_1m_wl (int)
+    return
 
-## player w/l over last month as player_1m_wl (int)
-
-def format_player_data(p_id):
+def format_player_stats(p_id):
     # formats player data received
     return
 
-## Collect list of players from match, collect player+hero variable
-def unpackage_players():
-    # for each player
-    # get_player_data
-    # format_player_data
-    # do things
-    return
+
+
+
 
 
 # Perform analytics on each player+hero combination
