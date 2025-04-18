@@ -2,9 +2,9 @@ import requests
 import json
 import pandas as pd
 
-#fetches match data from DeadlockAPI
+#fetches activematch data from DeadlockAPI
 
-def fetch_match_data():
+def fetch_active_match_data():
     site = "https://api.deadlock-api.com"
     endpoint = "/v1/matches/active"
     url = site+endpoint
@@ -21,7 +21,7 @@ def fetch_match_data():
     return match_data #Returns JSON of match data.
 
 def main():
-    match_data = fetch_match_data()
+    match_data = fetch_active_match_data()
     #with open('test_match_data.json','w') as f:
         #json.dump(match_data,f,indent=4)
     #print(match_data)

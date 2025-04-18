@@ -1,6 +1,6 @@
 import pandas as pd
 
-from Deadlock_Data_Fetch import fetch_match_data
+from Deadlock_Data_Fetch import fetch_active_match_data
 from Deadlock_Data_Filter import split_data,filter_match_data, filter_account_data
 from output_to_file import to_xlsx
 
@@ -13,7 +13,7 @@ def main():
 
     #Fetch Match Data
     print(f"\n******fetching data**** \n")
-    raw_match_data = fetch_match_data()  #Returns JSON of match data.
+    raw_match_data = fetch_active_match_data()  #Returns JSON of match data.
 
     #Returns DF for Match Data and Account Data.
     print(f"\n******spliting data**** \n")

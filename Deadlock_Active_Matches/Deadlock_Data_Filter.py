@@ -44,9 +44,9 @@ debug = True
 
 def main():
     main_debug = True
-    from Deadlock_Data_Fetch import fetch_match_data
+    from Deadlock_Data_Fetch import fetch_active_match_data
     print(f"\n******fetching data**** \n")
-    raw_match_data = fetch_match_data()
+    raw_match_data = fetch_active_match_data()
 
     print(f"\n******spliting data**** \n")
     match_data, account_data = split_data(raw_match_data)

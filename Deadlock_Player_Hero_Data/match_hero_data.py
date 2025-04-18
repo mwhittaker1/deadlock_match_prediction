@@ -5,7 +5,7 @@ import time
 import os
 from xlsx_output import to_xlsx
 from datetime import timedelta
-from Deadlock_Active_Matches.Deadlock_Data_Fetch import fetch_match_data
+from Deadlock_Active_Matches.Deadlock_Data_Fetch import fetch_active_match_data
 
 ## Author : Mickey Whittaker
 ## Last Edit Date : 4/16/2025, 10:15am
