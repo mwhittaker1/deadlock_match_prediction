@@ -99,20 +99,31 @@ def calculate_player_hero_stats():
 
 
 
-# Perform analytics on each player+hero combination
+#                         Hero Stats                  #
+## Hero pickrate past 7 days (Patch, or trend swings)
+## Hero pickrate past 30 days (longer term hero trends)
+## Hero w/l past 7 days (patch, or meta swings)
+## Hero w/l past 30 days (general strength)
+## Other hero corrolations to data points? Do player clusters trend to specific heros?
 
 #                         Player Stats                #
-## Player w/l over last 3 games (Short term tilt factor)
+## Player w/l over same day games, max 3 (Short term tilt factor)
+## Player k/d over same day games max 3 (in a tilt)
 ## Player w/l over past month (Bias for winning?)
+## Player first active match date (Smurf?)
 
 #                        Player_Hero Stats             #
+
 ## p_hero total games as hero (experience modifier)
-
-## p_hero w/l over past 30 days (Player skill)
-
+## p_hero w/l over past 60 days (Player skill)
 ## p_hero hero recency frequency (Player may be rusty with hero)
+## p_hero hero diversity (Shannon Entropy + Gini methods)
 
-
+#                       Player Cluster Expectations     #
+## Smurf - High W/L, low matches played, first match recent
+## One-Trick - Very low hero diversity, if not playing one-trick hero, significantly reduced win score
+## Tilter - Large loss streaks, tends to lose 2+ games in a row
+## 
 
 #Rebuild dataframe.
 
