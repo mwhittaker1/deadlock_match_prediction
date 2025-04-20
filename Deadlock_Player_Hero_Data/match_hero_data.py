@@ -98,7 +98,7 @@ def get_hero_trends(): #Creates two data dfs, one for 7 day hero trends, one for
     hero_trends_30d = hero_stats(hero_trends_30d)
 
 def main():
-    days = "2" #number of days to fetch hero_match data from today.
+    days = "30" #number of days to fetch hero_match data from today.
     min_average_badge = "min_average_badge=100" #filters matches by msinimum average match rank
     min_unix_time = get_time_delta(days) #converts current time - days to unix_time, sets boundary to fetch data.
 
@@ -111,7 +111,7 @@ def main():
     logging.debug(f"raw_m_h_data has been received.")
 
     match_hero_stats = hero_stats(raw_match_hero_data)
-    to_csv(match_hero_stats,"test_hero_match_data")
+    to_csv(match_hero_stats,"big_test_hero_match_data")
 
     logging.info(f"hero_stats added! :\n {match_hero_stats}")
     return
