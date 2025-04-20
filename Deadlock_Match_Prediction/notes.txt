@@ -1,0 +1,94 @@
+Build player_hero analytics
+
+Investigate how to create bias / weights based on analytics
+
+Create function to pull historical match data (can reuse some of active match data)
+
+Figure out how to train AI on data and create prediction model
+
+Train AI model
+
+Feed test data and repeat if needed
+
+Test predictions
+
+Sold
+
+def filter_player_hero_data(df):
+    ## p_hero total games played as p_hero_total_games (int)
+    ## p_hero w/l over last 1 months as p_hero_1m_wl (int)
+    ## p_hero w/l over last week as p_hero_1w_wl (int)
+
+    return
+
+def calculate_player_hero_stats():
+    ## player w/l over last 3 games as player_3g_wl (int)
+    ## player w/l over last month as player_1m_wl (int)
+    return
+
+#Collect match data
+#[players],"start_time", "winning_team", "match_id", "lobby_id", "duration_s","match_mode", "game_mode","region_mode_parsed" 
+
+#Collect match players
+## Expecting DataFrame of 12 account_id, hero_id pairs as pd.DataFrame[match_players]
+
+## Sort match players, 0-5 = winning team, 6-12 = losing team
+
+#for each player Fetch p_hero stats (dict)
+### See Player/account_id/hero-stats
+## p_hero total games played as p_hero_total_games (int)
+
+## p_hero w/l over last 2 months as p_hero_2m_wl (int)
+
+## p_hero w/l over last week as p_hero_1w_wl (int)
+
+## player w/l over last 3 games as player_3g_wl (int)
+
+## player w/l over last month as player_1m_wl (int)
+
+###Collect as dict{match_data: {m_data}, team_win: [[w_team]], team_lose: [[l_team]] } 
+
+#Send data to AI for analytics
+
+#Return prediction
+
+
+
+# Collect base data to be used for training an AI model.
+
+
+#                          Hero Stats                  #
+## Hero pickrate for high ranked games over past 7 days (Identify short term trends)
+
+## Hero w/l for high ranked games over past month (Long-term win/loss bias)
+
+## Hero w/l short term trend, past 7 days (Short-term win/loss bias)
+
+
+#                         Player Stats                #
+## Player w/l over last 3 games (Short term tilt factor)
+## Player w/l over past month (Bias for winning?)
+
+#                        Player_Hero Stats             #
+## p_hero total games as hero (experience modifier)
+
+## p_hero w/l over past 30 days (Player skill)
+
+## p_hero hero recency frequency (Player may be rusty with hero)
+
+
+
+
+#                       Match Stats                 #
+
+## Sort match players, 0-5 = winning team, 6-12 = losing team
+#Collect match data for prior time period
+#[players],"start_time", "winning_team", "match_id", "lobby_id", "duration_s","match_mode", "game_mode","region_mode_parsed" 
+
+
+###Collect as dict{match_data: {m_data}, team_win: [[w_team]], team_lose: [[l_team]] } 
+
+#Send data to AI for analytics
+
+#Return prediction
+
