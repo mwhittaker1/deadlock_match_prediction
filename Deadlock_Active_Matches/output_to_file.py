@@ -7,6 +7,10 @@ def to_xlsx(file, fname):
     df.to_excel(f'{fname}.xlsx', index=False)
     print(f"{df} passed to .xlsx")
 
+def to_csv(file, fname):
+    df = pd.DataFrame(file)
+    df.to_csv(f'{fname}.csv', index=False)
+    print(f"{df} passed to .csv")
 
 def main():
     data = {

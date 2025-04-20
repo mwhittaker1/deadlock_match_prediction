@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 import logging
 import openpyxl
-
+from xlsx_output import to_csv
 
 def setup_logging(verbose: bool):
     level = logging.DEBUG if verbose else logging.WARNING
@@ -39,14 +39,15 @@ def get_player_hero_data(p_id,h_id):
     # Check if the request was successful
     if response.status_code == 200:
         p_all_h_data = response.json() #player all hero data
-        print(f" found player data, here it is!: \n {p_all_h_data}")    
+        print(f" found player data! player: {p_id}")    
     else:
         print(f"Failed to retrieve match data: {response.status_code}")
     
     p_h_data = next((item for item in p_all_h_data if item['hero_id'] == h_id), None)
     
     if p_all_h_data:
-        logging.info(f"\n\nfound player_hero data for hero: {h_id} printing data \n {p_h_data}")
+        logging.info(f"\n\nfound player_hero data for hero: {h_id} player: {h_id}")
+        to_csv(p_h_data, f"{h_id}_{p_id}_data")
     else:
         logging.error(f"get_player_hero_data, find h_id in player data did not find match")
 
@@ -58,21 +59,22 @@ def cycle_account_ids(df):
     for index,row in df.iterrows(): #For each account_id in test_data
         p_id = row['account_id']
         h_id = row['hero_id']
-        logging.info(f"\n\ngetting player data....p_id is {p_id} and h_id is {h_id} interation {i}")
+        logging.info(f"\n\ngetting player data....p_id: is {p_id}, and h_id: is {h_id}, interation: {i}")
         p_hero_data = get_player_hero_data(p_id, h_id)
         
-        print(f"player hero data is: {p_hero_data}")
+        print(f"player hero data is: {p_hero_data}\n")
 
-        filtered_p_hero_data = filter_player_hero_data(p_hero_data) # function not written yet
-        final_p_hero_data = calculate_player_hero_stats(filtered_p_hero_data) # function not written yet
+        #filtered_p_hero_data = filter_player_hero_data(p_hero_data) # function not written yet
+        #final_p_hero_data = calculate_player_hero_stats(filtered_p_hero_data) # function not written yet
+        
         #append final_p_hero_data to row['account_id']
         i+=1
-        return p_hero_data
+    return p_hero_data
 
 def main():
-    logging.info(f"Starting... reading .csv")
-    test_data = pd.read_excel(f'single_account_data.xlsx')
-    logging.info(f"test_data is now {test_data}")
+    logging.info(f"\n\n***  ***  ***  ***  ***  *** \n\n****   Starting... reading .csv   ****\n\n   ***   ***   ***   ***   ***\n\n")
+    test_data = pd.read_excel(f'test_account_data.xlsx')
+    logging.info(f"\n\ntest_data is now\n\n {test_data}")
     i=0
     p_hero_data = cycle_account_ids(test_data) #will need to become a different variable later-
 

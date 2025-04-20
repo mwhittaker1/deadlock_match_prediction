@@ -3,9 +3,9 @@ import requests
 import logging
 import time
 import os
-from xlsx_output import to_xlsx
+from file_output import to_xlsx, to_csv
 from datetime import timedelta
-from Deadlock_Active_Matches.Deadlock_Data_Fetch import fetch_active_match_data
+#from Deadlock_Active_Matches.Deadlock_Data_Fetch import fetch_active_match_data
 
 ## Author : Mickey Whittaker
 ## Last Edit Date : 4/16/2025, 10:15am
@@ -29,7 +29,7 @@ def setup_logging(verbose: bool):
     logging.error("This is an error")
     logging.critical("This is critical")
 
-setup_logging(verbose=True)
+setup_logging(verbose=False)
 logger = logging.getLogger(__name__)
 logger.debug("Debug mode on")
 
@@ -111,6 +111,7 @@ def main():
     logging.debug(f"raw_m_h_data has been received.")
 
     match_hero_stats = hero_stats(raw_match_hero_data)
+    to_csv(match_hero_stats,"test_hero_match_data")
 
     logging.info(f"hero_stats added! :\n {match_hero_stats}")
     return

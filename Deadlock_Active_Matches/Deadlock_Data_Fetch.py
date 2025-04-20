@@ -15,6 +15,8 @@ def fetch_active_match_data():
     if response.status_code == 200:
         match_data = pd.DataFrame(response.json())
         #match_data = response.json()
+        #with open('json_match_data.json','w') as f:
+            #json.dump(match_data,f,indent=4)
     else:
         print(f"Failed to retrieve match data: {response.status_code}")
     
