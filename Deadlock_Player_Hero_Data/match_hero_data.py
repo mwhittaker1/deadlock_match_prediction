@@ -29,7 +29,7 @@ def setup_logging(verbose: bool):
     logging.error("This is an error")
     logging.critical("This is critical")
 
-setup_logging(verbose=False)
+setup_logging(verbose=True)
 logger = logging.getLogger(__name__)
 logger.debug("Debug mode on")
 
@@ -111,7 +111,7 @@ def main():
     logging.debug(f"raw_m_h_data has been received.")
 
     match_hero_stats = hero_stats(raw_match_hero_data)
-    to_csv(match_hero_stats,"big_test_hero_match_data")
+    #to_csv(match_hero_stats,"big_test_hero_match_data")
 
     logging.info(f"hero_stats added! :\n {match_hero_stats}")
     return

@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 import logging
 import openpyxl
-from Deadlock_Player_Hero_Data.file_output import to_csv
+from file_output import to_csv
 
 def setup_logging(verbose: bool):
     level = logging.DEBUG if verbose else logging.WARNING
