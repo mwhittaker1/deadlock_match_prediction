@@ -1,13 +1,10 @@
 import requests
 import json
 import pandas as pd
+import logging
 from utility_functions import to_csv, get_time_delta, setup_logging, initialize_logging
 
-#initialize logging
-verbose=True
-setup_logging(verbose)
-initialize_logging(verbose)
-
+logger = logging.getLogger(__name__)
 #Fetch Data Requests
 
 #Fetches 200 active matches with high badge rating. Will be used to cast predictions against.
@@ -52,7 +49,7 @@ def fetch_match_data(days,min_average_badge):
     return match_data #Returns JSON of match data.
 
 #Fetch hero data, @min_unix_time is historical time start point, @min_average_badge is min skill level
-def fetch_hero_stats(min_unix_time, min_average_badge):
+def fetch_hero_data(min_unix_time, min_average_badge):
     #API connection information
     site = "https://api.deadlock-api.com"
     endpoint = "/v1/analytics/hero-stats?" 
@@ -76,7 +73,7 @@ def fetch_hero_stats(min_unix_time, min_average_badge):
     #return DataFrame
     return m_hero_data
 
-def fetch_player_hero_data(p_id,h_id):
+def fetch_player_hero_data(p_id,h_id=None):
 
     # fetch player_hero from API on player_id
     site = "https://api.deadlock-api.com"
@@ -88,18 +85,13 @@ def fetch_player_hero_data(p_id,h_id):
 
     # Check if the request was successful
     if response.status_code == 200:
-        p_all_h_data = response.json() #player all hero data
+        p_h_data = response.json() #player all hero data
         print(f" found player data! player: {p_id}")    
     else:
         print(f"Failed to retrieve match data: {response.status_code}")
     
-    p_h_data = next((item for item in p_all_h_data if item['hero_id'] == h_id), None)
-    
-    if p_all_h_data:
-        logging.info(f"\n\nfound player_hero data for hero: {h_id} player: {h_id}")
-        to_csv(p_h_data, f"{h_id}_{p_id}_data")
-    else:
-        logging.error(f"get_player_hero_data, find h_id in player data did not find match")
+    if h_id is not None:
+        p_h_data = next((item for item in p_h_data if item['hero_id'] == h_id), None)
 
     return p_h_data #.json of h_id for p_id
 
@@ -111,5 +103,5 @@ def main():
         #json.dump(match_data,f,indent=4)
     #print(match_data)
 
-if __name__ == main():
+if __name__ == "__main__":
     main()

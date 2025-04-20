@@ -4,7 +4,7 @@ import time
 from datetime import timedelta
 
 # logging setup
-def setup_logging(verbose):
+def setup_logging(verbose=False):
     level = logging.DEBUG if verbose else logging.WARNING
 
     logging.basicConfig(

@@ -12,23 +12,19 @@ initialize_logging(verbose)
 #Fetches match data from DeadlockAPI, splits player data from match data, and filters based on MATCH_FILTERS from .cfg
 def orchestrate_active_match_data():
 
-    #Fetch Match Data
     print(f"\n******fetching data**** \n")
-    raw_match_data = fetch_active_match_data()  #Returns JSON of match data.
+    raw_match_data = fetch_active_match_data() 
 
-    #Returns DF for Match Data and Account Data.
     print(f"\n******spliting data**** \n")
     match_data, account_data = split_players_from_matches(raw_match_data)
-
-    #Filters by "MATCH_FILTERS", "PLAYER_FILTERS" from config.py. 
+ 
     print(f"\n******filtering match data**** \n")
-    match_data = filter_match_data(match_data)
+    match_data = filter_match_data(match_data) #Filters by "MATCH_FILTERS", "PLAYER_FILTERS" from config.py.
     
     print(f"\n******filtering account data**** \n")
     account_data = filter_account_data(account_data)
 
     print(f"\n******data to csv****")
-    #print(f"\nmatch_data is type {type(match_data)} and account_data is type {type(account_data)}")
     to_xlsx(match_data, "match")
     to_xlsx(account_data, "account")
 

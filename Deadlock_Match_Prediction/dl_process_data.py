@@ -1,11 +1,9 @@
 import pandas as pd
+import logging
 from utility_functions import setup_logging, initialize_logging
 from config import MATCH_FILTERS, PLAYER_FILTERS
 
-#initialize logging
-verbose=True
-setup_logging(verbose)
-initialize_logging(verbose)
+logger = logging.getLogger(__name__)
 
 # gets @total_matches, @hero_pickrate, @hero_win_percentage from pd.DataFrame(hero_stats)
 def calculate_hero_stats(m_hero_df):
@@ -13,7 +11,7 @@ def calculate_hero_stats(m_hero_df):
     def get_total_matches(df):
         total_matches = df['matches'].sum()
         total_matches = total_matches/12
-        print(f"sum matches = :{total_matches}")
+        #print(f"sum matches = :{total_matches}")
         return total_matches
     
     #adds pickrate to df
@@ -75,7 +73,7 @@ def filter_player_hero_data(df):
 
     return
 
-def calculate_player_hero_stats():
+def calculate_player_hero_stats(df):
     ## player w/l over last 3 games as player_3g_wl (int)
     ## player w/l over last month as player_1m_wl (int)
     return
