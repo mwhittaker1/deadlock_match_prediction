@@ -64,6 +64,22 @@ def fetch_hero_data(min_unix_time, min_average_badge):
     #return DataFrame
     return m_hero_data
 
+def fetch_hero_info():
+    site = "https://assets.deadlock-api.com"
+    endpoint = "/v2/heroes/"
+    url = site+endpoint
+    
+    response = requests.get(url)
+    
+    # Check if the request was successful
+    if response.status_code == 200:
+        heroes_info = pd.DataFrame(response.json())
+    else:
+        print(f"Failed to retrieve data: {response.status_code}")
+    
+    df = pd.DataFrame(heroes_info)
+    return df
+
 def fetch_player_hero_data(p_id,h_id=None):
 
     # fetch player_hero from API on player_id

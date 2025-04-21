@@ -1,6 +1,6 @@
 import pandas as pd
 from utility_functions import to_csv, to_xlsx, get_time_delta, setup_logging, initialize_logging
-from dl_fetch_data import fetch_active_match_data, fetch_hero_data, fetch_match_data, fetch_player_hero_data
+from dl_fetch_data import fetch_active_match_data, fetch_hero_data, fetch_match_data, fetch_player_hero_data, fetch_hero_info
 from dl_process_data import filter_account_data, filter_match_data, filter_player_hero_data, split_players_from_matches, calculate_hero_stats, calculate_player_hero_stats
 
 #initialize logging
@@ -32,6 +32,10 @@ def orchestrate_active_match_data():
     to_xlsx(match_data, "match")
     to_xlsx(account_data, "account")
 
+def orchestrate_hero_info():
+    hero_info = fetch_hero_info()
+    return hero_info
+
 def orchestrate_player_stats():
     #player specific stats, aka match history, w/l trends, hero diversity
     return
@@ -56,14 +60,15 @@ def orchestrate_hero_data():
     hero_trends_7d = calculate_hero_stats(hero_trends_7d)
     hero_trends_30d = fetch_hero_data(get_time_delta(30), min_average_badge)
     hero_trends_30d = calculate_hero_stats(hero_trends_30d)
-    return hero_trends_30d, hero_trends_7d
+    return hero_trends_7d, hero_trends_30d
 
 def main():
+    hero_info = True
     hero_d = False # returns 7d, 30d all_hero trend data.
     match_d = False # returns match metadata for x days and minimum badge
     a_match_d = False # returns 200 most recent high level matches
     player_d = False #returns p_id data
-    player_hero_d = True # returns p_all_hero data, or if h_id, p_hero_data
+    player_hero_d = False # returns p_all_hero data, or if h_id, p_hero_data
     p_id = "385814004"
     h_id = "58"
 
@@ -101,6 +106,16 @@ def main():
         if xlsx:
             print(f"\n\n**  p_h_data to .xlsx **\n\n")
             to_xlsx(p_h_stats, "p_h_stats")
+    
+    if hero_info:
+        heroes_info = orchestrate_hero_info()
+        if csv:
+            print(f"\n\n**  hero_info to .csv **\n\n")
+            to_csv(heroes_info, "hero_info")
+        if xlsx:
+            print(f"\n\n**  hero_info to .xlsx **\n\n")
+            to_xlsx(heroes_info, "hero_info")
+
 
 main()
 #if __name__ == "__main__":
