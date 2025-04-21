@@ -13,16 +13,20 @@ initialize_logging(verbose)
 def orchestrate_active_match_data():
 
     print(f"\n******fetching data**** \n")
-    raw_match_data = fetch_active_match_data() 
+    raw_match_data = fetch_active_match_data()
+    print(f"\n\n** Active_match_Data found, raw_match_data.head :  {raw_match_data.head()}:\n\n") 
 
     print(f"\n******spliting data**** \n")
     match_data, account_data = split_players_from_matches(raw_match_data)
+    print(f"\n\n** account, match data split. match_data: {match_data.head()} \n\naccount_data: {account_data.head()}:\n\n") 
  
-    print(f"\n******filtering match data**** \n")
+    """print(f"\n******filtering match data**** \n")
     match_data = filter_match_data(match_data) #Filters by "MATCH_FILTERS", "PLAYER_FILTERS" from config.py.
-    
+    print(f"\n\n** filter_match data complete, match_data: {match_data.head()}   \n\n")
+
     print(f"\n******filtering account data**** \n")
     account_data = filter_account_data(account_data)
+    print(f"\n\n** Filtered account data, account data: {account_data.head()}\n \n")"""
 
     print(f"\n******data to csv****")
     to_xlsx(match_data, "match")
@@ -55,49 +59,49 @@ def orchestrate_hero_data():
     return hero_trends_30d, hero_trends_7d
 
 def main():
-    hero_d = True # returns 7d, 30d all_hero trend data.
+    hero_d = False # returns 7d, 30d all_hero trend data.
     match_d = False # returns match metadata for x days and minimum badge
     a_match_d = False # returns 200 most recent high level matches
     player_d = False #returns p_id data
-    player_hero_d = False # returns p_all_hero data, or if h_id, p_hero_data
+    player_hero_d = True # returns p_all_hero data, or if h_id, p_hero_data
+    p_id = "385814004"
+    h_id = "58"
+
     csv = True #exports data to csv
     xlsx = False #exports data to xlsx
 
     if a_match_d:
-        print(f"** Orchestrating active match data, to_csv = {csv} to xlsx = {xlsx} **")
+        print(f"\n\n** Orchestrating active match data, to_csv = {csv} to xlsx = {xlsx} **\n\n")
         active_match_data, a_m_player_data = orchestrate_active_match_data()
         if csv:
-            print(f"** active_match_data, a_m_player_data to .csv **")
+            print(f"\n\n** active_match_data, a_m_player_data to .csv **\n\n")
             to_csv(active_match_data, "active_match_data")
             to_csv(a_m_player_data, "a_m_player_data")
         if xlsx:
-            print(f"** active_match_data, a_m_player_data to .xlsx **")
+            print(f"\n\n** active_match_data, a_m_player_data to .xlsx **\n\n")
             to_xlsx(active_match_data, "active_match_data")
             to_xlsx(a_m_player_data, "a_m_player_data")
 
     if hero_d:
         h_trends_7d, h_trends_30d = orchestrate_hero_data()
         if csv:
-            print(f"** h_trends 7d, 30d to .csv **")
+            print(f"\n\n** h_trends 7d, 30d to .csv **\n\n")
             to_csv(h_trends_7d, "h_trends_7d")
             to_csv(h_trends_30d, "h_trends_30d")
         if xlsx:
-            print(f"** h_trends 7d, 30d to .xlsx **")
+            print(f"\n\n** h_trends 7d, 30d to .xlsx **\n\n")
             to_xlsx(h_trends_7d, "h_trends_7d")
             to_xlsx(h_trends_30d, "h_trends_30d")
 
     if player_hero_d:
-        p_id =0
-        h_id =0
         p_h_stats = orchestrate_player_hero_stats(p_id, h_id) #needs player_id, hero_id filters by that hero
         if csv:
-            print(f"**  p_h_data to .csv **")
+            print(f"\n\n**  p_h_data to .csv **\n\n")
             to_csv(p_h_stats, "p_h_stats")
         if xlsx:
-            print(f"**  p_h_data to .xlsx **")
+            print(f"\n\n**  p_h_data to .xlsx **\n\n")
             to_xlsx(p_h_stats, "p_h_stats")
 
-    return #main return
-
-if __name__ == "__main__":
-    main()
+main()
+#if __name__ == "__main__":
+#    main()

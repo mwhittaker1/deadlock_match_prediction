@@ -1,9 +1,7 @@
 import pandas as pd
-import logging
-from utility_functions import setup_logging, initialize_logging
 from config import MATCH_FILTERS, PLAYER_FILTERS
 
-logger = logging.getLogger(__name__)
+
 
 # gets @total_matches, @hero_pickrate, @hero_win_percentage from pd.DataFrame(hero_stats)
 def calculate_hero_stats(m_hero_df):
@@ -43,22 +41,22 @@ def split_players_from_matches(df):
     players = pd.concat(account_data, ignore_index=True)
 
 
-    if debug ==True:
-        print(f"**SPLIT DATA, PLAYERS**  : \n\n")
+    """if debug ==True:
+        print(f"\n\n**SPLIT DATA, PLAYERS**  : \n\n")
         for i, (key) in enumerate(players.items()):
             if i < 5:
-                print(f"Key= {key}\n")
+                print(f"Key= {key}\n\n")
 
     #drop nested dictionary from df
     match_data = df.drop(columns=['players'])
 
     if debug ==True:
-        print(f"**SPLIT DATA, MATCH: \n")
+        print(f"**\n\nSPLIT DATA, MATCH: \n\n")
         for i, (key) in enumerate(match_data.items()):
             if i < 5:
-                print(f"Key= {key}")
+                print(f"Key= {key}\n")"""
     
-    return match_data, players
+    return df, players
 
 def filter_match_data(df):
     return df[MATCH_FILTERS]
