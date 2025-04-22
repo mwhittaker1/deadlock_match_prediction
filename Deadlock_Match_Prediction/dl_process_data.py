@@ -58,6 +58,11 @@ def split_players_from_matches(df):
     
     return df, players
 
+def match_data_outcome_add(df,json):
+    df = pd.json_normalize(json, record_path="players", meta=["match_id", "winning_team"])
+    df["won"] = df["team"] == df["winning_team"]
+    return df
+
 def filter_match_data(df):
     return df[MATCH_FILTERS]
 
@@ -72,6 +77,8 @@ def filter_player_hero_data(df):
     return
 
 def calculate_player_hero_stats(df):
+    df['win_percentage'] = (df['wins'].replace(0,1)/df['matches_played'].replcae(0,1)*100).round(2)
+
     ## player w/l over last 3 games as player_3g_wl (int)
     ## player w/l over last month as player_1m_wl (int)
     return

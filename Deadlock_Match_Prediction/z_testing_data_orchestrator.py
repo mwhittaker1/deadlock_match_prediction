@@ -50,8 +50,8 @@ def orchestrate_player_hero_stats(p_id, h_id=None):
         return p_all_hero_data
         
 
-def orchestrate_match_data(days,min_average_badge):
-    fetch_match_data(days, min_average_badge)
+def orchestrate_match_data(limit, days,min_average_badge):
+    fetch_match_data(limit, days, min_average_badge)
 
 #Creates two data dfs, one for 7 day hero trends, one for 30 day hero trends.
 def orchestrate_hero_data():
@@ -71,10 +71,14 @@ def main():
     player_hero_d = False # returns p_all_hero data, or if h_id, p_hero_data
     p_id = "385814004"
     h_id = "58"
-
+    min_average_badge = 100
+    limit = 5000
+    days = 10
     csv = True #exports data to csv
     xlsx = False #exports data to xlsx
 
+    # Active Match Data - Grabs 100 high ranking games currently being played.
+    # Returns 2 dataframes, one with match data, another with account and hero ids for the players.
     if a_match_d:
         print(f"\n\n** Orchestrating active match data, to_csv = {csv} to xlsx = {xlsx} **\n\n")
         active_match_data, a_m_player_data = orchestrate_active_match_data()
@@ -86,6 +90,18 @@ def main():
             print(f"\n\n** active_match_data, a_m_player_data to .xlsx **\n\n")
             to_xlsx(active_match_data, "active_match_data")
             to_xlsx(a_m_player_data, "a_m_player_data")
+
+    if match_d:
+        print(f"\n\n** Orchestrating match data, to_csv = {csv} to xlsx = {xlsx} **\n\n")
+        match_data = orchestrate_match_data(limit, days, min_average_badge)
+        if csv:
+            print(f"\n\n** match_data, match_data to .csv **\n\n")
+            to_csv(match_data, "match_data")
+            to_csv(match_data, "match_data")
+        if xlsx:
+            print(f"\n\n** match_data, match_data to .xlsx **\n\n")
+            to_xlsx(match_data, "match_data")
+            to_xlsx(match_data, "match_data")
 
     if hero_d:
         h_trends_7d, h_trends_30d = orchestrate_hero_data()

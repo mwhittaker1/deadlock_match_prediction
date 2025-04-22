@@ -39,7 +39,7 @@ def to_csv(file, fname):
 
 def get_time_delta(days):
     c_unix_timestamp = int(time.time()) #current time
-    x_days_ago = str(int(c_unix_timestamp - timedelta(days=days).total_seconds()))    
+    x_days_ago = (int(c_unix_timestamp - timedelta(days=days).total_seconds()))   
     min_unix_time = f"min_unix_timestamp={x_days_ago}"
     return min_unix_time
 
