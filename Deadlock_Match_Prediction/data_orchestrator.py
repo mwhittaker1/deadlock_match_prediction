@@ -55,6 +55,7 @@ def orchestrate_match_data(limit, days,min_average_badge):
     flat_m_data = match_data_outcome_add(df_m_data, json_match_data)
     return flat_m_data
 
+
 #Creates two data dfs, one for 7 day hero trends, one for 30 day hero trends.
 def orchestrate_hero_data():
     min_average_badge = "min_average_badge=100"
@@ -64,7 +65,15 @@ def orchestrate_hero_data():
     hero_trends_30d = calculate_hero_stats(hero_trends_30d)
     return hero_trends_7d, hero_trends_30d
 
+def orchestrate_match_hero_data(limit,days,min_average_badge):
+    limit = 1
+    single_match = orchestrate_match_data(limit,days,min_average_badge)
+    m_id = single_match['match_id'][0]
+    print(f"\n\n from orchestrate_match_hero_data. m_id = {m_id}***")
+    return
+
 def main():
+    single_full_set = True
     hero_info = False
     hero_d = False # returns 7d, 30d all_hero trend data.
     match_d = True # returns match metadata for x days and minimum badge
@@ -78,6 +87,10 @@ def main():
     days = 10
     csv = False #exports data to csv
     xlsx = False #exports data to xlsx
+
+    if single_full_set:
+        data = orchestrate_match_hero_data(limit,days,min_average_badge)
+        print(f"*** full match_player_hero data set orchestrated data= {data}")
 
     # Active Match Data - Grabs 100 high ranking games currently being played.
     # Returns 2 dataframes, one with match data, another with account and hero ids for the players.
