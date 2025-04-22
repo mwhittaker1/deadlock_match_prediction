@@ -1,0 +1,25 @@
+
+#### For a match  ####
+## for each player ##
+# use p_match_history as primary DataFrame
+# merge match_metadata for team win
+
+# fetch player last 3 matches W/l
+# fetch player last 30 days W/l
+
+### filter to player_hero
+# fetch player_hero last 3 matches W/l & pickrate
+# fetch player_hero last 30 days W/l_team & pickrate
+
+### fetch hero_stats for all heroes
+# hero last 7 days w/l trend & pickrate
+# hero last 30 days w/l trend & pickrate
+
+#### loop for each player, save hero_stats for each player ####
+
+# Collect base data to be used for training an AI model.
+                      
+#Send data to AI for analytics
+
+#Return prediction
+
