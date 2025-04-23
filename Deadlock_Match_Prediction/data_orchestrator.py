@@ -1,7 +1,7 @@
 import pandas as pd
-from Deadlock_Match_Prediction.services.utility_functions import to_csv, to_xlsx, get_time_delta, setup_logging, initialize_logging
-from Deadlock_Match_Prediction.services.dl_fetch_data import fetch_active_match_data, fetch_hero_data, fetch_match_data, fetch_player_hero_stats, fetch_hero_info, fetch_player_match_history
-from Deadlock_Match_Prediction.services.dl_process_data import filter_account_data, filter_match_data, filter_player_hero_data, split_players_from_matches, calculate_hero_stats, calculate_player_hero_stats, match_data_outcome_add
+from services.utility_functions import to_csv, to_xlsx, get_time_delta, setup_logging, initialize_logging
+from services.dl_fetch_data import fetch_active_match_data, fetch_hero_data, fetch_match_data, fetch_player_hero_stats, fetch_hero_info, fetch_player_match_history
+from services.dl_process_data import filter_account_data, filter_match_data, filter_player_hero_data, split_players_from_matches, calculate_hero_stats, calculate_player_hero_stats, match_data_outcome_add
 
 #initialize logging
 verbose=False
@@ -61,7 +61,9 @@ def orchestrate_hero_data():
 # Fetches match data over x days, miniumum rank, and max to fetch (hard limit 5000)
 def orchestrate_match_data(limit, days,min_average_badge,m_id=None):
     df_m_data, json_match_data = fetch_match_data(limit, days, min_average_badge,m_id)
+    print(f"\n\n** Data split, applying match outcome data ***\n")
     flat_m_data = match_data_outcome_add(df_m_data, json_match_data) #returns df
+    print(f"\n** data flattened + stats, data =\n {flat_m_data}")
     return flat_m_data #df
 
 # takes 1 match_id, fetches player data, fetches player_hero data for each, and returns all.

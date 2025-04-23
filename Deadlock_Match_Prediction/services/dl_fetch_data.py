@@ -1,7 +1,7 @@
 import requests
 import json
 import pandas as pd
-from Deadlock_Match_Prediction.services.utility_functions import to_csv, get_time_delta
+from services.utility_functions import to_csv, get_time_delta
 
 #Fetch Data Requests
 
@@ -37,7 +37,6 @@ def fetch_match_data(limit, days,min_average_badge,m_id=None):
         url = f"{site}{endpoint}include_player_info=true&{min_unix_time}&{min_average_badge}&limit={limit}"
         print(f"\n\nURL is: {url}\n\n")
         response = requests.get(url)
-    
     
     # Check if the request was successful
     if response.status_code == 200:

@@ -1,5 +1,6 @@
 import pandas as pd
-from Deadlock_Match_Prediction.services.config import MATCH_FILTERS, PLAYER_FILTERS
+import numpy as np
+from services.config import MATCH_FILTERS, PLAYER_FILTERS
 
 
 
@@ -18,7 +19,7 @@ def calculate_hero_stats(m_hero_df):
         return df
 
     #adds win_percentage to df
-    def hero_win_percentage(df):
+    def hero_win_percentage(df)-> pd.DataFrame:
         df['win_percentage'] = (df['wins'].replace(0,1)/df['matches'].replace(0,1)*100).round(2)
         return df
 
@@ -28,7 +29,7 @@ def calculate_hero_stats(m_hero_df):
     return m_hero_df
 
 #Extracts pd.DataFrame(players) from pd.DataFrame(matches), appends match_id to each player row
-def split_players_from_matches(df):
+def split_players_from_matches(df)-> pd.DataFrame:
     match_data = pd.DataFrame()
     account_data = []
 
@@ -58,15 +59,20 @@ def split_players_from_matches(df):
     
     return df, players
 
-def match_data_outcome_add(df,json):
+def match_data_outcome_add(df,json)-> pd.DataFrame:
+    """normalizes match data to compare winning team to player team"""
     df = pd.json_normalize(json, record_path="players", meta=["match_id", "winning_team"])
     df["won"] = df["team"] == df["winning_team"]
     return df
 
-def filter_match_data(df):
+def match_history_outcome_add(df)-> pd.DataFrame:
+    df["won"] = df["player_team"] == df["match_result"]
+    return df
+
+def filter_match_data(df)-> pd.DataFrame:
     return df[MATCH_FILTERS]
 
-def filter_account_data(df):
+def filter_account_data(df)-> pd.DataFrame:
     return df[PLAYER_FILTERS]
 
 def filter_player_hero_data(df):
@@ -78,7 +84,74 @@ def filter_player_hero_data(df):
 
 def calculate_player_hero_stats(df):
     df['win_percentage'] = (df['wins'].replace(0,1)/df['matches_played'].replcae(0,1)*100).round(2)
-
-    ## player w/l over last 3 games as player_3g_wl (int)
-    ## player w/l over last month as player_1m_wl (int)
     return
+
+def win_loss_history(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Given a DataFrame with:
+      - a boolean 'won' column
+      - a 'hero_id' column
+    returns a new DataFrame with:
+      - p_win_pct_3, p_win_pct_5: player rolling win-% (3/5 matches)
+      - p_streak_3, p_streak_5: player streak labels
+      - h_win_pct_3, h_win_pct_5: hero-specific rolling win-% (3/5 matches)
+      - h_streak_3, h_streak_5: hero-specific streak labels
+    """
+    df = df.copy()
+
+    # --- player-level rolling win-% ---
+    df['p_win_pct_3'] = df['won'].rolling(window=3, min_periods=1).mean() * 100
+    df['p_win_pct_5'] = df['won'].rolling(window=5, min_periods=1).mean() * 100
+
+    # player streak labels
+    labels3 = ['major_loss', 'loss_streak', 'win_streak', 'major_win']
+    conds3_p = [
+        df['p_win_pct_3'] ==   0,
+        df['p_win_pct_3'] ==  33.33333333333333,
+        df['p_win_pct_3'] ==  66.66666666666666,
+        df['p_win_pct_3'] == 100
+    ]
+    df['p_streak_3'] = np.select(conds3_p, labels3, default=pd.NA)
+
+    labels5 = ['major_loss', 'loss_streak', 'neutral',
+               'win_streak', 'strong_win', 'major_win']
+    conds5_p = [
+        df['p_win_pct_5'] ==    0,
+        df['p_win_pct_5'] ==   20,
+        df['p_win_pct_5'] ==   40,
+        df['p_win_pct_5'] ==   60,
+        df['p_win_pct_5'] ==   80,
+        df['p_win_pct_5'] ==  100
+    ]
+    df['p_streak_5'] = np.select(conds5_p, labels5, default=None)
+
+    # --- hero-level rolling win-% (per hero_id group) ---
+    df['h_win_pct_3'] = (
+        df.groupby('hero_id')['won']
+          .transform(lambda x: x.rolling(window=3, min_periods=1).mean() * 100)
+    )
+    df['h_win_pct_5'] = (
+        df.groupby('hero_id')['won']
+          .transform(lambda x: x.rolling(window=5, min_periods=1).mean() * 100)
+    )
+
+    # hero streak labels
+    conds3_h = [
+        df['h_win_pct_3'] ==   0,
+        df['h_win_pct_3'] ==  33.33333333333333,
+        df['h_win_pct_3'] ==  66.66666666666666,
+        df['h_win_pct_3'] == 100
+    ]
+    df['h_streak_3'] = np.select(conds3_h, labels3, default=pd.NA)
+
+    conds5_h = [
+        df['h_win_pct_5'] ==    0,
+        df['h_win_pct_5'] ==   20,
+        df['h_win_pct_5'] ==   40,
+        df['h_win_pct_5'] ==   60,
+        df['h_win_pct_5'] ==   80,
+        df['h_win_pct_5'] ==  100
+    ]
+    df['h_streak_5'] = np.select(conds5_h, labels5, default=None)
+
+    return df

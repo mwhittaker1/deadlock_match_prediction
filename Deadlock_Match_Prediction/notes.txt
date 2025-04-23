@@ -1,11 +1,13 @@
+###Working on build_training_data
+## need to append each iterations, currently overwrites.
 
 #### For a match  ####
 ## for each player ##
 # use p_match_history as primary DataFrame
 # merge match_metadata for team win
 
-# fetch player last 3 matches W/l
-# fetch player last 30 days W/l
+# fetch player last 3 matches W/l player_last_3_w_%
+# fetch player last 30 days W/l player_last_30_w_%
 
 ### filter to player_hero
 # fetch player_hero last 3 matches W/l & pickrate
