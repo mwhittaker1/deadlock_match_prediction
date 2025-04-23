@@ -1,0 +1,15 @@
+Build player_hero analytics
+
+Investigate how to create bias / weights based on analytics
+
+Create function to pull historical match data (can reuse some of active match data)
+
+Figure out how to train AI on data and create prediction model
+
+Train AI model
+
+Feed test data and repeat if needed
+
+Test predictions
+
+Sold

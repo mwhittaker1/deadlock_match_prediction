@@ -1,0 +1,44 @@
+2025-04-17 21:08:44,906 [DEBUG] This is a debug message
+2025-04-17 21:08:44,906 [INFO] This is an info message
+2025-04-17 21:08:44,906 [WARNING] This is a warning
+2025-04-17 21:08:44,906 [ERROR] This is an error
+2025-04-17 21:08:44,906 [CRITICAL] This is critical
+2025-04-17 21:08:44,906 [DEBUG] Debug mode on
+2025-04-17 21:08:44,906 [INFO] Starting... reading .csv
+2025-04-17 21:12:06,863 [DEBUG] This is a debug message
+2025-04-17 21:12:06,864 [INFO] This is an info message
+2025-04-17 21:12:06,864 [WARNING] This is a warning
+2025-04-17 21:12:06,864 [ERROR] This is an error
+2025-04-17 21:12:06,864 [CRITICAL] This is critical
+2025-04-17 21:12:06,864 [DEBUG] Debug mode on
+2025-04-17 21:12:06,864 [INFO] Starting... reading .csv
+2025-04-17 21:12:35,423 [DEBUG] This is a debug message
+2025-04-17 21:12:35,423 [INFO] This is an info message
+2025-04-17 21:12:35,423 [WARNING] This is a warning
+2025-04-17 21:12:35,423 [ERROR] This is an error
+2025-04-17 21:12:35,423 [CRITICAL] This is critical
+2025-04-17 21:12:35,423 [DEBUG] Debug mode on
+2025-04-17 21:12:35,423 [INFO] Starting... reading .csv
+2025-04-17 21:13:25,579 [DEBUG] This is a debug message
+2025-04-17 21:13:25,580 [INFO] This is an info message
+2025-04-17 21:13:25,580 [WARNING] This is a warning
+2025-04-17 21:13:25,580 [ERROR] This is an error
+2025-04-17 21:13:25,580 [CRITICAL] This is critical
+2025-04-17 21:13:25,580 [DEBUG] Debug mode on
+2025-04-17 21:13:25,580 [INFO] Starting... reading .csv
+2025-04-17 21:13:25,587 [INFO] iteration through player_ids, count 0
+2025-04-17 23:52:41,689 [DEBUG] This is a debug message
+2025-04-17 23:52:41,689 [INFO] This is an info message
+2025-04-17 23:52:41,689 [WARNING] This is a warning
+2025-04-17 23:52:41,689 [ERROR] This is an error
+2025-04-17 23:52:41,689 [CRITICAL] This is critical
+2025-04-17 23:52:41,689 [DEBUG] Debug mode on
+2025-04-17 23:52:41,689 [INFO] Starting... reading .csv
+2025-04-17 23:52:41,705 [INFO] iteration through player_ids, count 0
+2025-04-18 00:02:53,935 [DEBUG] This is a debug message
+2025-04-18 00:02:53,936 [INFO] This is an info message
+2025-04-18 00:02:53,936 [WARNING] This is a warning
+2025-04-18 00:02:53,936 [ERROR] This is an error
+2025-04-18 00:02:53,936 [CRITICAL] This is critical
+2025-04-18 00:02:53,936 [DEBUG] Debug mode on
+2025-04-18 00:02:53,936 [INFO] Starting... reading .csv
