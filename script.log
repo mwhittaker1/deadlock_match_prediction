@@ -1,0 +1,79 @@
+2025-04-15 22:25:07,561 [DEBUG] This is a debug message
+2025-04-15 22:25:07,562 [INFO] This is an info message
+2025-04-15 22:25:07,562 [WARNING] This is a warning
+2025-04-15 22:25:07,562 [ERROR] This is an error
+2025-04-15 22:25:07,562 [CRITICAL] This is critical
+2025-04-15 22:25:07,562 [DEBUG] Debug mode on
+2025-04-15 22:25:07,563 [INFO] Starting scrpt...
+2025-04-15 22:25:07,563 [INFO] Fetchin match_hero data...
+2025-04-15 22:26:01,483 [DEBUG] This is a debug message
+2025-04-15 22:26:01,484 [INFO] This is an info message
+2025-04-15 22:26:01,484 [WARNING] This is a warning
+2025-04-15 22:26:01,484 [ERROR] This is an error
+2025-04-15 22:26:01,484 [CRITICAL] This is critical
+2025-04-15 22:26:01,484 [DEBUG] Debug mode on
+2025-04-15 22:26:01,485 [INFO] Starting scrpt...
+2025-04-15 22:26:01,486 [INFO] Fetchin match_hero data...
+2025-04-15 22:27:01,399 [DEBUG] This is a debug message
+2025-04-15 22:27:01,399 [INFO] This is an info message
+2025-04-15 22:27:01,399 [WARNING] This is a warning
+2025-04-15 22:27:01,399 [ERROR] This is an error
+2025-04-15 22:27:01,400 [CRITICAL] This is critical
+2025-04-15 22:27:01,400 [DEBUG] Debug mode on
+2025-04-15 22:27:01,400 [INFO] Starting scrpt...
+2025-04-15 22:27:01,400 [INFO] Fetchin match_hero data...
+2025-04-15 22:27:28,941 [DEBUG] This is a debug message
+2025-04-15 22:27:28,941 [INFO] This is an info message
+2025-04-15 22:27:28,942 [WARNING] This is a warning
+2025-04-15 22:27:28,942 [ERROR] This is an error
+2025-04-15 22:27:28,942 [CRITICAL] This is critical
+2025-04-15 22:27:28,942 [DEBUG] Debug mode on
+2025-04-15 22:27:28,942 [INFO] Starting scrpt...
+2025-04-15 22:27:28,942 [INFO] Fetchin match_hero data...
+2025-04-15 22:28:15,362 [DEBUG] This is a debug message
+2025-04-15 22:28:15,362 [INFO] This is an info message
+2025-04-15 22:28:15,362 [WARNING] This is a warning
+2025-04-15 22:28:15,362 [ERROR] This is an error
+2025-04-15 22:28:15,363 [CRITICAL] This is critical
+2025-04-15 22:28:15,363 [DEBUG] Debug mode on
+2025-04-15 22:28:15,363 [INFO] Starting scrpt...
+2025-04-15 22:28:15,363 [INFO] Fetchin match_hero data...
+2025-04-15 22:28:26,940 [DEBUG] This is a debug message
+2025-04-15 22:28:26,940 [INFO] This is an info message
+2025-04-15 22:28:26,940 [WARNING] This is a warning
+2025-04-15 22:28:26,940 [ERROR] This is an error
+2025-04-15 22:28:26,940 [CRITICAL] This is critical
+2025-04-15 22:28:26,941 [DEBUG] Debug mode on
+2025-04-15 22:28:26,941 [INFO] Starting scrpt...
+2025-04-15 22:28:26,941 [INFO] Fetchin match_hero data...
+2025-04-15 22:29:47,312 [DEBUG] This is a debug message
+2025-04-15 22:29:47,313 [INFO] This is an info message
+2025-04-15 22:29:47,313 [WARNING] This is a warning
+2025-04-15 22:29:47,313 [ERROR] This is an error
+2025-04-15 22:29:47,313 [CRITICAL] This is critical
+2025-04-15 22:29:47,313 [DEBUG] Debug mode on
+2025-04-15 22:29:47,313 [INFO] Starting scrpt...
+2025-04-15 22:29:47,313 [INFO] Fetchin match_hero data...
+2025-04-15 22:29:47,314 [DEBUG] Getting data from full url: placeholder
+2025-04-15 22:35:43,327 [DEBUG] This is a debug message
+2025-04-15 22:35:43,327 [INFO] This is an info message
+2025-04-15 22:35:43,327 [WARNING] This is a warning
+2025-04-15 22:35:43,327 [ERROR] This is an error
+2025-04-15 22:35:43,327 [CRITICAL] This is critical
+2025-04-15 22:35:43,327 [DEBUG] Debug mode on
+2025-04-15 22:35:43,327 [INFO] Starting scrpt...
+2025-04-15 22:35:43,327 [INFO] Fetchin match_hero data...
+2025-04-15 22:35:43,327 [DEBUG] Getting data from full url: placeholder
+2025-04-15 22:36:19,823 [DEBUG] This is a debug message
+2025-04-15 22:36:19,824 [INFO] This is an info message
+2025-04-15 22:36:19,824 [WARNING] This is a warning
+2025-04-15 22:36:19,824 [ERROR] This is an error
+2025-04-15 22:36:19,824 [CRITICAL] This is critical
+2025-04-15 22:36:19,825 [DEBUG] Debug mode on
+2025-04-15 22:36:19,825 [INFO] Starting scrpt...
+2025-04-15 22:36:19,825 [INFO] Fetchin match_hero data...
+2025-04-15 22:36:19,825 [DEBUG] Getting data from full url: https://api.deadlock-api.com/v1/analytics/hero-stats?/min_average_badge=115/min_unix_timestamp=1744684579.0
+2025-04-15 22:36:19,827 [DEBUG] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-04-15 22:36:20,162 [DEBUG] https://api.deadlock-api.com:443 "GET /v1/analytics/hero-stats?/min_average_badge=115/min_unix_timestamp=1744684579.0 HTTP/1.1" 200 None
+2025-04-15 22:36:20,163 [INFO] match_hero data fetched.
+2025-04-15 22:36:20,164 [DEBUG] 
