@@ -1,8 +1,8 @@
 import pandas as pd
-from utility_functions import to_csv, to_xlsx, get_time_delta, setup_logging, initialize_logging
-from dl_fetch_data import fetch_active_match_data, fetch_hero_data, fetch_match_data, fetch_player_hero_stats, fetch_hero_info, fetch_player_match_history
-from dl_process_data import filter_account_data, filter_match_data, filter_player_hero_data, split_players_from_matches, calculate_hero_stats, calculate_player_hero_stats, match_data_outcome_add
-
+from Deadlock_Match_Prediction.services.utility_functions import to_csv, to_xlsx, get_time_delta, setup_logging, initialize_logging
+from Deadlock_Match_Prediction.services.dl_fetch_data import fetch_active_match_data, fetch_hero_data, fetch_match_data, fetch_player_hero_stats, fetch_hero_info, fetch_player_match_history
+from Deadlock_Match_Prediction.services.dl_process_data import filter_account_data, filter_match_data, filter_player_hero_data, split_players_from_matches, calculate_hero_stats, calculate_player_hero_stats, match_data_outcome_add
+from Deadlock_Match_Prediction.data_orchestrator import orchestrate_match_data
 
 ### fetch set of matches for training ###
 

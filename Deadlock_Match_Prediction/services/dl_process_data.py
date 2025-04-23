@@ -1,5 +1,5 @@
 import pandas as pd
-from config import MATCH_FILTERS, PLAYER_FILTERS
+from Deadlock_Match_Prediction.services.config import MATCH_FILTERS, PLAYER_FILTERS
 
 
 

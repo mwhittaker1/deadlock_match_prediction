@@ -1,7 +1,7 @@
 import pandas as pd
-from utility_functions import to_csv, to_xlsx, get_time_delta, setup_logging, initialize_logging
-from dl_fetch_data import fetch_active_match_data, fetch_hero_data, fetch_match_data, fetch_player_hero_data, fetch_hero_info
-from dl_process_data import filter_account_data, filter_match_data, filter_player_hero_data, split_players_from_matches, calculate_hero_stats, calculate_player_hero_stats
+from Deadlock_Match_Prediction.services.utility_functions import to_csv, to_xlsx, get_time_delta, setup_logging, initialize_logging
+from Deadlock_Match_Prediction.services.dl_fetch_data import fetch_active_match_data, fetch_hero_data, fetch_match_data, fetch_player_hero_data, fetch_hero_info
+from Deadlock_Match_Prediction.services.dl_process_data import filter_account_data, filter_match_data, filter_player_hero_data, split_players_from_matches, calculate_hero_stats, calculate_player_hero_stats
 
 #initialize logging
 verbose=True

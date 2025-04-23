@@ -1,7 +1,7 @@
 import requests
 import json
 import pandas as pd
-from utility_functions import to_csv, get_time_delta
+from Deadlock_Match_Prediction.services.utility_functions import to_csv, get_time_delta
 
 #Fetch Data Requests
 
