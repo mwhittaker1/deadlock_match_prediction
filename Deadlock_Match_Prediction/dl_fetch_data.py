@@ -26,14 +26,18 @@ def fetch_active_match_data():
     return match_data #Returns JSON of match data.
 
 #Fetches historical match data, @days = historical days backwards, @min_average_badge represents skill level
-def fetch_match_data(limit, days,min_average_badge):
+def fetch_match_data(limit, days,min_average_badge,m_id=None):
     site = "https://api.deadlock-api.com"
     endpoint = "/v1/matches/metadata?"
-    min_unix_time = get_time_delta(days)
-    url = f"{site}{endpoint}include_player_info=true&{min_unix_time}&{min_average_badge}&limit={limit}"
-    print(f"\n\nURL is: {url}\n\n")
-
-    response = requests.get(url)
+    if m_id:
+        url=f"{site}{endpoint}match_ids={m_id}"
+        response = requests.get(url)
+    else: 
+        min_unix_time = get_time_delta(days)
+        url = f"{site}{endpoint}include_player_info=true&{min_unix_time}&{min_average_badge}&limit={limit}"
+        print(f"\n\nURL is: {url}\n\n")
+        response = requests.get(url)
+    
     
     # Check if the request was successful
     if response.status_code == 200:

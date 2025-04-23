@@ -1,0 +1,22 @@
+match+normalized players
+1 match = 12 rows
+100 matches = 1,200 rows
+5000 matches = 110,000 rows
+
+df, 1 row = ...
+account_id - int
+match_id - int
+account_match - Primary Key, int
+won - bool
+hero_id - int
+hero_7d_pickrate_pct - %
+hero_30d_pickrate_pct - %
+hero_7d_winrate_pct - %
+hero_30d_winrate_pct - %
+player_7d_winrate_pct - %
+player_30d_winrate_pct - %
+player_3g_winrate_pct - %
+player_hero_total_matches - int
+player_hero_total_pickrate_pct - %
+player_hero_7d_winrate_pct - %
+player_hero_30d_winrate_pct - %

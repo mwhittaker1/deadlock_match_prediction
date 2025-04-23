@@ -49,12 +49,6 @@ def orchestrate_match_history(p_id):
     p_m_history = fetch_player_match_history(p_id)
     return p_m_history
 
-# Fetches match data over x days, miniumum rank, and max to fetch (hard limit 5000)
-def orchestrate_match_data(limit, days,min_average_badge):
-    df_m_data, json_match_data = fetch_match_data(limit, days, min_average_badge)
-    flat_m_data = match_data_outcome_add(df_m_data, json_match_data)
-    return flat_m_data
-
 #Creates two data dfs, one for 7 day hero trends, one for 30 day hero trends.
 def orchestrate_hero_data():
     min_average_badge = "min_average_badge=100"
@@ -63,6 +57,24 @@ def orchestrate_hero_data():
     hero_trends_30d = fetch_hero_data(get_time_delta(30), min_average_badge)
     hero_trends_30d = calculate_hero_stats(hero_trends_30d)
     return hero_trends_7d, hero_trends_30d
+
+# Fetches match data over x days, miniumum rank, and max to fetch (hard limit 5000)
+def orchestrate_match_data(limit, days,min_average_badge,m_id=None):
+    df_m_data, json_match_data = fetch_match_data(limit, days, min_average_badge,m_id)
+    flat_m_data = match_data_outcome_add(df_m_data, json_match_data) #returns df
+    return flat_m_data #df
+
+# takes 1 match_id, fetches player data, fetches player_hero data for each, and returns all.
+def orchestrate_match_hero_data(limit,days,min_average_badge):
+    limit = 1
+    single_match = orchestrate_match_data(limit,days,min_average_badge)
+    m_id = single_match['match_id'][0]
+    match_data = orchestrate_match_data(limit,days,min_average_badge,m_id)
+    for row in match_data:
+        current_p_id = row["account_id"]
+
+    print(f"\n\n *** from orchestrate_match_hero_data. m_id = {m_id}***")
+    return
 
 def main():
     hero_info = False
