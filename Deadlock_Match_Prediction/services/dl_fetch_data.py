@@ -35,7 +35,7 @@ def fetch_match_data(limit, days,min_average_badge,m_id=None):
     else: 
         min_unix_time = get_time_delta(days)
         url = f"{site}{endpoint}include_player_info=true&{min_unix_time}&{min_average_badge}&limit={limit}"
-        print(f"\n\nURL is: {url}\n\n")
+        #print(f"\n\nURL is: {url}\n\n")
         response = requests.get(url)
     
     # Check if the request was successful
@@ -89,13 +89,13 @@ def fetch_player_match_history(p_id):
     endpoint = f"/v1/players/{p_id}/match-history" 
 
     url = site+endpoint
-    print(f"\n\nGetting player_match_history p_id: {p_id} from full url: {url}\n\n")
+    #print(f"\n\nGetting player_match_history p_id: {p_id} from full url: {url}\n\n")
 
     #get json
     response = requests.get(url)
     if response.status_code == 200: #if 200, converts to pd.DataFrame: m_hero_data
         response_data = response.json()
-        print(f"\n\nresponse_data[:5]\n\n")
+        #print(f"\n\nresponse_data[:5]\n\n")
         p_m_history = pd.DataFrame(response_data)
     else: 
         print(f"\n\nError fetching data, code = {response.status_code}\n\n")

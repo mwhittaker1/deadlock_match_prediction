@@ -1,3 +1,5 @@
+###issue - in "dl_process_data.win_loss_history" current logic for 3/5_pct functions counts 0 as 1 to avoid division error, however this creates 100% and skews logic.
+
 ###Working on build_training_data
 ## need to append each iterations, currently overwrites.
 

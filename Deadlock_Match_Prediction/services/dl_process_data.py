@@ -66,6 +66,7 @@ def match_data_outcome_add(df,json)-> pd.DataFrame:
     return df
 
 def match_history_outcome_add(df)-> pd.DataFrame:
+    """calculates and adds which matches the player won in df, adds as new column"""
     df["won"] = df["player_team"] == df["match_result"]
     return df
 
