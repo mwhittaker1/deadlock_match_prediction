@@ -29,5 +29,5 @@ def dev_build_training_data(days,min_average_badge):
     to_xlsx(training_data,"p_id_match_history")
     to_csv(training_data,"p_id_match_history")
     return
-
-dev_build_training_data(5,100) # max days, min badge
+if __name__ == "__main__":
+    dev_build_training_data(5,100) # max days, min badge

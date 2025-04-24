@@ -5,8 +5,8 @@ from services.utility_functions import to_csv, get_time_delta
 
 #Fetch Data Requests
 
-#Fetches 200 active matches with high badge rating. Will be used to cast predictions against.
 def fetch_active_match_data():
+    """Fetches most recent 200 active matches, no parameters expected."""
     site = "https://api.deadlock-api.com"
     endpoint = "/v1/matches/active"
     url = site+endpoint
@@ -25,8 +25,14 @@ def fetch_active_match_data():
     
     return match_data #Returns JSON of match data.
 
-#Fetches historical match data, @days = historical days backwards, @min_average_badge represents skill level
+
 def fetch_match_data(limit,days,min_average_badge,m_id=None):
+    """Fetches metadata for single match, or fetches match range
+    
+    limit = Max number of matches to return
+    days = how many days backwards to fetch from
+    min_average_badge = minumum average rank for the match
+    m_id = Return data for a specific match only, other variables not used."""
     site = "https://api.deadlock-api.com"
     endpoint = "/v1/matches/metadata?"
     if m_id:
@@ -47,8 +53,8 @@ def fetch_match_data(limit,days,min_average_badge,m_id=None):
     
     return df_match_data, json_match_data
 
-#Fetch hero data, @min_unix_time is historical time start point, @min_average_badge is min skill level
 def fetch_hero_data(min_unix_time, min_average_badge):
+    """fetches historical data for a hero @time @min badge"""
     #API connection information
     site = "https://api.deadlock-api.com"
     endpoint = "/v1/analytics/hero-stats?" 
@@ -69,6 +75,7 @@ def fetch_hero_data(min_unix_time, min_average_badge):
     return m_hero_data
 
 def fetch_hero_info():
+    """Returns base information for heros, i.e. name, background"""
     site = "https://assets.deadlock-api.com"
     endpoint = "/v2/heroes/"
     url = site+endpoint
@@ -85,6 +92,7 @@ def fetch_hero_info():
     return df
 
 def fetch_player_match_history(p_id):
+    """For the account_id listed, fetches full match history of player"""
     site = "https://api.deadlock-api.com"
     endpoint = f"/v1/players/{p_id}/match-history" 
 
@@ -104,6 +112,7 @@ def fetch_player_match_history(p_id):
     return p_m_history
 
 def fetch_player_hero_stats(p_id,h_id=None):
+    """Fetches players hero-stats, then filters by h_id if provided"""
 
     # fetch player_hero from API on player_id
     site = "https://api.deadlock-api.com"
