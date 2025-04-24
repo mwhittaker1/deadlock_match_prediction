@@ -99,10 +99,12 @@ def win_loss_history(df: pd.DataFrame) -> pd.DataFrame:
       - h_streak_3, h_streak_5: hero-specific streak labels
     """
     df = df.copy()
-
+    df = df.sort_values(by=['account_id', 'start_time'])
     # --- player-level rolling win-% ---
-    df['p_win_pct_3'] = df['won'].rolling(window=3, min_periods=1).mean() * 100
-    df['p_win_pct_5'] = df['won'].rolling(window=5, min_periods=1).mean() * 100
+    df['p_win_pct_3'] = df.groupby('account_id')['won'].transform(
+        lambda x: x.rolling(window=3, min_periods=3).mean() * 100)
+    df['p_win_pct_5'] = df.groupby('account_id')['won'].transform(
+        lambda x: x.rolling(window=5, min_periods=5).mean() * 100)
 
     # player streak labels
     labels3 = ['major_loss', 'loss_streak', 'win_streak', 'major_win']
@@ -112,7 +114,7 @@ def win_loss_history(df: pd.DataFrame) -> pd.DataFrame:
         df['p_win_pct_3'] ==  66.66666666666666,
         df['p_win_pct_3'] == 100
     ]
-    df['p_streak_3'] = np.select(conds3_p, labels3, default=pd.NA)
+    df['p_streak_3'] = np.select(conds3_p, labels3, default="insufficient_data")
 
     labels5 = ['major_loss', 'loss_streak', 'neutral',
                'win_streak', 'strong_win', 'major_win']
@@ -124,17 +126,17 @@ def win_loss_history(df: pd.DataFrame) -> pd.DataFrame:
         df['p_win_pct_5'] ==   80,
         df['p_win_pct_5'] ==  100
     ]
-    df['p_streak_5'] = np.select(conds5_p, labels5, default=None)
+    df['p_streak_5'] = np.select(conds5_p, labels5, default="insufficient_data")
 
+    df = df.sort_values(by=['hero_id', 'start_time'])
+    
     # --- hero-level rolling win-% (per hero_id group) ---
     df['h_win_pct_3'] = (
-        df.groupby('hero_id')['won']
-          .transform(lambda x: x.rolling(window=3, min_periods=1).mean() * 100)
-    )
+        df.groupby(['account_id','hero_id'])['won']
+        .transform(lambda x: x.rolling(window=3, min_periods=3).mean() * 100))
     df['h_win_pct_5'] = (
-        df.groupby('hero_id')['won']
-          .transform(lambda x: x.rolling(window=5, min_periods=1).mean() * 100)
-    )
+        df.groupby(['account_id','hero_id'])['won']
+        .transform(lambda x: x.rolling(window=5, min_periods=5).mean() * 100))
 
     # hero streak labels
     conds3_h = [
@@ -143,7 +145,7 @@ def win_loss_history(df: pd.DataFrame) -> pd.DataFrame:
         df['h_win_pct_3'] ==  66.66666666666666,
         df['h_win_pct_3'] == 100
     ]
-    df['h_streak_3'] = np.select(conds3_h, labels3, default=pd.NA)
+    df['h_streak_3'] = np.select(conds3_h, labels3, default="insufficient_data")
 
     conds5_h = [
         df['h_win_pct_5'] ==    0,
@@ -153,6 +155,6 @@ def win_loss_history(df: pd.DataFrame) -> pd.DataFrame:
         df['h_win_pct_5'] ==   80,
         df['h_win_pct_5'] ==  100
     ]
-    df['h_streak_5'] = np.select(conds5_h, labels5, default=None)
-
+    df['h_streak_5'] = np.select(conds5_h, labels5, default="insufficient_data")
+    df = df.sort_values(by=['account_id', 'start_time'])
     return df

@@ -14,7 +14,7 @@ from services.utility_functions import to_csv,to_xlsx
 def dev_build_training_data(days,min_average_badge):
     print(f"\n\n***Starting Build Training Data ****\n\n")
     training_data = pd.DataFrame()
-    df_training_matches, json_training_matches = fetch_match_data(5,10,100) #limit, days, badge
+    df_training_matches, json_training_matches = fetch_match_data(1,10,100) #limit, max days, min badge
     print(f"Starting row iteration of matches, expecting row count= {len(df_training_matches)}")
     match_count=0
     for _,row in df_training_matches.iterrows():
@@ -30,4 +30,4 @@ def dev_build_training_data(days,min_average_badge):
     to_csv(training_data,"p_id_match_history")
     return
 
-dev_build_training_data(5,100) #days, min badge
+dev_build_training_data(5,100) # max days, min badge
