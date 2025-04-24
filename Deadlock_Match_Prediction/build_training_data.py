@@ -1,6 +1,7 @@
 import pandas as pd
 from data_orchestrator import orchestrate_match_data, orchestrate_match_history
 from services.dl_process_data import match_history_outcome_add, win_loss_history
+from services.dl_fetch_data import fetch_match_data
 from services.utility_functions import to_csv,to_xlsx
 ### fetch set of matches for training ###
 ### Build full dataset for each match ###
@@ -10,39 +11,23 @@ from services.utility_functions import to_csv,to_xlsx
 #
 
 
-
-def dev_build_training_data(limit,days,min_average_badge):
+def dev_build_training_data(days,min_average_badge):
+    print(f"\n\n***Starting Build Training Data ****\n\n")
     training_data = pd.DataFrame()
-    """Collect dataset for training, {limit} 1-5000"""
-    limit = 1
-    print(f"\nDEBUG, limit = {limit}, days = {days}")
-
-    match = orchestrate_match_data(limit,days,min_average_badge)
-    """Get a {limit} matches of data """
-    
-    last_m_id = 0
-    # iterate over matches, than players
-    for m_id in match['match_id'].unique():
-        """m_id is not unqiue, checks for next non-duplicate"""
-        match_count = 0
-        if last_m_id != m_id:
-            match_count +=1
-            last_m_id = m_id
-            single_match_players_history = pd.DataFrame()
-            player_count = 0
-            #print(f"\n**pulling account_id from data m_id = {match['match_id']}**\n")
-            for current_p_id in match['account_id']:
-                player_count +=1
-                h_id = match['hero_id']
-                #print(f"\n\n *** from orchestrate_match_hero_data. p_id = {current_p_id}***")
-                p_id_match_history = orchestrate_match_history(current_p_id)
-                single_match_players_history = pd.concat([single_match_players_history,p_id_match_history],ignore_index=True)
-                print(f"player count for match {m_id} = {player_count}")
-            print(f"match count for all matches = {match_count}")
-            training_data = pd.concat([training_data, single_match_players_history], ignore_index=True)
+    df_training_matches, json_training_matches = fetch_match_data(5,10,100) #limit, days, badge
+    print(f"Starting row iteration of matches, expecting row count= {len(df_training_matches)}")
+    match_count=0
+    for _,row in df_training_matches.iterrows():
+        match_count+=1
+        match_id = row['match_id']
+        print(f"\n\n*DEBUG* match count={match_count} match_id = {match_id}")
+        match = orchestrate_match_data(days,min_average_badge,match_id) #can also pass m_id directly)
+        print(f"\n\n*DEBUG* expecting flattened match, match =\n {match}")
+        single_match_players_history = orchestrate_match_history(match)
+        training_data = pd.concat([training_data, single_match_players_history], ignore_index=True)
     print(f"Training data to xlsx, csv!")
     to_xlsx(training_data,"p_id_match_history")
     to_csv(training_data,"p_id_match_history")
     return
 
-dev_build_training_data(1,1,100)
+dev_build_training_data(5,100) #days, min badge

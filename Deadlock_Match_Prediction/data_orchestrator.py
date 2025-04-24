@@ -45,11 +45,17 @@ def orchestrate_player_hero_stats(p_id, h_id=None):
     p_hero_data = calculate_player_hero_stats
     
 # retreive all match history for p_id
-def orchestrate_match_history(p_id):
-    p_m_history = fetch_player_match_history(p_id)
-    p_m_history = match_history_outcome_add(p_m_history)
-    p_m_history = win_loss_history(p_m_history)
-    return p_m_history
+def orchestrate_match_history(df):
+    single_match_players_history = pd.DataFrame()
+    player_count = 0
+    #print(f"\n**pulling account_id from data m_id = {match['match_id']}**\n")
+    for current_p_id in df['account_id']:
+        player_count +=1
+        p_m_history = fetch_player_match_history(current_p_id)
+        p_m_history = match_history_outcome_add(p_m_history)
+        p_m_history = win_loss_history(p_m_history)
+        single_match_players_history = pd.concat([single_match_players_history,p_m_history],ignore_index=True)
+    return single_match_players_history
 
 #Creates two data dfs, one for 7 day hero trends, one for 30 day hero trends.
 def orchestrate_hero_data():
@@ -61,8 +67,9 @@ def orchestrate_hero_data():
     return hero_trends_7d, hero_trends_30d
 
 # Fetches match data over x days, miniumum rank, and max to fetch (hard limit 5000)
-def orchestrate_match_data(limit, days,min_average_badge,m_id=None):
-    df_m_data, json_match_data = fetch_match_data(limit, days, min_average_badge,m_id)
+def orchestrate_match_data(days,min_average_badge,m_id=None):
+    limit = 1
+    df_m_data, json_match_data = fetch_match_data(limit,days, min_average_badge,m_id)
     print(f"\n\n** Data split, applying match outcome data ***\n")
     flat_m_data = match_data_outcome_add(df_m_data, json_match_data) #returns df
     print(f"\n** data flattened + stats, data =\n {flat_m_data}")
@@ -83,7 +90,7 @@ def orchestrate_match_hero_data(limit,days,min_average_badge):
 def main():
     hero_info = False
     hero_d = False # returns 7d, 30d all_hero trend data.
-    match_d = True # returns match metadata for x days and minimum badge
+    match_d = False # returns match metadata for x days and minimum badge
     a_match_d = False # returns 200 most recent high level matches
     player_match_history = False #Returns match history for p_id
     player_hero_stat = False # returns JSON p_all_hero data, or if h_id, p_hero_data
@@ -160,6 +167,6 @@ def main():
             to_xlsx(heroes_info, "hero_info")
 
 
-main()
+#main()
 #if __name__ == "__main__":
 #    main()
