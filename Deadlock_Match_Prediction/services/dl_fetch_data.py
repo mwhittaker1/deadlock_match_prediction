@@ -25,7 +25,6 @@ def fetch_active_match_data():
     
     return match_data #Returns JSON of match data.
 
-
 def fetch_match_data(limit,days,min_average_badge,m_id=None):
     """Fetches metadata for single match, or fetches match range
     

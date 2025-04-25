@@ -1,64 +1,60 @@
 import pandas as pd
 from services.utility_functions import to_csv, to_xlsx, get_time_delta, setup_logging, initialize_logging
 from services.dl_fetch_data import fetch_active_match_data, fetch_hero_data, fetch_match_data, fetch_player_hero_stats, fetch_hero_info, fetch_player_match_history
-from services.dl_process_data import filter_account_data, filter_match_data, filter_player_hero_data, split_players_from_matches, calculate_hero_stats, calculate_player_hero_stats, match_data_outcome_add, match_history_outcome_add, win_loss_history
+from services.dl_process_data import split_players_from_matches, calculate_hero_stats, calculate_player_hero_stats, match_data_outcome_add, match_history_outcome_add, win_loss_history, match_data_normalize
 
 #initialize logging
 verbose=False
 setup_logging(verbose)
 initialize_logging(verbose)
 
-
-#Fetches match data from DeadlockAPI, splits player data from match data, and filters based on MATCH_FILTERS from .cfg
 def orchestrate_active_match_data():
-
+    """Fetches match data from DeadlockAPI, splits player data from match data"""
+    
     print(f"\n******fetching data**** \n")
     raw_match_data = fetch_active_match_data()
 
     print(f"\n******spliting data**** \n")
     match_data, account_data = split_players_from_matches(raw_match_data)
  
-    print(f"\n******data to csv****")
+    print(f"\n******data to xlsx****")
     to_xlsx(match_data, "match")
     to_xlsx(account_data, "account")
 
-# fetch base hero information, aka name, description, etc.
 def orchestrate_hero_info():
+    """fetch base hero information, aka name, description, etc."""
     hero_info = fetch_hero_info()
     return hero_info
 
-#not currently pulling flat player stats.
-def orchestrate_player_stats():
-    #player specific stats, aka match history, w/l trends, hero diversity
-    return
+def orchestrate_player_hero_stats(p_id, h_id=None)->pd.DataFrame:
+    """fetch player_hero stats, if h_id is blank, returns stats for all heroes for the player."""
 
-# fetch player_hero stats, if h_id is blank, returns stats for all heroes for the player.
-def orchestrate_player_hero_stats(p_id, h_id=None):
     print(f"\n\n*** In orchestrate_player_hero_stats, h_id = {h_id} ***")
     if h_id:
         p_hero_data =fetch_player_hero_stats(p_id, h_id)
+        p_hero_data = calculate_player_hero_stats()
         return p_hero_data
     else:
         p_hero_data = fetch_player_hero_stats(p_id)
+        p_hero_data = calculate_player_hero_stats()
         return p_hero_data
-    
-    p_hero_data = calculate_player_hero_stats
-    
-# retreive all match history for p_id
-def orchestrate_match_history(df):
-    single_match_players_history = pd.DataFrame()
+        
+def orchestrate_match_history(df)->pd.DataFrame:
+    """ retreive all match history for p_id & add extra calculations"""
+    p_m_history_list = []
     player_count = 0
     #print(f"\n**pulling account_id from data m_id = {match['match_id']}**\n")
     for current_p_id in df['account_id']:
         player_count +=1
         p_m_history = fetch_player_match_history(current_p_id)
         p_m_history = match_history_outcome_add(p_m_history)
+        p_m_history = match_data_normalize(p_m_history)
         p_m_history = win_loss_history(p_m_history)
-        single_match_players_history = pd.concat([single_match_players_history,p_m_history],ignore_index=True)
-    return single_match_players_history
+        p_m_history_list.append(p_m_history)
+    return pd.concat([p_m_history_list],ignore_index=True)
 
-#Creates two data dfs, one for 7 day hero trends, one for 30 day hero trends.
 def orchestrate_hero_data():
+    """Creates two data dfs, one for 7 day hero trends, one for 30 day hero trends."""
     min_average_badge = "min_average_badge=100"
     hero_trends_7d = fetch_hero_data(get_time_delta(7), min_average_badge)
     hero_trends_7d = calculate_hero_stats(hero_trends_7d)
@@ -66,16 +62,20 @@ def orchestrate_hero_data():
     hero_trends_30d = calculate_hero_stats(hero_trends_30d)
     return hero_trends_7d, hero_trends_30d
 
-# Fetches match data over x days, miniumum rank, and max to fetch (hard limit 5000)
 def orchestrate_match_data(days,min_average_badge,m_id=None):
+    """Fetches match metadata 
+    
+    days = number of days backwards to fetch
+    min_averae_badge = minimum average rank of matches to fetch
+    m_id = optional, if entered, returns ONLY that match, ignoring other variables"""
+
     limit = 1
     df_m_data, json_match_data = fetch_match_data(limit,days, min_average_badge,m_id)
-    print(f"\n\n** Data split, applying match outcome data ***\n")
-    flat_m_data = match_data_outcome_add(df_m_data, json_match_data) #returns df
-    print(f"\n** data flattened + stats, data =\n {flat_m_data}")
+    flat_m_data = match_data_normalize(json_match_data)
+    flat_m_data = match_data_outcome_add(flat_m_data)
     return flat_m_data #df
 
-# takes 1 match_id, fetches player data, fetches player_hero data for each, and returns all.
+"""# takes 1 match_id, fetches player data, fetches player_hero data for each, and returns all.
 def orchestrate_match_hero_data(limit,days,min_average_badge):
     limit = 1
     single_match = orchestrate_match_data(limit,days,min_average_badge)
@@ -85,7 +85,7 @@ def orchestrate_match_hero_data(limit,days,min_average_badge):
         current_p_id = row["account_id"]
 
     print(f"\n\n *** from orchestrate_match_hero_data. m_id = {m_id}***")
-    return
+    return"""
 
 def main():
     hero_info = False
