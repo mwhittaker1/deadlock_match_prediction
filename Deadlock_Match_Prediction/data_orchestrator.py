@@ -18,26 +18,45 @@ def orchestrate_build_training_data(con, num_matches, days, min_average_badge=10
     """
     
     print(f"\n\n***Starting Build Training Data ****\n\n")
-    #match_data_args = [num_matches,days,min_average_badge]
-    #df_training_matches = safe_pull(orchestrate_match_data,*match_data_args) #limit, max days, min badge
+
+    df_training_matches = orchestrate_match_data(num_matches,days,min_average_badge)
+    
+    split_df = prdt.split_dfs_for_insertion(con, df_training_matches)
+    match_df = split_df.get('match_columns')
+    player_df = split_df.get('player_columns')
+    trends_df = split_df.get('trend_columns')
+    if match_df is not None or player_df is not None or trends_df is not None:
+        prdt.insert_dataframes(con, match_df, player_df, trends_df)
+    else:
+        print("***tried to insert into db, but no valid dfs were identified***")
+    ###   
+    # from database, get unqiue account_ids, check if in player_matches, and if not fetch history.
+    ###
+
+def pre_refactor_orchestrate_build_training_data(con, num_matches, days, min_average_badge=100):
+    """
+    Fetch matches, match_players, 
+    match_players_history, hero_trends
+    splits and inserts into db @con
+    """
+    
+    print(f"\n\n***Starting Build Training Data ****\n\n")
+
     df_training_matches = orchestrate_match_data(num_matches,days,min_average_badge)
     prdt.insert_dataframes(df_training_matches)
     ###   
     # Get unique account_id from entire matches list.
     # for each account id, get match history
     ###
-
     print(f"\n***getting matches histories data***\n")
     all_matches_players_history = prdt.get_all_histories(df_training_matches)
-    #raw_matches_players_history = safe_pull(orchestrate_match_players,df_training_matches)
-    #to_xlsx(training_data,"raw_matches_players_history")
-    to_csv(all_matches_players_history,"all_matches_players_history")
+    #to_csv(all_matches_players_history,"all_matches_players_history")
 
     print(f"\n\n***Splitting and inserting to database.***\n\n")
     split_dfs = prdt.split_dfs_for_insertion(con, all_matches_players_history)
-    match_df = split_dfs.get['match_df']
-    player_df = split_dfs.get['player_df']
-    trends_df = split_dfs.get['trends_df']
+    match_df = split_dfs.get['match_columns']
+    player_df = split_dfs.get['player_columns']
+    trends_df = split_dfs.get['trend_columns']
     if match_df is not None or player_df is not None or trends_df is not None:
         prdt.insert_dataframes(con, match_df, player_df, trends_df)
     else:
@@ -51,9 +70,9 @@ def orchestrate_build_training_data(con, num_matches, days, min_average_badge=10
 
     return
 
-def orchestrate_match_data(limit, min_average_badge, days=365,m_id=None)->pd.DataFrame:
+def orchestrate_match_data(limit, min_average_badge=100, days=365,m_id=None)->pd.DataFrame:
     """Fetches match data over x days, miniumum rank, and max to fetch (hard limit 5000) """
-    fetched_matches = fd.fetch_match_data(limit, days, min_average_badge, m_id)
+    fetched_matches = fd.fetch_match_data(limit, days, min_average_badge)
     fetched_matches = prdt.normalize_match_json(fetched_matches)
     #flat_m_data = prdt.match_data_outcome_add(fetched_matches)
     print(f"\n**matches formatted!")
@@ -109,9 +128,9 @@ def orchestrate_matches_players_stats(df):
 def orchestrate_hero_trends():
     """Creates two data dfs, one for 7 day hero trends, one for 30 day hero trends."""
 
-    current_time = get_time_delta(0,True)
-    seven_days = get_time_delta(7,True)
-    thirty_days = get_time_delta(3,True)
+    current_time = get_time_delta(0,short=True)
+    seven_days = get_time_delta(7,short=True)
+    thirty_days = get_time_delta(3,short=True)
     min_average_badge = "min_average_badge=100"
     hero_trends_7d = fd.fetch_hero_data(seven_days, min_average_badge)
     hero_trends_7d = prdt.calculate_hero_stats(hero_trends_7d)
@@ -254,13 +273,14 @@ def orchestrate():
             to_xlsx(player_stats, "heplayer_statso_info")
 
 if __name__ == "__main__":
-    #con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
-    #num_matches = 2
-    #days = 10
+    con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
+    num_matches = 10
+    days = 10
     #args = [con, num_matches, days]
     #response = orchestrate_fetch_training_data(con, num_matches, days)
-    response = orchestrate_match_data(4000,100,30)
-    to_csv(response, "large_match_pull")
+    #orchestrate_build_training_data(con,num_matches,days)
+    #print("done")
+    #to_csv(response, "large_match_pull")
     #df_training_matches = pd.read_csv("large_match_pull.csv")
     #all_matches_players_history = prdt.get_all_histories(df_training_matches)
     #to_csv(all_matches_players_history, "large_player_history_pull")

@@ -60,15 +60,17 @@ def fetch_match_data(limit,days,max_days=0,min_average_badge=100,m_id=None)->jso
     
     site = "https://api.deadlock-api.com"
     endpoint = "/v1/matches/metadata?"
+
     if m_id:
         print(f"ERROR m_id found!")
         url=f"{site}{endpoint}include_player_info=true&match_ids={m_id}"
         response = requests.get(url)
     elif max_days != 0:
+        print(f"\n**debug** - days= {days}, max days = {max_days}")
+        min_unix_time = get_time_delta(days)
         max_unix_time = get_time_delta(max_days,True)
-        max_unix_time = f"max_unix_timestamp={get_time_delta(days)}"
         url = f"{site}{endpoint}include_player_info=true&{min_unix_time}&{max_unix_time}&min_average_badge={min_average_badge}&limit={limit}"
-        #print(f"\n\nURL is: {url}\n\n")
+        print(f"\n\n**debug** fetch_match_data, max_days !=0 URL is: {url}\n\n")
         response = requests.get(url)
 
     else:
@@ -82,6 +84,7 @@ def fetch_match_data(limit,days,max_days=0,min_average_badge=100,m_id=None)->jso
         json_match_data = response.json()
     else:
         print(f"\n\nFailed to retrieve match data: {response.status_code}\n\n response: {response}\n\n")
+        return
     
     return json_match_data
 

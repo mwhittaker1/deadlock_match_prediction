@@ -36,7 +36,7 @@ def insert_dataframes(con, match_df=None, player_df=None, trends_df=None, hero_t
     Inserts available DataFrames into their corresponding DuckDB tables.
     Only non-None DataFrames are inserted.
     
-    Parameters:
+    Parameters: #Run through split_dfs_for_insertion first.
     - con: active DuckDB connection
     - match_df: DataFrame for 'matches' table
     - player_df: DataFrame for 'player_matches' table
@@ -44,39 +44,49 @@ def insert_dataframes(con, match_df=None, player_df=None, trends_df=None, hero_t
     - hero_trends_df: DataFrame for 'hero_trends' table
     """
     #print(f"*DEBUG* - insert_dataframes started!")
-    stats = {}
+
     #print(f"\n\n*Debug*\n match_df headers are: {match_df.head()} and columns are: {match_df.columns.tolist()}")
+    stats = {}
+
     if match_df is not None:
+        cols = ', '.join(match_df.columns)
+        query = f"INSERT OR IGNORE INTO matches ({cols}) SELECT * FROM match_df"
         to_csv(match_df, "match_df")
         before = con.execute("SELECT COUNT(*) FROM matches").fetchone()[0]
-        con.execute("INSERT OR IGNORE INTO matches SELECT * FROM match_df")
+        con.execute(query)
         after = con.execute("SELECT COUNT(*) FROM matches").fetchone()[0]
         stats['matches_inserted'] = after - before
-        print(f"\n\nInserted {stats['matches_inserted']} new rows across matches\n\n")
+        print(f"Inserted {stats['matches_inserted']} new rows into matches")
 
     if player_df is not None:
+        cols = ', '.join(player_df.columns)
+        query = f"INSERT OR IGNORE INTO player_matches ({cols}) SELECT * FROM player_df"
         to_csv(player_df, "player_df")
         before = con.execute("SELECT COUNT(*) FROM player_matches").fetchone()[0]
-        con.execute("INSERT OR IGNORE INTO player_matches SELECT * FROM player_df")
+        con.execute(query)
         after = con.execute("SELECT COUNT(*) FROM player_matches").fetchone()[0]
-        stats['player_matches_inserted'] = after - before
-        print(f"\n\nInserted {stats['player_matches_inserted']} new rows across player_matches\n\n")
+        stats['player_inserted'] = after - before
+        print(f"Inserted {stats['player_inserted']} new rows into player_matches")
 
     if trends_df is not None:
+        cols = ', '.join(trends_df.columns)
+        query = f"INSERT OR IGNORE INTO player_trends ({cols}) SELECT * FROM trends_df"
         to_csv(trends_df, "trends_df")
         before = con.execute("SELECT COUNT(*) FROM player_trends").fetchone()[0]
-        con.execute("INSERT OR IGNORE INTO player_trends SELECT * FROM trends_df")
+        con.execute(query)
         after = con.execute("SELECT COUNT(*) FROM player_trends").fetchone()[0]
-        stats['player_trends_inserted'] = after - before
-        print(f"\n\nInserted {stats['player_trends_inserted']} new rows across player_trends\n\n")
+        stats['trends_inserted'] = after - before
+        print(f"Inserted {stats['trends_inserted']} new rows into player_trends")
 
     if hero_trends_df is not None:
-        to_csv(hero_trends_df,"hero_trends_df")
+        cols = ', '.join(hero_trends_df.columns)
+        query = f"INSERT OR IGNORE INTO hero_trends ({cols}) SELECT * FROM hero_trends_df"
+        to_csv(hero_trends_df, "hero_trends_df")
         before = con.execute("SELECT COUNT(*) FROM hero_trends").fetchone()[0]
-        con.execute("INSERT OR IGNORE INTO hero_trends SELECT * FROM hero_trends_df")
+        con.execute(query)
         after = con.execute("SELECT COUNT(*) FROM hero_trends").fetchone()[0]
-        stats['hero_trends'] = after - before
-        print(f"\n\nInserted {stats['hero_trends']} new rows across player_trends\n\n")
+        stats['hero_trends_inserted'] = after - before
+        print(f"Inserted {stats['hero_trends_inserted']} new rows into hero_trends")
         
     total_inserted = sum(stats.values())
     print(f"Inserted {total_inserted} new rows across tables: {stats}")
@@ -92,8 +102,8 @@ def split_dfs_for_insertion(con, full_df):
 
     schema_map = {   
         "match_columns" : [
-        'match_id', 'start_time', 'game_mode', 'match_mode',
-        'match_duration_s', 'objectives_mask_team0', 'objectives_mask_team1', 'match_result'
+        'match_id', 'account_id','start_time', 'game_mode', 'match_mode',
+        'duration_s', 'winning_team'
     ],
 
     "player_columns" : [
@@ -110,15 +120,26 @@ def split_dfs_for_insertion(con, full_df):
         'h_win_pct_3', 'h_win_pct_5', 'h_streak_3', 'h_streak_5'
     ]
     }
-
+    pd.set_option('display.max_columns',None)
+    print(f"\n\n*Debug* in split_dfs_for_insertion, full_df columns are: {list(full_df.columns)}")
     split_dfs = {}
-    for name, required_cols in schema_map.items():
-        if all(col in full_df.columns for col in required_cols):
-            split_dfs[name] = full_df[required_cols]
+    
+    for table_name, required_cols in schema_map.items():
+        # Check if all required columns exist
+        missing_cols = [col for col in required_cols if col not in full_df.columns]
+        
+        if missing_cols:
+            print(f"Warning: Skipping '{table_name}' split - missing columns: {missing_cols}")
+            continue
+        
+        # Create a copy with only the needed columns
+        split_dfs[table_name] = full_df[required_cols].copy()
+        print(f"Created '{table_name}' DataFrame with {len(split_dfs[table_name])} rows and {len(required_cols)} columns")
+    
     return split_dfs
 
 def normalize_match_json(json):
-    df = pd.json_normalize(json, record_path="players", meta=["match_id", "winning_team"])
+    df = pd.json_normalize(json, record_path="players", meta=["match_id", "winning_team","start_time","game_mode","match_mode","duration_s"])
     return df
 
 def match_data_outcome_add(df)-> pd.DataFrame:

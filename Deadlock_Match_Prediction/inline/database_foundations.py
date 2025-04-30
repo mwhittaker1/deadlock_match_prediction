@@ -10,14 +10,14 @@ def drop_tables(con):
 def create_tables(con):
     con.execute("""
     CREATE TABLE matches (
-    match_id BIGINT PRIMARY KEY,
+    match_id BIGINT,
+    account_id BIGINT,
     start_time TIMESTAMP,
-    game_mode INTEGER,
-    match_mode INTEGER,
-    match_duration_s INTEGER,
-    objectives_mask_team0 BIGINT,
-    objectives_mask_team1 BIGINT,
-    match_result VARCHAR
+    game_mode VARCHAR,
+    match_mode VARCHAR,
+    duration_s INTEGER,
+    winning_team VARCHAR,
+    PRIMARY KEY (match_id, account_id)
     )
     """)
 

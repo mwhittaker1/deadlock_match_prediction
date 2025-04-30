@@ -38,11 +38,18 @@ def to_csv(file, fname):
     df.to_csv(f'{fname}.csv', index=False)
     print(f"{df} passed to .csv")
 
-def get_time_delta(days,short=False):
+def get_time_delta(days,short=False,max=False):
     """Returns string for url if short=False, else just the int"""
     c_unix_timestamp = int(time.time()) #current time
-    x_days_ago = (int(c_unix_timestamp - timedelta(days=days).total_seconds()))   
-    return x_days_ago if short else f"min_unix_timestamp={x_days_ago}"
+    x_days_ago = (int(c_unix_timestamp - timedelta(days=days).total_seconds()))
+    if max:
+        x_days_ago = f"max_unix_timestamp={x_days_ago}"
+    else:
+        if short:
+            return x_days_ago    
+        x_days_ago = f"min_unix_timestamp={x_days_ago}"
+    
+        return x_days_ago
 
 def main():
     data = {
