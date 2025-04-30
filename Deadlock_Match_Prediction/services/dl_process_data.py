@@ -111,11 +111,11 @@ def split_dfs_for_insertion(con, full_df):
     ]
     }
 
-    segment = {}
+    split_dfs = {}
     for name, required_cols in schema_map.items():
         if all(col in full_df.columns for col in required_cols):
-            segment[name] = full_df[required_cols]
-    return segment
+            split_dfs[name] = full_df[required_cols]
+    return split_dfs
 
 def normalize_match_json(json):
     df = pd.json_normalize(json, record_path="players", meta=["match_id", "winning_team"])

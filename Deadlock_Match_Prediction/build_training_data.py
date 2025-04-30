@@ -3,7 +3,7 @@ import duckdb
 from data_orchestrator import orchestrate_build_training_data
 
 
-def get_training_matches():
+def get_training_matches(bulk=False):
     """
     Fetch matches, match_players, 
     match_players_history, hero_trends
@@ -13,7 +13,6 @@ def get_training_matches():
     num_matches = 10
     days = 365
     min_badge = 100
-    
     orchestrate_build_training_data(con, num_matches, days, min_badge)
     return
 
