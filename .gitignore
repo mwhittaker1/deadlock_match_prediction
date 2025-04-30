@@ -1,0 +1,7 @@
+.venv/
+*__pycache__
+*__init__.py
+norm_matches*
+non_normal_total_matches*
+*.db
+legacy/
