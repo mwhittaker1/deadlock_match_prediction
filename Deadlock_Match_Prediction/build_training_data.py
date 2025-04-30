@@ -1,10 +1,9 @@
 import pandas as pd
 import duckdb
-from data_orchestrator import orchestrate_hero_trends, orchestrate_match_data, orchestrate_match_players, orchestrate_fetch_training_data
-from services.dl_process_data import insert_dataframes, split_dfs_for_insertion
-from services.utility_functions import to_csv,to_xlsx
+from data_orchestrator import orchestrate_build_training_data
 
-def build_training_data():
+
+def get_training_matches():
     """
     Fetch matches, match_players, 
     match_players_history, hero_trends
@@ -15,9 +14,11 @@ def build_training_data():
     days = 365
     min_badge = 100
     
-    orchestrate_fetch_training_data(con, num_matches, days, min_badge)
-
+    orchestrate_build_training_data(con, num_matches, days, min_badge)
     return
 
+def get_training_match_players():
+    pass
+
 if __name__ == "__main__":
-    build_training_data()
+    get_training_matches()

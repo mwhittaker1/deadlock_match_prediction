@@ -2,14 +2,15 @@ import pandas as pd
 import duckdb
 import time
 import json
+import pyarrow.parquet as pq
 import services.dl_process_data as prdt
 import services.dl_fetch_data as fd
 from services.utility_functions import to_csv, to_xlsx, get_time_delta, setup_logging, initialize_logging
-from data_orchestrator import orchestrate_hero_trends, orchestrate_match_data
+from data_orchestrator import orchestrate_hero_trends
 
 def test_insert_data(all_matches_players_history):
+    """inserts data to df, needs match_df, player_df, trends_df, and/or her_trends_df"""
     con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
-    
     
     print(f"\n\n***Splitting and inserting to database.***\n\n")
     match_df, player_df, trends_df = prdt.split_dfs_for_insertion(con, all_matches_players_history)
@@ -23,7 +24,13 @@ def test_insert_data(all_matches_players_history):
 
     return
 
-def fetch_matches():
+def bulk_fetch_matches(limit=500,max_days_fetch=90):
+    """fetches a batch of matches, 1 day per pull, exports to json.
+
+    batch is unnormalized, 'players' contains a df of each matches 'players'
+    limit = max matches within a day to pull
+    max_days_fetch = how many days to cycle through for total fetch"""
+
     print(f"start")
     con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
     limit = 5000
@@ -50,13 +57,12 @@ def noramlize_matches():
     norm_matches = prdt.normalize_match_json(total_matches)
     to_csv(norm_matches,"norm_matches")
 
-
 def run_tests():
     print("Starting!")
-    
+    parquet_file = pq.ParquetFile("C:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/test_data/match_player_35.parquet")
+    print(f"number of rows:{parquet_file.metadata.num_rows}\nnum columns:{parquet_file.metadata.num_columns}")
 
     print(f"\n\n\n ***COMPLETED****")
 
 if __name__ == "__main__":
-    #fetch_matches()
-    #noramlize_matches()
+    run_tests()

@@ -31,22 +31,6 @@ def calculate_hero_stats(m_hero_df):
     m_hero_df = hero_percentages(m_hero_df)
     return m_hero_df
 
-#Extracts pd.DataFrame(players) from pd.DataFrame(matches), appends match_id to each player row
-def split_players_and_matches(df)-> pd.DataFrame:
-    account_data = []
-
-    #Extract nested dictionary from df
-    for _, row in df.iterrows():
-        match_id = row['match_id']
-        players = pd.DataFrame(row['players'])
-        if not players:
-            continue ## *** Good logging catch**
-        players['match_id'] = match_id
-        account_data.append(players)
-    players = pd.concat(account_data, ignore_index=True)
-
-    return df, players
-
 def insert_dataframes(con, match_df=None, player_df=None, trends_df=None, hero_trends_df=None):
     """
     Inserts available DataFrames into their corresponding DuckDB tables.
@@ -99,39 +83,39 @@ def insert_dataframes(con, match_df=None, player_df=None, trends_df=None, hero_t
 
 def split_dfs_for_insertion(con, full_df):
     """
-    Splits raw DataFrame into parts, inserts into DuckDB tables,
-    and builds raw (non-normalized) player_profiles from trends.
+    Reviews if columns in full_df match any of the sets in schema_map, then splits into a df.
 
-    Expects df of matches, players, and player_trends
+    match = can insert to matches table
+    player = can insert into match_player table
+    trend = player_trends table
     """
 
-    #print(f"*DEBUG* - split and insert started!")
-    #Define the columns for each table
-    match_columns = [
+    schema_map = {   
+        "match_columns" : [
         'match_id', 'start_time', 'game_mode', 'match_mode',
         'match_duration_s', 'objectives_mask_team0', 'objectives_mask_team1', 'match_result'
-    ]
+    ],
 
-    player_columns = [
+    "player_columns" : [
         'account_id', 'match_id', 'hero_id', 'hero_level', 'player_team',
         'player_kills', 'player_deaths', 'player_assists', 'denies',
         'net_worth', 'last_hits', 'team_abandoned', 'abandoned_time_s', 'won',
         'p_total_kills','p_total_deaths','p_avg_kd','p_total_matches','p_h_total_matches',
         'p_h_pick_pct'
-    ]
+    ],
 
-    trend_columns = [
+    "trend_columns" : [
         'account_id', 'match_id', 'hero_id',
         'p_win_pct_3', 'p_win_pct_5', 'p_streak_3', 'p_streak_5',
         'h_win_pct_3', 'h_win_pct_5', 'h_streak_3', 'h_streak_5'
     ]
+    }
 
-    #Split the DataFrame
-    match_df = full_df[match_columns].drop_duplicates(subset=['match_id'])
-    player_df = full_df[player_columns]
-    trends_df = full_df[trend_columns]
-
-    return match_df, player_df, trends_df
+    segment = {}
+    for name, required_cols in schema_map.items():
+        if all(col in full_df.columns for col in required_cols):
+            segment[name] = full_df[required_cols]
+    return segment
 
 def normalize_match_json(json):
     df = pd.json_normalize(json, record_path="players", meta=["match_id", "winning_team"])
@@ -210,25 +194,6 @@ def calculate_player_stats(df)-> pd.DataFrame:
 
     return df
 
-def old_filter_match_data(df)-> pd.DataFrame:
-    return df[MATCH_FILTERS]
-
-def old_filter_account_data(df)-> pd.DataFrame:
-    return df[PLAYER_FILTERS]
-
-def old_filter_player_hero_data(df):
-    ## p_hero total games played as p_hero_total_games (int)
-    ## p_hero w/l over last 1 months as p_hero_1m_wl (int)
-    ## p_hero w/l over last week as p_hero_1w_wl (int)
-
-    return
-
-def old_calculate_player_hero_stats(df):
-    df['win_percentage'] = (df['wins'].replace(0,1)/df['matches_played'].replcae(0,1)*100).round(2)
-    df['p_h_total_matches'] = df['match_id'].count()
-
-    return
-
 def win_loss_history(df: pd.DataFrame) -> pd.DataFrame:
     """
     Given a DataFrame with:
@@ -300,3 +265,38 @@ def win_loss_history(df: pd.DataFrame) -> pd.DataFrame:
     df['h_streak_5'] = np.select(conds5_h, labels5, default="insufficient_data")
     df = df.sort_values(by=['account_id', 'start_time'])
     return df
+
+def old_filter_match_data(df)-> pd.DataFrame:
+    return df[MATCH_FILTERS]
+
+def old_filter_account_data(df)-> pd.DataFrame:
+    return df[PLAYER_FILTERS]
+
+def old_filter_player_hero_data(df):
+    ## p_hero total games played as p_hero_total_games (int)
+    ## p_hero w/l over last 1 months as p_hero_1m_wl (int)
+    ## p_hero w/l over last week as p_hero_1w_wl (int)
+
+    return
+
+def old_calculate_player_hero_stats(df):
+    df['win_percentage'] = (df['wins'].replace(0,1)/df['matches_played'].replcae(0,1)*100).round(2)
+    df['p_h_total_matches'] = df['match_id'].count()
+
+    return
+
+#Extracts pd.DataFrame(players) from pd.DataFrame(matches), appends match_id to each player row
+def old_split_players_and_matches(df)-> pd.DataFrame:
+    account_data = []
+
+    #Extract nested dictionary from df
+    for _, row in df.iterrows():
+        match_id = row['match_id']
+        players = pd.DataFrame(row['players'])
+        if not players:
+            continue ## *** Good logging catch**
+        players['match_id'] = match_id
+        account_data.append(players)
+    players = pd.concat(account_data, ignore_index=True)
+
+    return df, players
