@@ -25,9 +25,7 @@ def orchestrate_build_training_data(con, num_matches, days, min_average_badge=10
     ###   
     # Get unique account_id from entire matches list.
     # for each account id, get match history
-
     ###
-
 
     print(f"\n***getting matches histories data***\n")
     all_matches_players_history = prdt.get_all_histories(df_training_matches)

@@ -131,9 +131,10 @@ def match_data_outcome_add(df)-> pd.DataFrame:
     return df
 
 def get_all_histories(matches_df):
-    all_matches_player_histories = pd.DataFrame()
     """for all matches, get players_match_histories and stats"""
+    all_matches_player_histories = pd.DataFrame()
     #print(f"\n\n get_all_histories, matches_df\n\n {matches_df}")
+    
     for idx,match_row in matches_df.iterrows():
         """pulls match history of all players in match"""
         #print(f"****\n\n match_row type = {type(match_row)} =\n\n{match_row}")

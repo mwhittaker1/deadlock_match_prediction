@@ -6,7 +6,7 @@ import pyarrow.parquet as pq
 import services.dl_process_data as prdt
 import services.dl_fetch_data as fd
 from services.utility_functions import to_csv, to_xlsx, get_time_delta, setup_logging, initialize_logging
-from data_orchestrator import orchestrate_hero_trends
+from data_orchestrator import orchestrate_hero_trends,orchestrate_match_data
 
 def test_insert_data(all_matches_players_history):
     """inserts data to df, needs match_df, player_df, trends_df, and/or her_trends_df"""
@@ -59,8 +59,8 @@ def noramlize_matches():
 
 def run_tests():
     print("Starting!")
-    parquet_file = pq.ParquetFile("C:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/test_data/match_player_35.parquet")
-    print(f"number of rows:{parquet_file.metadata.num_rows}\nnum columns:{parquet_file.metadata.num_columns}")
+
+    df_training_matches = orchestrate_match_data(num_matches,days,min_average_badge)
 
     print(f"\n\n\n ***COMPLETED****")
 
