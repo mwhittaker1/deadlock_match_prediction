@@ -3,6 +3,7 @@ import duckdb
 import time
 import services.dl_process_data as prdt
 import services.dl_fetch_data as fd
+import inline.database_foundations as dbf
 from services.utility_functions import to_csv, to_xlsx, get_time_delta, setup_logging, initialize_logging
 
 #initialize logging
@@ -18,7 +19,9 @@ def orchestrate_build_training_data(con, max_days=90, min_days=0, min_average_ba
     """
     
     print(f"\n\n***Starting Build Training Data ****\n\n")
-
+    
+    orchestrate_hero_trends(reset=True) #builds and inserts hero_trend 7d,30d data.
+    
     df_training_matches = fd.bulk_fetch_matches(max_days,min_days,min_average_badge)
     df_training_matches = prdt.normalize_match_json(df_training_matches)
     split_df = prdt.split_dfs_for_insertion(con, df_training_matches)
@@ -30,6 +33,7 @@ def orchestrate_build_training_data(con, max_days=90, min_days=0, min_average_ba
         prdt.insert_dataframes(con, match_df, player_df, trends_df)
     else:
         print("***tried to insert into db, but no valid dfs were identified***")
+    
     ###   
     # from database, get unqiue account_ids, check if in player_matches, and if not fetch history.
     ###
@@ -129,8 +133,12 @@ def orchestrate_matches_players_stats(df):
     
     return df
 
-def orchestrate_hero_trends():
+def orchestrate_hero_trends(reset=True):
     """Creates two data dfs, one for 7 day hero trends, one for 30 day hero trends."""
+    if reset:
+        con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
+        con.execute("DROP TABLE IF EXISTS hero_trends")
+        dbf.create_hero_trends_table()
 
     current_time = get_time_delta(0,short=True)
     seven_days = get_time_delta(7,short=True)
@@ -188,7 +196,7 @@ def safe_pull(function, *args, retry=3):
     print(F"\n\n***CRITICAL*** to many failed attempts.")
     return None
 
-def orchestrate():
+def old_orchestrate():
     hero_info = False
     p_stats = False #Returns player stats for p_id by collecting all match history. (can be 1000+ matches)
     player_match_history = False #Returns match history for p_id

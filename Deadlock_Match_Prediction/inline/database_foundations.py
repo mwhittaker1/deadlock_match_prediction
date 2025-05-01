@@ -8,6 +8,13 @@ def drop_tables(con):
     con.execute("DROP TABLE IF EXISTS hero_trends")
 
 def create_all_tables(con):
+    create_matches_table(con)
+    create_player_matches_table(con)
+    create_hero_trends_table(con)
+    create_player_trends_table(con)
+    print(f"\n*INFO* all tables created")
+
+def create_matches_table(con):
     con.execute("""
     CREATE TABLE matches (
     match_id BIGINT,
@@ -21,6 +28,7 @@ def create_all_tables(con):
     )
     """)
 
+def create_player_matches_table(con):
     con.execute("""
     CREATE TABLE player_matches (
     account_id BIGINT,
@@ -47,6 +55,7 @@ def create_all_tables(con):
     )
     """)
 
+def create_player_trends_table(con):
     con.execute("""
     CREATE TABLE player_trends (
     account_id BIGINT,
@@ -63,7 +72,8 @@ def create_all_tables(con):
     PRIMARY KEY (account_id, match_id, hero_id)
     )
     """)
-    
+
+def create_hero_trends_table(con):  
     con.execute("""
     CREATE TABLE hero_trends (
     hero_id INTEGER,

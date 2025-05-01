@@ -1,7 +1,12 @@
+
+p_v_h_score #compares p_h_stats against hero_trends - 
+see data_orchestrator.build_trianing_data
+
+
 need to create 7d and 30d trends for many data points:
 player_win
 p_hero_win
-p_v_h_score #compares p_h stats against hero trends
+
 
 ## Need to dig deep into sql window function vs match_history_outcome_add
 

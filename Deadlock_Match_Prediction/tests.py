@@ -127,9 +127,9 @@ def run_tests():
     con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
     test_insert_into_db()
 
-    #df = con.execute("SELECT DISTINCT account_id FROM matches WHERE match_id IN (28627568,28628027)").fetchdf()
+    df = con.execute("SELECT DISTINCT account_id FROM matches WHERE match_id IN (28627568,28628027)").fetchdf()
     #print(f"\n\n*DEBUG* count of distinct account_ids = {len(df)}")
-    #df = test_single_p_m_history_stats(df)
+    df = test_single_p_m_history_stats(df)
 
     #to_csv(df,"p_m_histories")
     #print(f"\n ***COMPLETED****")    
