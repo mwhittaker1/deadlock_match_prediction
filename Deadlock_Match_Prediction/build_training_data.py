@@ -16,8 +16,5 @@ def get_training_matches(bulk=False):
     orchestrate_build_training_data(con, num_matches, days, min_badge)
     return
 
-def get_training_match_players():
-    pass
-
 if __name__ == "__main__":
     get_training_matches()
