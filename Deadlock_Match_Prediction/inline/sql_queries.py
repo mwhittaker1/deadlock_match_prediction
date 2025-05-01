@@ -17,7 +17,7 @@ if __name__ == "__main__":
     con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
     #get_tables()
     result = con.execute("select count(DISTINCT account_id) from matches").fetchall()
-    result2 = con.execute("select count(*) from matches").fetchall()
+    result2 = con.execute("select count(*) from player_matches").fetchall()
     #result = con.execute("select count(DISTINCT match_id) from matches").fetchall()
     #result = con.execute("""
     #SELECT COUNT(*) FROM (

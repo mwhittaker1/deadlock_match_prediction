@@ -146,8 +146,8 @@ def manage_tbl_temp_p_m_history(df,insert=False, create=False, clear=False):
 
 if __name__ == "__main__":
     con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
-    reset_all_tables()
+    #reset_all_tables()
     #con.execute("ALTER TABLE player_trends drop COLUMN p_h_pick_per;")
-    #con.execute("ALTER TABLE player_matches ADD COLUMN p_total_kills FLOAT;")
+    #con.execute("ALTER TABLE player_matches ADD COLUMN average_kd FLOAT;")
 
     #create_test_subset(con)
