@@ -7,7 +7,7 @@ def drop_tables(con):
     con.execute("DROP TABLE IF EXISTS player_trends")
     con.execute("DROP TABLE IF EXISTS hero_trends")
 
-def create_tables(con):
+def create_all_tables(con):
     con.execute("""
     CREATE TABLE matches (
     match_id BIGINT,
@@ -120,7 +120,7 @@ def alter_table():
 def reset_all_tables():
     con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
     drop_tables(con)
-    create_tables(con)
+    create_all_tables(con)
     #create_player_profile(con)
 
 def manage_tbl_temp_p_m_history(df,insert=False, create=False, clear=False):

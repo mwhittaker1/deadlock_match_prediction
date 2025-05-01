@@ -136,6 +136,7 @@ def orchestrate_hero_trends():
     seven_days = get_time_delta(7,short=True)
     thirty_days = get_time_delta(3,short=True)
     min_average_badge = "min_average_badge=100"
+
     hero_trends_7d = fd.fetch_hero_data(seven_days, min_average_badge)
     hero_trends_7d = prdt.calculate_hero_stats(hero_trends_7d)
     hero_trends_7d = hero_trends_7d.assign(
@@ -144,6 +145,7 @@ def orchestrate_hero_trends():
         trend_date = current_time,
         trend_window_days="7"
     )
+
     hero_trends_30d = fd.fetch_hero_data(thirty_days, min_average_badge)
     hero_trends_30d = prdt.calculate_hero_stats(hero_trends_30d)
     hero_trends_30d = hero_trends_30d.assign(
@@ -152,6 +154,7 @@ def orchestrate_hero_trends():
         trend_date = current_time,
         trend_window_days="30"
     )
+    
     def filter_hero_trends(df)->pd.DataFrame:
         df_filters = [
         'hero_id','trend_start_date','trend_end_date','trend_date','trend_window_days',
@@ -162,8 +165,12 @@ def orchestrate_hero_trends():
         filtered_df['trend_end_date'] = pd.to_datetime(filtered_df['trend_end_date'], unit='s')
         filtered_df['trend_date'] = pd.to_datetime(filtered_df['trend_date'], unit='s')
         return filtered_df
+    
     hero_trends_30d = filter_hero_trends(hero_trends_30d)
     hero_trends_7d = filter_hero_trends(hero_trends_7d)
+    prdt.insert_dataframes(con, hero_trends_df=hero_trends_30d)
+    prdt.insert_dataframes(con, hero_trends_df=hero_trends_7d)
+    
     return hero_trends_7d, hero_trends_30d
 
 def orchestrate_hero_info():
