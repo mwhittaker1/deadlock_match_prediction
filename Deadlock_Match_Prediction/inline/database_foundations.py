@@ -76,7 +76,7 @@ def create_tables(con):
     average_kills FLOAT,
     average_deaths FLOAT,
     average_assists FLOAT,
-
+    average_kd FLOAT
     PRIMARY KEY (hero_id, trend_start_date, trend_end_date, trend_window_days)
     )
     """)

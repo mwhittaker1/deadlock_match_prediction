@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import duckdb
 from services.utility_functions import to_csv
 from services.dl_fetch_data import fetch_player_match_history
 
@@ -9,9 +10,8 @@ def calculate_hero_stats(m_hero_df):
     #returns total matches
     def get_total_matches(df):
         total_matches = df['matches'].sum()
-        total_matches = total_matches/12
         #print(f"sum matches = :{total_matches}")
-        return total_matches
+        return total_matches/12
     
     #adds pickrate to df
     def get_hero_pickrate(matches, df):
@@ -24,6 +24,7 @@ def calculate_hero_stats(m_hero_df):
         df['average_kills'] = (df['total_kills'].replace(0,1)/df['matches'].replace(0,1)*100).round(2)
         df['average_deaths'] = (df['total_deaths'].replace(0,1)/df['matches'].replace(0,1)*100).round(2)
         df['average_assists'] = (df['total_assists'].replace(0,1)/df['matches'].replace(0,1)*100).round(2)
+        df['average_kd'] = df['total_kills'].replace(0,1)/df['total_deaths'].replace(0,1).round(2)
         return df
 
     sum_matches = get_total_matches(m_hero_df) 
@@ -117,7 +118,8 @@ def split_dfs_for_insertion(con, full_df):
     "trend_columns" : [
         'account_id', 'match_id', 'hero_id',
         'p_win_pct_3', 'p_win_pct_5', 'p_streak_3', 'p_streak_5',
-        'h_win_pct_3', 'h_win_pct_5', 'h_streak_3', 'h_streak_5'
+        'h_win_pct_3', 'h_win_pct_5', 'h_streak_3', 'h_streak_5',
+        
     ]
     }
     pd.set_option('display.max_columns',None)
@@ -139,8 +141,7 @@ def split_dfs_for_insertion(con, full_df):
     return split_dfs
 
 def normalize_match_json(json):
-    df = pd.json_normalize(json, record_path="players", meta=["match_id", "winning_team","start_time","game_mode","match_mode","duration_s"])
-    return df
+    return pd.json_normalize(json, record_path="players", meta=["match_id", "winning_team","start_time","game_mode","match_mode","duration_s"])
 
 def match_data_outcome_add(df)-> pd.DataFrame:
     """compares winning team to team, calcs "won" bool
@@ -151,50 +152,38 @@ def match_data_outcome_add(df)-> pd.DataFrame:
     df["won"] = df["team"] == df["winning_team"]
     return df
 
-def get_all_histories(matches_df):
-    """for all matches, get players_match_histories and stats"""
-    all_matches_player_histories = pd.DataFrame()
-    #print(f"\n\n get_all_histories, matches_df\n\n {matches_df}")
-    
-    for idx,match_row in matches_df.iterrows():
-        """pulls match history of all players in match"""
-        #print(f"****\n\n match_row type = {type(match_row)} =\n\n{match_row}")
-        match_players_histories = get_player_match_history(match_row)
-        all_matches_player_histories = pd.concat([all_matches_player_histories, match_players_histories], ignore_index=True)
-    
-    all_matches_player_histories['start_time'] = pd.to_datetime(all_matches_player_histories['start_time'], unit='s')
-    return all_matches_player_histories
+def get_distinct_matches(con)->pd.DataFrame:
+    con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
+    match_account_ids = con.execute("SELECT DISTINCT account_id FROM matches WHERE match_id IN (28627568,28628027)").fetchdf()
+    #print(f"\n\n*DEBUG* count of distinct account_ids = {len(df)}")
+    return get_players_from_matches(match_account_ids)
 
-def old_get_players_match_histories(match_players_df)->pd.DataFrame:
+def get_players_from_matches(match_players_df=pd.DataFrame)->pd.DataFrame:
     """
-    creates statistics for player based on match history
+    from normalized list of matches, cycles p_id
     """
-
-    player_count = 0
-    print(f"match_players_df  get_players_match_history =\n\n\n{match_players_df} ")
-    
-    print(f"\n**pulling account_id from data m_id = {'match_id'}**\n")
-    
+    #print(f"\n*DEBUG* match_players_df get_players_match_history =\n\n\n{match_players_df} ")
+    p_m_history_chunk = []
     for p_id in match_players_df['account_id']:
-        player_count +=1
-        p_m_history = get_player_match_history(p_id)
-        match_players_histories = pd.concat([match_players_histories,p_m_history],ignore_index=True)
+        p_m_history = calculate_p_m_history_stats(p_id)
+        p_m_history_chunk.append(p_m_history)
+    match_players_histories = pd.concat([match_players_histories,p_m_history_chunk],ignore_index=True)
     
     return match_players_histories
 
-def get_player_match_history(match):
+def calculate_p_m_history_stats(p_id):
     """for player, calculate player stats."""
-    p_id = match['account_id']
+
     #print(f"\n\n***DEBUG GET_PLAYER_MATCH_STATS - p_id = {p_id}")
-    player_history = fetch_player_match_history(p_id)
-    #print(f"\n\n***DEBUG GET_PLAYER_MATCH_STATS match_history_outcome_add - player_history =\n\n {player_history}")
-    player_history = match_history_outcome_add(player_history)
-    #print(f"\n\n***DEBUG GET_PLAYER_MATCH_STATS win_loss_history - player_history =\n\n {player_history}")
-    player_history = win_loss_history(player_history)
-    #print(f"\n\n***DEBUG GET_PLAYER_MATCH_STATS  calculate_player_stats- player_history =\n\n {player_history}")
-    player_history = calculate_player_stats(player_history)
-    #print(f"\n\n***DEBUG GET_PLAYER_MATCH_STATS - done =\n\n {player_history}")
-    return player_history
+    player_m_history = fetch_player_match_history(p_id)
+    #print(f"\n\n***DEBUG GET_PLAYER_MATCH_STATS match_history_outcome_add - player_m_history =\n\n {player_m_history}")
+    player_m_history = match_history_outcome_add(player_m_history)
+    #print(f"\n\n***DEBUG GET_PLAYER_MATCH_STATS win_loss_history - player_m_history =\n\n {player_m_history}")
+    player_m_history = win_loss_history(player_m_history)
+    #print(f"\n\n***DEBUG GET_PLAYER_MATCH_STATS  calculate_player_stats- player_m_history =\n\n {player_m_history}")
+    player_m_history = calculate_player_stats(player_m_history)
+    #print(f"\n\n***DEBUG GET_PLAYER_MATCH_STATS - done =\n\n {player_m_history}")
+    return player_m_history
 
 def match_history_outcome_add(df)-> pd.DataFrame:
     """calculates and adds which matches the player won in df, adds as new column"""
@@ -306,6 +295,20 @@ def old_calculate_player_hero_stats(df):
     df['p_h_total_matches'] = df['match_id'].count()
 
     return
+
+def old_get_all_histories(matches_df):
+    """for all matches, get players_match_histories and stats"""
+    all_matches_player_histories = pd.DataFrame()
+    #print(f"\n\n get_all_histories, matches_df\n\n {matches_df}")
+    
+    for idx,match_row in matches_df.iterrows():
+        """pulls match history of all players in match"""
+        #print(f"****\n\n match_row type = {type(match_row)} =\n\n{match_row}")
+        match_players_histories = get_player_match_history(match_row)
+        all_matches_player_histories = pd.concat([all_matches_player_histories, match_players_histories], ignore_index=True)
+    
+    all_matches_player_histories['start_time'] = pd.to_datetime(all_matches_player_histories['start_time'], unit='s')
+    return all_matches_player_histories
 
 #Extracts pd.DataFrame(players) from pd.DataFrame(matches), appends match_id to each player row
 def old_split_players_and_matches(df)-> pd.DataFrame:

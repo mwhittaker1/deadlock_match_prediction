@@ -25,6 +25,7 @@ def orchestrate_build_training_data(con, max_days=90, min_days=0, min_average_ba
     match_df = split_df.get('match_columns')
     player_df = split_df.get('player_columns')
     trends_df = split_df.get('trend_columns')
+
     if match_df is not None or player_df is not None or trends_df is not None:
         prdt.insert_dataframes(con, match_df, player_df, trends_df)
     else:
@@ -32,6 +33,9 @@ def orchestrate_build_training_data(con, max_days=90, min_days=0, min_average_ba
     ###   
     # from database, get unqiue account_ids, check if in player_matches, and if not fetch history.
     ###
+    df_training_matches = prdt.get_distinct_matches(con)
+    df_training_matches = prdt.get_players_from_matches(df_training_matches)
+
 
 def pre_refactor_orchestrate_build_training_data(con, num_matches, days, min_average_badge=100):
     """
