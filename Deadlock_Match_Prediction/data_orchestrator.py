@@ -26,57 +26,19 @@ def orchestrate_build_training_data(con, max_days=90, min_days=0, min_average_ba
     df_training_matches = prdt.normalize_match_json(df_training_matches)
     split_df = prdt.split_dfs_for_insertion(con, df_training_matches)
     match_df = split_df.get('match_columns')
-    player_df = split_df.get('player_columns')
-    trends_df = split_df.get('trend_columns')
+
 
     if match_df is not None or player_df is not None or trends_df is not None:
         prdt.insert_dataframes(con, match_df, player_df, trends_df)
     else:
         print("***tried to insert into db, but no valid dfs were identified***")
     
-    ###   
     # from database, get unqiue account_ids, check if in player_matches, and if not fetch history.
-    ###
     df_training_matches = prdt.get_distinct_matches(con)
     df_training_matches = prdt.get_players_from_matches(df_training_matches)
-
-
-def pre_refactor_orchestrate_build_training_data(con, num_matches, days, min_average_badge=100):
-    """
-    Fetch matches, match_players, 
-    match_players_history, hero_trends
-    splits and inserts into db @con
-    """
-    
-    print(f"\n\n***Starting Build Training Data ****\n\n")
-
-    df_training_matches = orchestrate_match_data(num_matches,days,min_average_badge)
-    prdt.insert_dataframes(df_training_matches)
-    ###   
-    # Get unique account_id from entire matches list.
-    # for each account id, get match history
-    ###
-    print(f"\n***getting matches histories data***\n")
-    all_matches_players_history = prdt.get_all_histories(df_training_matches)
-    #to_csv(all_matches_players_history,"all_matches_players_history")
-
-    print(f"\n\n***Splitting and inserting to database.***\n\n")
-    split_dfs = prdt.split_dfs_for_insertion(con, all_matches_players_history)
-    match_df = split_dfs.get['match_columns']
-    player_df = split_dfs.get['player_columns']
-    trends_df = split_dfs.get['trend_columns']
-    if match_df is not None or player_df is not None or trends_df is not None:
-        prdt.insert_dataframes(con, match_df, player_df, trends_df)
-    else:
-        print("***tried to insert into db, but no valid dfs were identified***")
-
-    print(f"\n\n***getting 7d and 30d hero trends***")
-    hero_trends_df_7, hero_trends_df_30 = orchestrate_hero_trends()
-
-    prdt.insert_dataframes(con, hero_trends_df=hero_trends_df_30)
-    prdt.insert_dataframes(con, hero_trends_df=hero_trends_df_7)
-
-    return
+    split_df = prdt.split_dfs_for_insertion(con, df_training_matches)
+    player_df = split_df.get('player_columns')
+    trends_df = split_df.get('trend_columns')
 
 def orchestrate_match_data(limit, min_average_badge=100, days=365,m_id=None)->pd.DataFrame:
     """Fetches match data over x days, miniumum rank, and max to fetch (hard limit 5000) """
@@ -85,53 +47,6 @@ def orchestrate_match_data(limit, min_average_badge=100, days=365,m_id=None)->pd
     #flat_m_data = prdt.match_data_outcome_add(fetched_matches)
     print(f"\n**matches formatted!")
     return fetched_matches #df
-
-def orchestrate_matches_players_stats(df):
-    """
-    For all matches in df, get all players match history and stats
-    
-    for each match in df:
-        for each player in match:
-            get player match history
-            calculate player stats
-    """
-    def get_all_m_p_history(df)->pd.DataFrame:
-        """for all matches, get players_match_histories and stats"""
-
-        for _,match_row in df.iterrows():
-            """pulls match history of all players in match"""
-            single_matches_players_history = single_p_m_history_stats(match_row)
-            all_matches_players_history = pd.concat([all_matches_players_history, single_matches_players_history], ignore_index=True)
-        
-        all_matches_players_history['start_time'] = pd.to_datetime(all_matches_players_history['start_time'], unit='s')
-        return all_matches_players_history
-
-    def single_p_m_history_stats(match_data)->pd.DataFrame:
-        """
-        creates statistics for player based on match history
-        """
-
-        player_count = 0
-        #print(f"\n**pulling account_id from data m_id = {match['match_id']}**\n")
-        
-        for current_p_id in match_data['account_id']:
-            player_count +=1
-            p_m_history = get_p_m_history_stats(current_p_id)
-            single_matches_players_history = pd.concat([single_matches_players_history,p_m_history],ignore_index=True)
-        
-        return single_matches_players_history
-
-    def get_p_m_history_stats(p_id):
-        """for player, calculate player stats."""
-        p_m_history = fd.fetch_player_match_history(p_id)
-        p_m_history = prdt.match_history_outcome_add(p_m_history)
-        p_m_history = prdt.win_loss_history(p_m_history)
-        p_m_history = prdt.calculate_player_stats(p_m_history)
-        return p_m_history
-
-    df = get_all_m_p_history(df)
-    
-    return df
 
 def orchestrate_hero_trends(reset=True):
     """Creates two data dfs, one for 7 day hero trends, one for 30 day hero trends."""
