@@ -158,7 +158,7 @@ def fetch_player_hero_stats(p_id,h_id=None):
         return p_h_all_data
     return p_h_data
 
-def fetch_active_match_data():
+def old_fetch_active_match_data():
     """Fetches most recent 200 active matches, no parameters expected."""
     site = "https://api.deadlock-api.com"
     endpoint = "/v1/matches/active"
