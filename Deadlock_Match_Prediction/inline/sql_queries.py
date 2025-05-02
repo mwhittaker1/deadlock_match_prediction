@@ -48,7 +48,6 @@ if __name__ == "__main__":
         player_count,
         COUNT(*) AS match_count
         FROM (
-        -- Step 1: for each unique match in `matches`, count how many players it has in `player_matches`
         SELECT
             m.match_id,
             COUNT(pm.account_id) AS player_count
@@ -64,32 +63,35 @@ if __name__ == "__main__":
         GROUP BY player_count
         ORDER BY player_count;
                      """).fetchall()
+    count_of_missing_ids = con.execute("""
+        WITH incomplete_matches AS (
+        SELECT
+            match_id
+        FROM player_matches
+        GROUP BY match_id
+        HAVING COUNT(account_id) < 12
+        )
+
+        SELECT 
+        COUNT(*) as missing_records_count
+        FROM matches m
+        JOIN incomplete_matches im ON m.match_id = im.match_id
+        WHERE NOT EXISTS (
+        SELECT 1 
+        FROM player_matches pm 
+        WHERE pm.match_id = m.match_id 
+        AND pm.account_id = m.account_id
+        )
+        """).fetchall()
+    
     check = con.execute("SELECT count(DISTINCT match_id) from matches WHERE start_time < NOW() - INTERVAL 10 DAY limit 10").fetchone()
     print(f"count distinct account id in matches: {result}")
-    print(f"\n\n matches distinct account ids: {result} should match player_matches total rows: {result2}")
+    print(f"\n\n count distinct account id in player_matches: {result2}")
     print(f"\n count of match ids in matches: {result3}\n\n")   
     print(f"\count_missing_account_ids: {count_missing_account_ids}")
+    print(f"count of missing ids: {count_of_missing_ids}")
+    print(f"expected ids: {result3[0][0]*12}- count of missing ids - {result3[0][0]*12-count_missing_account_ids[0][0]}\nshould match {result[0][0]}")
     print(f"v2 = {v2}")
     print(f"\n\nmatches greater than 10 days {check} ")
 
-    long_account_id_list_missing_to_make_matched = con.execute("""
-            WITH incomplete_matches AS (
-            SELECT
-                match_id
-            FROM player_matches
-            GROUP BY match_id
-            HAVING COUNT(account_id) < 12
-            )
-
-            SELECT 
-            m.account_id
-            FROM matches m
-            JOIN incomplete_matches im ON m.match_id = im.match_id
-            WHERE NOT EXISTS (
-            SELECT 1 
-            FROM player_matches pm 
-            WHERE pm.match_id = m.match_id 
-            AND pm.account_id = m.account_id
-            )
-            """).fetchall()
-    print(f"\n\n all missing account ids to make complete matches: {long_account_id_list_missing_to_make_matched}")
+    

@@ -211,7 +211,7 @@ def get_players_from_matches(match_players_df=pd.DataFrame)->pd.DataFrame:
         
         p_m_history_chunk.append(p_m_history)
 
-        if count_calculated %10 == 0:
+        if count_calculated %50 == 0:
             print(f"\n\n*INFO* current count: {count_calculated} of {id_count}")
         #print(f"*DEBUG* p_m_history_chunk item type = {type(p_m_history_chunk[0])} data = \n\n {p_m_history_chunk[0]}")
     
@@ -330,27 +330,30 @@ def get_distinct_incomplete_matches(con) -> pd.DataFrame:
     Returns every distinct account_id from any match
     that does NOT have exactly 12 players recorded.
     """
-    query = con.execute("""
-            WITH incomplete_matches AS (
-            SELECT
-                match_id
-            FROM player_matches
-            GROUP BY match_id
-            HAVING COUNT(account_id) < 12
-            )
-
+    df = con.execute("""
+        WITH incomplete_matches AS (
             SELECT 
+                m.match_id
+            FROM (
+                SELECT DISTINCT match_id 
+                FROM matches
+            ) AS m
+            LEFT JOIN player_matches AS pm ON pm.match_id = m.match_id
+            GROUP BY m.match_id
+            HAVING COUNT(pm.account_id) < 12
+        )
+        SELECT 
+            m.match_id,
             m.account_id
-            FROM matches m
-            JOIN incomplete_matches im ON m.match_id = im.match_id
-            WHERE NOT EXISTS (
+        FROM matches m
+        JOIN incomplete_matches im ON m.match_id = im.match_id
+        WHERE NOT EXISTS (
             SELECT 1 
             FROM player_matches pm 
             WHERE pm.match_id = m.match_id 
             AND pm.account_id = m.account_id
-                        limit 500
-            )
-            """).fetchall()
-    df = con.execute(query).fetchdf()
+        )
+        ORDER BY m.match_id, m.account_id
+        """).fetchdf()
     print(f"*INFO* found {len(df)} distinct account_ids from incomplete matches")
     return df

@@ -43,7 +43,8 @@ def orchestrate_match_player_histories(con):
 
 def orchestrate_training_data_fill(con):
     match_fills = prdt.get_distinct_incomplete_matches(con)
-    prdt.batch_get_players_from_matches(con, match_fills, batch_size=500)
+    print(len(match_fills))
+    #prdt.batch_get_players_from_matches(con, match_fills, batch_size=500)
 
 def orchestrate_match_data(limit, min_average_badge=100, days=365,m_id=None)->pd.DataFrame:
     """Fetches match data over x days, miniumum rank, and max to fetch (hard limit 5000) """
@@ -107,9 +108,10 @@ def orchestrate_hero_info():
 
 if __name__ == "__main__":
     con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
+    orchestrate_match_data(con,15)
     #num_matches = 10
     #days = 10
-    orchestrate_build_training_data(con, max_days_fetch=10)
+    #orchestrate_build_training_data(con, max_days_fetch=10)
     #args = [con, num_matches, days]
     #response = orchestrate_fetch_training_data(con, num_matches, days)
     #orchestrate_build_training_data(con,num_matches,days)
