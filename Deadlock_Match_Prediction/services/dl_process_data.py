@@ -180,7 +180,7 @@ def match_data_outcome_add(df)-> pd.DataFrame:
 
 def get_distinct_matches(con)->pd.DataFrame:
     con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
-    match_account_ids = con.execute("SELECT DISTINCT account_id FROM matches").fetchdf()
+    match_account_ids = con.execute("SELECT DISTINCT m.account_id FROM matches AS m LEFT JOIN player_matches AS mp USING(account_id) WHERE mp.account_id IS NULL;").fetchdf()
     print(f"\n\n*INFO* count of distinct account_ids = {len(match_account_ids)}")
     return match_account_ids
 
