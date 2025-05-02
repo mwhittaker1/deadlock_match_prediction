@@ -41,19 +41,19 @@ def fetch_match_data(limit,days,max_days=0,min_average_badge=100,m_id=None)->jso
 
     if m_id:
         print(f"ERROR m_id found!")
-        url=f"{site}{endpoint}include_player_info=true&match_ids={m_id}"
+        url=f"{site}{endpoint}include_player_info=true&match_ids={m_id}?only_stored_history=true"
         response = requests.get(url)
     elif max_days != 0:
         print(f"\n**debug** - days= {days}, max days = {max_days}")
         min_unix_time = get_time_delta(days)
         max_unix_time = get_time_delta(max_days,short=False, max=True)
-        url = f"{site}{endpoint}include_player_info=true&{min_unix_time}&{max_unix_time}&min_average_badge={min_average_badge}&limit={limit}"
+        url = f"{site}{endpoint}include_player_info=true&{min_unix_time}&{max_unix_time}&min_average_badge={min_average_badge}&limit={limit}?only_stored_history=true"
         print(f"\n\n**debug** fetch_match_data, max_days !=0 URL is: {url}\n\n")
         response = requests.get(url)
 
     else:
         min_unix_time = get_time_delta(days)
-        url = f"{site}{endpoint}include_player_info=true&{min_unix_time}&min_average_badge={min_average_badge}&limit={limit}"
+        url = f"{site}{endpoint}include_player_info=true&{min_unix_time}&min_average_badge={min_average_badge}&limit={limit}?only_stored_history=true"
         #print(f"\n\nURL is: {url}\n\n")
         response = requests.get(url)
     
@@ -106,7 +106,7 @@ def fetch_hero_info():
 def fetch_player_match_history(p_id):
     """For the account_id listed, fetches full match history of player"""
     site = "https://api.deadlock-api.com"
-    endpoint = f"/v1/players/{p_id}/match-history" 
+    endpoint = f"/v1/players/{p_id}/match-history?only_stored_history=true" 
 
     url = site+endpoint
     #print(f"\n\nGetting player_match_history p_id: {p_id} from full url: {url}\n\n")
@@ -118,9 +118,13 @@ def fetch_player_match_history(p_id):
         #print(f"\n\nresponse_data[:5]\n\n")
         history = pd.DataFrame(response_data)
     else: 
-        print(f"\n\nError fetching data, code = {response.status_code}\n\n")
+        print(f"\n\nError fetch_player_match_history, code = {response.status_code}\n\n response= {response}\n\n")
 
     #return DataFrame
+    if history is None:
+        print(f"\n\n**ERROR** history is blank in fetch_player_match_history, p_id: {p_id}\n\n")
+    if history.empty:
+        print(f"\n\n**ERROR** history is empty in fetch_player_match_history, p_id: {p_id}\n\n")
     return history
 
 def fetch_player_hero_stats(p_id,h_id=None):

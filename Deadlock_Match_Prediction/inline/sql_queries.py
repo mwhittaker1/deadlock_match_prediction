@@ -61,10 +61,10 @@ if __name__ == "__main__":
         GROUP BY player_count
         ORDER BY player_count;
                      """).fetchall()
-    
+    check = con.execute("SELECT * from player_matches WHERE account_id = 75030733").fetchone()
     print(result)
     print(f"\n\n matches distinct account ids: {result} should match player_matches total rows: {result2}")
     print(f"\n count of match ids in matches: {result3}\n\n")   
-    print(result5)
     print(f"\ncheck dups: {check_dups}")
     print(f"v2 = {v2}")
+    print(f"\n\nchecking account id:75030733 in matches. {check} ")

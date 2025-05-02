@@ -39,6 +39,7 @@ def batch_get_players_from_matches(con, df_matches, batch_size=500):
     all_ids = df_matches['account_id'].tolist()
 
     for i in range(0, len(all_ids), batch_size):
+        print(f"**INFO** Processing chunk {i}-{i + batch_size} of {len(all_ids)}")
         chunk_ids = all_ids[i:i + batch_size]
         chunk_df = df_matches[df_matches['account_id'].isin(chunk_ids)]
 
@@ -204,7 +205,7 @@ def get_players_from_matches(match_players_df=pd.DataFrame)->pd.DataFrame:
             except Exception as e:
                 print(f"\n**WARNING** Fetch failed for {p_id}, attempt {attempts+1}/5: {e}")
                 attempts += 1
-                time.sleep(15)
+                time.sleep(5)
         if not success:
             print(f"\n\n**ERROR**Failed to fetch {p_id} after 5 attempts.")
         

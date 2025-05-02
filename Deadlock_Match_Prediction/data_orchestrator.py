@@ -39,7 +39,7 @@ def orchestrate_match_player_histories(con):
     df_training_matches = prdt.get_distinct_matches(con)
     #print(f"df training matches: {df_training_matches}")
     
-    prdt.batch_get_players_from_matches(con, df_training_matches, batch_size=500)
+    prdt.batch_get_players_from_matches(con, df_training_matches, batch_size=50)
 
 def orchestrate_training_data_fill(con):
     match_fills = prdt.get_distinct_incomplete_matches(con)
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
     #num_matches = 10
     #days = 10
-    orchestrate_training_data_fill()
+    orchestrate_training_data_fill(con)
     #args = [con, num_matches, days]
     #response = orchestrate_fetch_training_data(con, num_matches, days)
     #orchestrate_build_training_data(con,num_matches,days)
