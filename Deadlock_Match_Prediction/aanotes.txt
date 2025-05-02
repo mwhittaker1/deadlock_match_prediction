@@ -1,7 +1,7 @@
 
-p_v_h_score #compares p_h_stats against hero_trends - 
-see data_orchestrator.build_trianing_data
 
+get_players_from_matches, each fetch is a dataframe,
+turning them into a list of dataframes. needs fixing.
 
 need to create 7d and 30d trends for many data points:
 player_win

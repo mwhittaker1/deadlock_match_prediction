@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import duckdb
+import time
 from services.utility_functions import to_csv
 from services.dl_fetch_data import fetch_player_match_history
 
@@ -155,20 +156,42 @@ def match_data_outcome_add(df)-> pd.DataFrame:
 def get_distinct_matches(con)->pd.DataFrame:
     con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
     match_account_ids = con.execute("SELECT DISTINCT account_id FROM matches WHERE match_id IN (28627568,28628027)").fetchdf()
-    #print(f"\n\n*DEBUG* count of distinct account_ids = {len(df)}")
-    return get_players_from_matches(match_account_ids)
+    print(f"\n\n*DEBUG* count of distinct account_ids = {len(match_account_ids)}")
+    return match_account_ids
 
 def get_players_from_matches(match_players_df=pd.DataFrame)->pd.DataFrame:
     """
     from normalized list of matches, cycles p_id
     """
-    #print(f"\n*DEBUG* match_players_df get_players_match_history =\n\n\n{match_players_df} ")
+    id_count = len(match_players_df)
+    print(f"\n*INFO* Starting p_m_history fetches from matches unique IDS total: {id_count}\n") 
+    count_calculated=0
     p_m_history_chunk = []
+
     for p_id in match_players_df['account_id']:
-        p_m_history = calculate_p_m_history_stats(p_id)
+        count_calculated+=1
+        attempts = 0
+        success = False
+
+        while attempts < 5 and not success:
+            try:
+                p_m_history = calculate_p_m_history_stats(p_id)  # replace with your actual function
+                success = True
+            except Exception as e:
+                print(f"Fetch failed for {p_id}, attempt {attempts+1}/5: {e}")
+                attempts += 1
+                time.sleep(15)
+        if not success:
+            print(f"Failed to fetch {p_id} after 5 attempts.")
+        
         p_m_history_chunk.append(p_m_history)
-    match_players_histories = pd.concat([match_players_histories,p_m_history_chunk],ignore_index=True)
+
+        if count_calculated %10 == 0:
+            print(f"*INFO* current count: {count_calculated} of {id_count}")
+        #print(f"*DEBUG* p_m_history_chunk item type = {type(p_m_history_chunk[0])} data = \n\n {p_m_history_chunk[0]}")
     
+    match_players_histories = pd.concat(p_m_history_chunk, ignore_index=True)
+
     return match_players_histories
 
 def calculate_p_m_history_stats(p_id):

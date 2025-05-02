@@ -13,32 +13,41 @@ initialize_logging(verbose)
 
 def orchestrate_build_training_data(con, max_days=90, min_days=0, min_average_badge=100):
     """
-    Fetch matches, match_players, 
-    match_players_history, hero_trends
-    splits and inserts into db @con
+    Fetch matches, normalizes, and inserts into matches_table
     """
     
     print(f"\n\n***Starting Build Training Data ****\n\n")
-    
-    orchestrate_hero_trends(reset=True) #builds and inserts hero_trend 7d,30d data.
     
     df_training_matches = fd.bulk_fetch_matches(max_days,min_days,min_average_badge)
     df_training_matches = prdt.normalize_match_json(df_training_matches)
     split_df = prdt.split_dfs_for_insertion(con, df_training_matches)
     match_df = split_df.get('match_columns')
-
+    player_df = split_df.get('player_columns')
+    trends_df = split_df.get('trend_columns')
 
     if match_df is not None or player_df is not None or trends_df is not None:
         prdt.insert_dataframes(con, match_df, player_df, trends_df)
     else:
         print("***tried to insert into db, but no valid dfs were identified***")
+
+def orchestrate_match_player_histories(con):
+    """
+    from matches table, get unqiue account_ids, and if not fetch history.
+    Does not check for existing data in match_players before fetching.
+    """
     
-    # from database, get unqiue account_ids, check if in player_matches, and if not fetch history.
     df_training_matches = prdt.get_distinct_matches(con)
+    print(f"df training matches: {df_training_matches}")
     df_training_matches = prdt.get_players_from_matches(df_training_matches)
     split_df = prdt.split_dfs_for_insertion(con, df_training_matches)
     player_df = split_df.get('player_columns')
     trends_df = split_df.get('trend_columns')
+    match_df = split_df.get('match_columns')
+
+    if match_df is not None or player_df is not None or trends_df is not None:
+        prdt.insert_dataframes(con, match_df, player_df, trends_df)
+    else:
+        print("***tried to insert into db, but no valid dfs were identified***")
 
 def orchestrate_match_data(limit, min_average_badge=100, days=365,m_id=None)->pd.DataFrame:
     """Fetches match data over x days, miniumum rank, and max to fetch (hard limit 5000) """
