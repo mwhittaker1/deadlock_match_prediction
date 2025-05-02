@@ -41,21 +41,14 @@ def orchestrate_match_player_histories(con):
     
     prdt.batch_get_players_from_matches(con, df_training_matches, batch_size=500)
 
-    #split_df = prdt.split_dfs_for_insertion(con, df_training_matches)
-    #player_df = split_df.get('player_columns')
-    #trends_df = split_df.get('trend_columns')
-    #match_df = split_df.get('match_columns')
-
-    #if match_df is not None or player_df is not None or trends_df is not None:
-    #    prdt.insert_dataframes(con, match_df, player_df, trends_df)
-    #else:
-    #    print("***tried to insert into db, but no valid dfs were identified***")
+def orchestrate_training_data_fill(con):
+    match_fills = prdt.get_distinct_incomplete_matches(con)
+    prdt.batch_get_players_from_matches(con, match_fills, batch_size=500)
 
 def orchestrate_match_data(limit, min_average_badge=100, days=365,m_id=None)->pd.DataFrame:
     """Fetches match data over x days, miniumum rank, and max to fetch (hard limit 5000) """
     fetched_matches = fd.fetch_match_data(limit, days, min_average_badge)
     fetched_matches = prdt.normalize_match_json(fetched_matches)
-    #flat_m_data = prdt.match_data_outcome_add(fetched_matches)
     print(f"\n**matches formatted!")
     return fetched_matches #df
 
@@ -114,8 +107,9 @@ def orchestrate_hero_info():
 
 if __name__ == "__main__":
     con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
-    num_matches = 10
-    days = 10
+    #num_matches = 10
+    #days = 10
+    orchestrate_training_data_fill()
     #args = [con, num_matches, days]
     #response = orchestrate_fetch_training_data(con, num_matches, days)
     #orchestrate_build_training_data(con,num_matches,days)

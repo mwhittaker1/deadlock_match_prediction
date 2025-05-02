@@ -148,7 +148,6 @@ def split_dfs_for_insertion(con, full_df):
         
     ]
     }
-    pd.set_option('display.max_columns',None)
     #print(f"\n\n*Debug* in split_dfs_for_insertion, full_df columns are: {list(full_df.columns)}")
     split_dfs = {}
     
@@ -323,4 +322,28 @@ def win_loss_history(df: pd.DataFrame) -> pd.DataFrame:
     ]
     df['h_streak_5'] = np.select(conds5_h, labels5, default="insufficient_data")
     df = df.sort_values(by=['account_id', 'start_time'])
+    return df
+
+def get_distinct_incomplete_matches(con) -> pd.DataFrame:
+    """
+    Returns every distinct account_id from any match
+    that does NOT have exactly 12 players recorded.
+    """
+    query = """
+    WITH incomplete_matches AS (
+      SELECT
+        match_id
+      FROM player_matches
+      GROUP BY match_id
+      HAVING COUNT(account_id) <> 12
+    )
+    SELECT DISTINCT
+      m.account_id
+    FROM matches AS m
+    JOIN incomplete_matches AS im
+      ON m.match_id = im.match_id
+    ;
+    """
+    df = con.execute(query).fetchdf()
+    print(f"*INFO* found {len(df)} distinct account_ids from incomplete matches")
     return df

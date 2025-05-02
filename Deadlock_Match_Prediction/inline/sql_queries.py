@@ -32,22 +32,39 @@ if __name__ == "__main__":
     #print(df['match_id'].value_counts())
     
     #count of, count of match_player.account_id to matches.match_id. i.e. (1,23),(2,51230)...
-    result5 = con.execute("""
-        SELECT 
-            player_count,
-            COUNT(*) AS match_count
+    check_dups = con.execute("""
+        SELECT
+        match_id,
+        COUNT(*) AS player_count
+        FROM matches
+        GROUP BY match_id
+        HAVING COUNT(*) <> 12;
+                             """).fetchall()
+    v2 = con.execute("""
+        SELECT
+        player_count,
+        COUNT(*) AS match_count
         FROM (
-            SELECT 
-                pm.match_id,
-                COUNT(*) AS player_count
-            FROM player_matches pm
-            INNER JOIN matches m ON pm.match_id = m.match_id
-            GROUP BY pm.match_id
-        )
+        -- Step 1: for each unique match in `matches`, count how many players it has in `player_matches`
+        SELECT
+            m.match_id,
+            COUNT(pm.account_id) AS player_count
+        FROM (
+            SELECT DISTINCT match_id
+            FROM matches
+        ) AS m
+        LEFT JOIN player_matches AS pm
+            ON pm.match_id = m.match_id
+        GROUP BY m.match_id
+        ) AS per_match
+        -- Step 2: bucket those per-match counts into how often each occurs
         GROUP BY player_count
         ORDER BY player_count;
-        """).fetchall()
+                     """).fetchall()
+    
     print(result)
     print(f"\n\n matches distinct account ids: {result} should match player_matches total rows: {result2}")
     print(f"\n count of match ids in matches: {result3}\n\n")   
     print(result5)
+    print(f"\ncheck dups: {check_dups}")
+    print(f"v2 = {v2}")

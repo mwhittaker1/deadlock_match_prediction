@@ -4,7 +4,7 @@ import pandas as pd
 import services.dl_fetch_data as fd
 from services.utility_functions import to_csv, get_time_delta
 
-def bulk_fetch_matches(max_days_fetch=90,max_days=0,min_days=1)->list[json]:
+def bulk_fetch_matches(max_days_fetch=90,max_days=0,min_days=1)->list[dict]:
     """fetches a batch of matches, 1 day per pull, returns json and exports.
 
     batch is unnormalized, 'players' contains a df of each matches 'players'
