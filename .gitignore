@@ -6,3 +6,4 @@ non_normal_total_matches*
 *.db
 legacy/
 *.parquet
+test_data/
