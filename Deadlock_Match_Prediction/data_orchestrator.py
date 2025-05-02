@@ -37,7 +37,7 @@ def orchestrate_match_player_histories(con):
     """
     
     df_training_matches = prdt.get_distinct_matches(con)
-    print(f"df training matches: {df_training_matches}")
+    #print(f"df training matches: {df_training_matches}")
     df_training_matches = prdt.get_players_from_matches(df_training_matches)
     split_df = prdt.split_dfs_for_insertion(con, df_training_matches)
     player_df = split_df.get('player_columns')

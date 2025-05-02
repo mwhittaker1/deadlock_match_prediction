@@ -11,7 +11,7 @@ def bulk_fetch_matches(max_days_fetch=90,max_days=0,min_days=1)->json:
     limit = max matches within a day to pull
     max_days_fetch = how many days to cycle through for total fetch"""
 
-    print(f"start")
+    #print(f"start")
     limit = 5000
     batch_matches = []
     i=0
@@ -25,7 +25,7 @@ def bulk_fetch_matches(max_days_fetch=90,max_days=0,min_days=1)->json:
         i+=1
     with open("non_normal_total_matches.json", "w") as f:
         json.dump(batch_matches, f)
-    print(f"\n\nfin\n\n")
+    #print(f"\n\nfin\n\n")
     return batch_matches
 
 def fetch_active_match_data():

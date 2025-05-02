@@ -58,7 +58,7 @@ def insert_dataframes(con, match_df=None, player_df=None, trends_df=None, hero_t
         con.execute(query)
         after = con.execute("SELECT COUNT(*) FROM matches").fetchone()[0]
         stats['matches_inserted'] = after - before
-        print(f"Inserted {stats['matches_inserted']} new rows into matches")
+        print(f"\n**INFO** Inserted {stats['matches_inserted']} new rows into matches")
 
     if player_df is not None:
         cols = ', '.join(player_df.columns)
@@ -68,7 +68,7 @@ def insert_dataframes(con, match_df=None, player_df=None, trends_df=None, hero_t
         con.execute(query)
         after = con.execute("SELECT COUNT(*) FROM player_matches").fetchone()[0]
         stats['player_inserted'] = after - before
-        print(f"Inserted {stats['player_inserted']} new rows into player_matches")
+        print(f"\n**INFO**Inserted {stats['player_inserted']} new rows into player_matches")
 
     if trends_df is not None:
         cols = ', '.join(trends_df.columns)
@@ -78,7 +78,7 @@ def insert_dataframes(con, match_df=None, player_df=None, trends_df=None, hero_t
         con.execute(query)
         after = con.execute("SELECT COUNT(*) FROM player_trends").fetchone()[0]
         stats['trends_inserted'] = after - before
-        print(f"Inserted {stats['trends_inserted']} new rows into player_trends")
+        print(f"\n**INFO**Inserted {stats['trends_inserted']} new rows into player_trends")
 
     if hero_trends_df is not None:
         cols = ', '.join(hero_trends_df.columns)
@@ -88,10 +88,10 @@ def insert_dataframes(con, match_df=None, player_df=None, trends_df=None, hero_t
         con.execute(query)
         after = con.execute("SELECT COUNT(*) FROM hero_trends").fetchone()[0]
         stats['hero_trends_inserted'] = after - before
-        print(f"Inserted {stats['hero_trends_inserted']} new rows into hero_trends")
+        print(f"\n**INFO**Inserted {stats['hero_trends_inserted']} new rows into hero_trends")
         
     total_inserted = sum(stats.values())
-    print(f"Inserted {total_inserted} new rows across tables: {stats}")
+    print(f"\n**INFO**Inserted {total_inserted} new rows across tables: {stats}")
 
 def split_dfs_for_insertion(con, full_df):
     """
@@ -124,7 +124,7 @@ def split_dfs_for_insertion(con, full_df):
     ]
     }
     pd.set_option('display.max_columns',None)
-    print(f"\n\n*Debug* in split_dfs_for_insertion, full_df columns are: {list(full_df.columns)}")
+    #print(f"\n\n*Debug* in split_dfs_for_insertion, full_df columns are: {list(full_df.columns)}")
     split_dfs = {}
     
     for table_name, required_cols in schema_map.items():
@@ -137,7 +137,7 @@ def split_dfs_for_insertion(con, full_df):
         
         # Create a copy with only the needed columns
         split_dfs[table_name] = full_df[required_cols].copy()
-        print(f"Created '{table_name}' DataFrame with {len(split_dfs[table_name])} rows and {len(required_cols)} columns")
+        print(f"\n\n**INFO** Created '{table_name}' DataFrame with {len(split_dfs[table_name])} rows and {len(required_cols)} columns")
     
     return split_dfs
 
@@ -155,8 +155,8 @@ def match_data_outcome_add(df)-> pd.DataFrame:
 
 def get_distinct_matches(con)->pd.DataFrame:
     con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
-    match_account_ids = con.execute("SELECT DISTINCT account_id FROM matches WHERE match_id IN (28627568,28628027)").fetchdf()
-    print(f"\n\n*DEBUG* count of distinct account_ids = {len(match_account_ids)}")
+    match_account_ids = con.execute("SELECT DISTINCT account_id FROM matches WHERE match_id IN (28627568, 28628027, 28630735, 28631475, 28633718, 28633837, 28634015, 28637700, 28643067, 28643168, 28646729, 28651176, 28654076, 28654436, 28655142, 28655639, 28656443, 28657603, 28659669, 28659785, 28660006, 28661082, 28661981, 28663256, 28663659, 28666309, 28670349, 28671310, 28672634, 28673187, 28673667, 28674422, 28674702, 28676317, 28678965, 28681457, 28683492, 28683948, 28688486, 28688605)").fetchdf()
+    print(f"\n\n*INFO* count of distinct account_ids = {len(match_account_ids)}")
     return match_account_ids
 
 def get_players_from_matches(match_players_df=pd.DataFrame)->pd.DataFrame:
@@ -178,16 +178,16 @@ def get_players_from_matches(match_players_df=pd.DataFrame)->pd.DataFrame:
                 p_m_history = calculate_p_m_history_stats(p_id)  # replace with your actual function
                 success = True
             except Exception as e:
-                print(f"Fetch failed for {p_id}, attempt {attempts+1}/5: {e}")
+                print(f"\n**WARNING** Fetch failed for {p_id}, attempt {attempts+1}/5: {e}")
                 attempts += 1
                 time.sleep(15)
         if not success:
-            print(f"Failed to fetch {p_id} after 5 attempts.")
+            print(f"\n\n**ERROR**Failed to fetch {p_id} after 5 attempts.")
         
         p_m_history_chunk.append(p_m_history)
 
         if count_calculated %10 == 0:
-            print(f"*INFO* current count: {count_calculated} of {id_count}")
+            print(f"\n\n*INFO* current count: {count_calculated} of {id_count}")
         #print(f"*DEBUG* p_m_history_chunk item type = {type(p_m_history_chunk[0])} data = \n\n {p_m_history_chunk[0]}")
     
     match_players_histories = pd.concat(p_m_history_chunk, ignore_index=True)
