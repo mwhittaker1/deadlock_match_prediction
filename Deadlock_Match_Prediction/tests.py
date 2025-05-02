@@ -123,9 +123,9 @@ def test_get_p_m_history_stats(p_id):
 
 def run_tests():
     print("Starting!")
+    df = pd.read_csv("match_df.csv")
 
-    data= fd.fetch_player_match_history("1878849658")
-    print(data)
+    print(len(df))
     return
 
 if __name__ == "__main__":
