@@ -18,7 +18,7 @@ def orchestrate_build_training_data(con, max_days_fetch=1):
     
     print(f"\n\n***Starting Build Training Data ****\n\n")
     
-    df_training_matches = fd.bulk_fetch_matches(max_days_fetch=10)
+    df_training_matches = fd.bulk_fetch_matches(max_days_fetch=45)
     df_training_matches = prdt.normalize_match_json(df_training_matches)
     split_df = prdt.split_dfs_for_insertion(con, df_training_matches)
     match_df = split_df.get('match_columns')
@@ -108,7 +108,7 @@ def orchestrate_hero_info():
 
 if __name__ == "__main__":
     con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
-    orchestrate_match_data(con,15)
+    orchestrate_build_training_data(con,45)
     #num_matches = 10
     #days = 10
     #orchestrate_build_training_data(con, max_days_fetch=10)
