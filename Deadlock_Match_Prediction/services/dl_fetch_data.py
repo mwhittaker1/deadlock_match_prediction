@@ -41,19 +41,19 @@ def fetch_match_data(limit,days,max_days=0,min_average_badge=100,m_id=None)->jso
 
     if m_id:
         print(f"ERROR m_id found!")
-        url=f"{site}{endpoint}include_player_info=true&match_ids={m_id}?only_stored_history=true"
+        url=f"{site}{endpoint}include_player_info=true&match_ids={m_id}"
         response = requests.get(url)
     elif max_days != 0:
         print(f"\n**debug** - days= {days}, max days = {max_days}")
         min_unix_time = get_time_delta(days)
         max_unix_time = get_time_delta(max_days,short=False, max=True)
-        url = f"{site}{endpoint}include_player_info=true&{min_unix_time}&{max_unix_time}&min_average_badge={min_average_badge}&limit={limit}?only_stored_history=true"
+        url = f"{site}{endpoint}include_player_info=true&{min_unix_time}&{max_unix_time}&min_average_badge={min_average_badge}&limit={limit}"
         print(f"\n\n**debug** fetch_match_data, max_days !=0 URL is: {url}\n\n")
         response = requests.get(url)
 
     else:
         min_unix_time = get_time_delta(days)
-        url = f"{site}{endpoint}include_player_info=true&{min_unix_time}&min_average_badge={min_average_badge}&limit={limit}?only_stored_history=true"
+        url = f"{site}{endpoint}include_player_info=true&{min_unix_time}&min_average_badge={min_average_badge}&limit={limit}"
         #print(f"\n\nURL is: {url}\n\n")
         response = requests.get(url)
     

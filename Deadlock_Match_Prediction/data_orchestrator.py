@@ -11,14 +11,14 @@ verbose=False
 setup_logging(verbose)
 initialize_logging(verbose)
 
-def orchestrate_build_training_data(con, max_days_fetch=90):
+def orchestrate_build_training_data(con, max_days_fetch=1):
     """
     Fetch matches, normalizes, and inserts into matches_table
     """
     
     print(f"\n\n***Starting Build Training Data ****\n\n")
     
-    df_training_matches = fd.bulk_fetch_matches(max_days_fetch)
+    df_training_matches = fd.bulk_fetch_matches(max_days_fetch=10)
     df_training_matches = prdt.normalize_match_json(df_training_matches)
     split_df = prdt.split_dfs_for_insertion(con, df_training_matches)
     match_df = split_df.get('match_columns')
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
     #num_matches = 10
     #days = 10
-    orchestrate_training_data_fill(con)
+    orchestrate_build_training_data(con, max_days_fetch=10)
     #args = [con, num_matches, days]
     #response = orchestrate_fetch_training_data(con, num_matches, days)
     #orchestrate_build_training_data(con,num_matches,days)

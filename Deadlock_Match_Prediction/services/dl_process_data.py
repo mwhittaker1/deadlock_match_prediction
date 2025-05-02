@@ -205,7 +205,7 @@ def get_players_from_matches(match_players_df=pd.DataFrame)->pd.DataFrame:
             except Exception as e:
                 print(f"\n**WARNING** Fetch failed for {p_id}, attempt {attempts+1}/5: {e}")
                 attempts += 1
-                time.sleep(5)
+                time.sleep(10)
         if not success:
             print(f"\n\n**ERROR**Failed to fetch {p_id} after 5 attempts.")
         
@@ -330,21 +330,27 @@ def get_distinct_incomplete_matches(con) -> pd.DataFrame:
     Returns every distinct account_id from any match
     that does NOT have exactly 12 players recorded.
     """
-    query = """
-    WITH incomplete_matches AS (
-      SELECT
-        match_id
-      FROM player_matches
-      GROUP BY match_id
-      HAVING COUNT(account_id) <> 12
-    )
-    SELECT DISTINCT
-      m.account_id
-    FROM matches AS m
-    JOIN incomplete_matches AS im
-      ON m.match_id = im.match_id
-    ;
-    """
+    query = con.execute("""
+            WITH incomplete_matches AS (
+            SELECT
+                match_id
+            FROM player_matches
+            GROUP BY match_id
+            HAVING COUNT(account_id) < 12
+            )
+
+            SELECT 
+            m.account_id
+            FROM matches m
+            JOIN incomplete_matches im ON m.match_id = im.match_id
+            WHERE NOT EXISTS (
+            SELECT 1 
+            FROM player_matches pm 
+            WHERE pm.match_id = m.match_id 
+            AND pm.account_id = m.account_id
+                        limit 500
+            )
+            """).fetchall()
     df = con.execute(query).fetchdf()
     print(f"*INFO* found {len(df)} distinct account_ids from incomplete matches")
     return df

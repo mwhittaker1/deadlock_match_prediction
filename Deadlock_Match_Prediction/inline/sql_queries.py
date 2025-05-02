@@ -17,29 +17,32 @@ if __name__ == "__main__":
     con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
     #get_tables()
     result = con.execute("select COUNT(DISTINCT account_id) from matches").fetchall()
-    result2 = con.execute("select count(*) from player_matches").fetchall()
+    result2 = con.execute("select count(DISTINCT account_id) from player_matches").fetchall()
     result3 = con.execute("select count(DISTINCT match_id) from matches").fetchall()
     #result4 = con.execute("SELECT COUNT(*) FROM matches WHERE account_id IS NULL").fetchone()
-    x = con.execute("""
-    SELECT COUNT(*) FROM (
-        SELECT match_id
-        FROM player_matches
-        GROUP BY match_id
-    )""").fetchone()[0]
-    print(f"count distinct matchid from matches= {x}")
     #print(result)
     #df = pd.read_csv("player_history_dev.csv")
     #print(df['match_id'].value_counts())
-    
     #count of, count of match_player.account_id to matches.match_id. i.e. (1,23),(2,51230)...
-    check_dups = con.execute("""
+    count_missing_account_ids = con.execute("""
+        WITH incomplete_matches AS (
         SELECT
-        match_id,
-        COUNT(*) AS player_count
-        FROM matches
+        match_id
+        FROM player_matches
         GROUP BY match_id
-        HAVING COUNT(*) <> 12;
-                             """).fetchall()
+        HAVING COUNT(account_id) < 12 )
+
+        SELECT 
+        COUNT(*) as missing_records_count
+        FROM matches m
+        JOIN incomplete_matches im ON m.match_id = im.match_id
+        WHERE NOT EXISTS (
+        SELECT 1 
+        FROM player_matches pm 
+        WHERE pm.match_id = m.match_id 
+        AND pm.account_id = m.account_id);
+                """).fetchall()
+
     v2 = con.execute("""
         SELECT
         player_count,
@@ -61,10 +64,32 @@ if __name__ == "__main__":
         GROUP BY player_count
         ORDER BY player_count;
                      """).fetchall()
-    check = con.execute("SELECT * from player_matches WHERE account_id = 75030733").fetchone()
-    print(result)
+    check = con.execute("SELECT count(DISTINCT match_id) from matches WHERE start_time < NOW() - INTERVAL 10 DAY limit 10").fetchone()
+    print(f"count distinct account id in matches: {result}")
     print(f"\n\n matches distinct account ids: {result} should match player_matches total rows: {result2}")
     print(f"\n count of match ids in matches: {result3}\n\n")   
-    print(f"\ncheck dups: {check_dups}")
+    print(f"\count_missing_account_ids: {count_missing_account_ids}")
     print(f"v2 = {v2}")
-    print(f"\n\nchecking account id:75030733 in matches. {check} ")
+    print(f"\n\nmatches greater than 10 days {check} ")
+
+    long_account_id_list_missing_to_make_matched = con.execute("""
+            WITH incomplete_matches AS (
+            SELECT
+                match_id
+            FROM player_matches
+            GROUP BY match_id
+            HAVING COUNT(account_id) < 12
+            )
+
+            SELECT 
+            m.account_id
+            FROM matches m
+            JOIN incomplete_matches im ON m.match_id = im.match_id
+            WHERE NOT EXISTS (
+            SELECT 1 
+            FROM player_matches pm 
+            WHERE pm.match_id = m.match_id 
+            AND pm.account_id = m.account_id
+            )
+            """).fetchall()
+    print(f"\n\n all missing account ids to make complete matches: {long_account_id_list_missing_to_make_matched}")
