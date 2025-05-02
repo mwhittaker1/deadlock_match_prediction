@@ -38,8 +38,9 @@ def orchestrate_match_player_histories(con):
     
     df_training_matches = prdt.get_distinct_matches(con)
     #print(f"df training matches: {df_training_matches}")
-    all_player_ids = df_training_matches['account_id'].unique().tolist()
-    prdt.batch_get_players_from_matches(con, all_player_ids, batch_size=500)
+    
+    prdt.batch_get_players_from_matches(con, df_training_matches, batch_size=500)
+
     #split_df = prdt.split_dfs_for_insertion(con, df_training_matches)
     #player_df = split_df.get('player_columns')
     #trends_df = split_df.get('trend_columns')

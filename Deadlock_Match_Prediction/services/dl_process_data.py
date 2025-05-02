@@ -33,18 +33,25 @@ def calculate_hero_stats(m_hero_df):
     m_hero_df = hero_percentages(m_hero_df)
     return m_hero_df
 
-def batch_get_players_from_matches(con, all_player_ids, batch_size=500):
-    for i in range(0, len(all_player_ids), batch_size):
-        chunk = all_player_ids[i:i + batch_size]
-        try:
-            df_matches = get_players_from_matches(chunk)
-            split_df = split_dfs_for_insertion(con, df_matches)
+def batch_get_players_from_matches(con, df_matches, batch_size=500):
+    """batch feeds player_ids for player_match_histories"""
 
+    all_ids = df_matches['account_id'].tolist()
+
+    for i in range(0, len(all_ids), batch_size):
+        chunk_ids = all_ids[i:i + batch_size]
+        chunk_df = df_matches[df_matches['account_id'].isin(chunk_ids)]
+
+        try:
+            df_player_hist = get_players_from_matches(chunk_df)
+            
+            split_df = split_dfs_for_insertion(con, df_player_hist)
             match_df = split_df.get('match_columns')
             player_df = split_df.get('player_columns')
             trends_df = split_df.get('trend_columns')
 
-            if any(df is not None and not df.empty for df in [match_df, player_df, trends_df]):
+            if any(df is not None and not df.empty 
+                   for df in [match_df, player_df, trends_df]):
                 insert_dataframes(con, match_df, player_df, trends_df)
             else:
                 print(f"\n\n**ERROR**Chunk {i}-{i + batch_size} produced no valid data***")
@@ -173,7 +180,7 @@ def match_data_outcome_add(df)-> pd.DataFrame:
 
 def get_distinct_matches(con)->pd.DataFrame:
     con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
-    match_account_ids = con.execute("SELECT DISTINCT account_id FROM matches WHERE match_id IN (28627568, 28628027, 28630735, 28631475, 28633718, 28633837, 28634015, 28637700, 28643067, 28643168, 28646729, 28651176, 28654076, 28654436, 28655142, 28655639, 28656443, 28657603, 28659669, 28659785, 28660006, 28661082, 28661981, 28663256, 28663659, 28666309, 28670349, 28671310, 28672634, 28673187, 28673667, 28674422, 28674702, 28676317, 28678965, 28681457, 28683492, 28683948, 28688486, 28688605)").fetchdf()
+    match_account_ids = con.execute("SELECT DISTINCT account_id FROM matches").fetchdf()
     print(f"\n\n*INFO* count of distinct account_ids = {len(match_account_ids)}")
     return match_account_ids
 

@@ -19,7 +19,7 @@ if __name__ == "__main__":
     result = con.execute("select COUNT(DISTINCT account_id) from matches").fetchall()
     result2 = con.execute("select count(*) from player_matches").fetchall()
     result3 = con.execute("select count(DISTINCT match_id) from matches").fetchall()
-    result4 = con.execute("SELECT COUNT(*) FROM matches WHERE account_id IS NULL").fetchone()
+    #result4 = con.execute("SELECT COUNT(*) FROM matches WHERE account_id IS NULL").fetchone()
     x = con.execute("""
     SELECT COUNT(*) FROM (
         SELECT match_id
@@ -47,8 +47,7 @@ if __name__ == "__main__":
         GROUP BY player_count
         ORDER BY player_count;
         """).fetchall()
-    print(result5)
     print(result)
-    print(f"\n\n vs all = {result2}")
-    print(result3)
-    print(result4)
+    print(f"\n\n matches distinct account ids: {result} should match player_matches total rows: {result2}")
+    print(f"\n count of match ids in matches: {result3}\n\n")   
+    print(result5)
