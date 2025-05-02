@@ -4,7 +4,7 @@ import pandas as pd
 import services.dl_fetch_data as fd
 from services.utility_functions import to_csv, get_time_delta
 
-def bulk_fetch_matches(max_days_fetch=90,max_days=0,min_days=1)->json:
+def bulk_fetch_matches(max_days_fetch=90,max_days=0,min_days=1)->list[json]:
     """fetches a batch of matches, 1 day per pull, returns json and exports.
 
     batch is unnormalized, 'players' contains a df of each matches 'players'
@@ -28,26 +28,6 @@ def bulk_fetch_matches(max_days_fetch=90,max_days=0,min_days=1)->json:
     #print(f"\n\nfin\n\n")
     return batch_matches
 
-def fetch_active_match_data():
-    """Fetches most recent 200 active matches, no parameters expected."""
-    site = "https://api.deadlock-api.com"
-    endpoint = "/v1/matches/active"
-    url = site+endpoint
-    print(f"\n\nURL is: {url}\n\n")
-    response = requests.get(url)
-
-    # Check if the request was successful
-    if response.status_code == 200:
-        match_data = pd.DataFrame(response.json())
-        #match_data = response.json()
-        #with open('json_match_data.json','w') as f:
-            #json.dump(match_data,f,indent=4)
-    else:
-        print(f"\n\nFailed to retrieve match data: {response.status_code}\n\n")
-        return
-    
-    return match_data #Returns JSON of match data.
-
 def fetch_match_data(limit,days,max_days=0,min_average_badge=100,m_id=None)->json:
     """Fetches metadata for single match, or fetches match range
     
@@ -66,7 +46,7 @@ def fetch_match_data(limit,days,max_days=0,min_average_badge=100,m_id=None)->jso
     elif max_days != 0:
         print(f"\n**debug** - days= {days}, max days = {max_days}")
         min_unix_time = get_time_delta(days)
-        max_unix_time = get_time_delta(max_days,True)
+        max_unix_time = get_time_delta(max_days,short=False, max=True)
         url = f"{site}{endpoint}include_player_info=true&{min_unix_time}&{max_unix_time}&min_average_badge={min_average_badge}&limit={limit}"
         print(f"\n\n**debug** fetch_match_data, max_days !=0 URL is: {url}\n\n")
         response = requests.get(url)
@@ -173,6 +153,26 @@ def fetch_player_hero_stats(p_id,h_id=None):
         p_h_all_data = pd.DataFrame(p_h_data)
         return p_h_all_data
     return p_h_data
+
+def fetch_active_match_data():
+    """Fetches most recent 200 active matches, no parameters expected."""
+    site = "https://api.deadlock-api.com"
+    endpoint = "/v1/matches/active"
+    url = site+endpoint
+    print(f"\n\nURL is: {url}\n\n")
+    response = requests.get(url)
+
+    # Check if the request was successful
+    if response.status_code == 200:
+        match_data = pd.DataFrame(response.json())
+        #match_data = response.json()
+        #with open('json_match_data.json','w') as f:
+            #json.dump(match_data,f,indent=4)
+    else:
+        print(f"\n\nFailed to retrieve match data: {response.status_code}\n\n")
+        return
+    
+    return match_data #Returns JSON of match data.
 
 def test():
     days = 5
