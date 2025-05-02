@@ -33,6 +33,24 @@ def calculate_hero_stats(m_hero_df):
     m_hero_df = hero_percentages(m_hero_df)
     return m_hero_df
 
+def batch_get_players_from_matches(con, all_player_ids, batch_size=500):
+    for i in range(0, len(all_player_ids), batch_size):
+        chunk = all_player_ids[i:i + batch_size]
+        try:
+            df_matches = get_players_from_matches(chunk)
+            split_df = split_dfs_for_insertion(con, df_matches)
+
+            match_df = split_df.get('match_columns')
+            player_df = split_df.get('player_columns')
+            trends_df = split_df.get('trend_columns')
+
+            if any(df is not None and not df.empty for df in [match_df, player_df, trends_df]):
+                insert_dataframes(con, match_df, player_df, trends_df)
+            else:
+                print(f"\n\n**ERROR**Chunk {i}-{i + batch_size} produced no valid data***")
+        except Exception as e:
+            print(f"\n\n**ERROR** on chunk {i}-{i + batch_size}: {e}")
+
 def insert_dataframes(con, match_df=None, player_df=None, trends_df=None, hero_trends_df=None):
     """
     Inserts available DataFrames into their corresponding DuckDB tables.

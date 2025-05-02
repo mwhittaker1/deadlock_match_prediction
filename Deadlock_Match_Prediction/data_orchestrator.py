@@ -38,16 +38,17 @@ def orchestrate_match_player_histories(con):
     
     df_training_matches = prdt.get_distinct_matches(con)
     #print(f"df training matches: {df_training_matches}")
-    df_training_matches = prdt.get_players_from_matches(df_training_matches)
-    split_df = prdt.split_dfs_for_insertion(con, df_training_matches)
-    player_df = split_df.get('player_columns')
-    trends_df = split_df.get('trend_columns')
-    match_df = split_df.get('match_columns')
+    all_player_ids = df_training_matches['account_id'].unique().tolist()
+    prdt.batch_get_players_from_matches(con, all_player_ids, batch_size=500)
+    #split_df = prdt.split_dfs_for_insertion(con, df_training_matches)
+    #player_df = split_df.get('player_columns')
+    #trends_df = split_df.get('trend_columns')
+    #match_df = split_df.get('match_columns')
 
-    if match_df is not None or player_df is not None or trends_df is not None:
-        prdt.insert_dataframes(con, match_df, player_df, trends_df)
-    else:
-        print("***tried to insert into db, but no valid dfs were identified***")
+    #if match_df is not None or player_df is not None or trends_df is not None:
+    #    prdt.insert_dataframes(con, match_df, player_df, trends_df)
+    #else:
+    #    print("***tried to insert into db, but no valid dfs were identified***")
 
 def orchestrate_match_data(limit, min_average_badge=100, days=365,m_id=None)->pd.DataFrame:
     """Fetches match data over x days, miniumum rank, and max to fetch (hard limit 5000) """
@@ -62,7 +63,7 @@ def orchestrate_hero_trends(reset=True):
     if reset:
         con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
         con.execute("DROP TABLE IF EXISTS hero_trends")
-        dbf.create_hero_trends_table()
+        dbf.create_hero_trends_table(con)
 
     current_time = get_time_delta(0,short=True)
     seven_days = get_time_delta(7,short=True)
