@@ -16,15 +16,13 @@ def df_to_csv(file, fname):
     df.to_csv(f'{fname}.csv', index=False)
     print(f"{df} passed to .csv")
 
-def get_unix_time(days_ago):   
+def get_unix_time(days_ago=0):   
     c_unix_timestamp = int(time.time()) #current time
     return int(c_unix_timestamp - timedelta(days=days_ago).total_seconds())
 
 def get_time_delta(min_unix_time,max_time):
     """Returns string for url if short=False, else just the int"""
-    
     min_unix_time = int(time.time()) #current time
-
     return (int(min_unix_time - timedelta(days=max_time).total_seconds()))
 
 def test():
