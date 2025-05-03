@@ -1,10 +1,55 @@
 import requests
 import json
 import pandas as pd
-import utility_functions as u
+import services.utility_functions as u
+from urllib.parse import urlencode
 
 
-def bulk_fetch_matches(max_days_fetch=90,max_days=0,min_days=1)->list[dict]:
+def fetch_match_data(
+    min_average_badge: int = 100,
+    max_unix_timestamp: int | None = None,
+    min_unix_timestamp: int | None = None,
+    m_id: str | None = None,
+    include_player_info: bool = True,
+    limit: int = 1000
+    ) -> json:
+
+    base = "https://api.deadlock-api.com/v1/matches"
+    # if a specific match ID is given, check player_data and just hit that endpoint
+
+    if m_id:
+        path = f"{base}/{m_id}/metadata"
+        params = {}
+        if include_player_info:
+            params["include_player_info"] = "true"
+
+        query = urlencode(params)
+        full_url = f"{path}?{query}" if query else path
+        print(f"*DEBUG* GET {full_url}")
+        return requests.get(full_url).json()
+
+
+    # Bulk-metadata endpoint
+    path = f"{base}/metadata"
+    params: dict[str, str] = {}
+
+    if include_player_info:
+        params["include_player_info"] = "true"
+    if min_unix_timestamp is not None:
+        params["min_unix_timestamp"] = str(u.get_unix_time(min_unix_timestamp))
+    if max_unix_timestamp is not None:
+        params["max_unix_timestamp"] = str(u.get_unix_time(max_unix_timestamp))
+    if min_average_badge is not None:
+        params["min_average_badge"] = str(min_average_badge)
+    if limit is not None:
+        params["limit"] = str(limit)
+
+    query = urlencode(params)
+    full_url = f"{path}?{query}" if query else path
+    print(f"*DEBUG* GET {full_url}")
+    return requests.get(full_url).json()
+
+def bulk_fetch_matches(max_days_fetch=90,min_days=0,max_days=1)->json:
     """fetches a batch of matches, 1 day per pull, returns json and exports.
 
     batch is unnormalized, 'players' contains a df of each matches 'players'
@@ -14,53 +59,16 @@ def bulk_fetch_matches(max_days_fetch=90,max_days=0,min_days=1)->list[dict]:
     #print(f"start")
     limit = 5000
     batch_matches = []
-    i=0
     
     for batch in range(max_days_fetch):
-        print(f"\n*day:{i} min ={min_days} max = {max_days}")
-        fetched_matches = fd.fetch_match_data(limit, min_days, max_days)
-        batch_matches.extend(fetched_matches)
+        print(f"\n*day:{batch} min ={min_days} max = {max_days}")
+        fetched_matches = fetch_match_data(min_unix_timestamp=min_days, max_unix_timestamp=max_days, limit=limit)
+        batch_matches.append(fetched_matches)
         max_days +=1
         min_days +=1
-        i+=1
-    with open("non_normal_total_matches.json", "w") as f:
-        json.dump(batch_matches, f)
-    #print(f"\n\nfin\n\n")
+
     return batch_matches
     
-def fetch_match_data(
-    min_average_badge: int = 100,
-    max_unix_timestamp: int | None = None,
-    min_unix_timestamp: int | None = None,
-    m_id: str | None = None,
-    include_player_info: bool = True,
-    ) -> dict:
-
-    base = "https://api.deadlock-api.com/v1/matches"
-    # if a specific match ID is given, check player_data and just hit that endpoint
-    if m_id:
-        if include_player_info:
-            params["include_player_info"] = "true"
-            url = f"{base}/{m_id}/metadata?include_player_info=true"
-            return requests.get(url).json()
-        url = f"{base}/{m_id}/metadata"
-        return requests.get(url).json()
-
-    # buuilding dynamic url for metadata
-    params: dict[str, str] = {}
-    if include_player_info:
-        params["include_player_info"] = "true"
-    if min_unix_timestamp is not None:
-        params["min_unix_time"] = str(u.get_unix_time(min_unix_timestamp))
-    if max_unix_timestamp is not None:
-        params["max_unix_time"] = str(u.get_unix_time(max_unix_timestamp))
-    if min_average_badge is not None:
-        params["min_average_badge"] = str(min_average_badge)
-
-    query = url(params)
-    url = f"{base}/metadata?{query}"
-    return requests.get(url).json()
-
 def fetch_hero_data(min_unix_time, min_average_badge):
     """fetches historical data for a hero @time @min badge"""
     #API connection information

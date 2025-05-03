@@ -2,7 +2,7 @@ import pandas as pd
 import logging
 import time
 import openpyxl
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 
 #Accepts dict and saves to a .xlsx with the items name.
@@ -33,6 +33,9 @@ def test():
     }
     df = pd.DataFrame(data)
     #to_xlsx(df)
+
+def parse_ts(rec):
+    return datetime.strptime(rec["start_time"], FMT)
 
 if __name__ == "__main__":
     test()
