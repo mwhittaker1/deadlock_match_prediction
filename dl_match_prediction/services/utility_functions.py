@@ -1,0 +1,40 @@
+import pandas as pd
+import logging
+import time
+import openpyxl
+from datetime import timedelta
+
+
+#Accepts dict and saves to a .xlsx with the items name.
+def df_to_xlsx(file, fname):
+    df = pd.DataFrame(file)
+    df.to_excel(f'{fname}.xlsx', index=False)
+    print(f"{df} passed to .xlsx")
+
+def df_to_csv(file, fname):
+    df = pd.DataFrame(file)
+    df.to_csv(f'{fname}.csv', index=False)
+    print(f"{df} passed to .csv")
+
+def get_unix_time(days_ago):   
+    c_unix_timestamp = int(time.time()) #current time
+    return int(c_unix_timestamp - timedelta(days=days_ago).total_seconds())
+
+def get_time_delta(min_unix_time,max_time):
+    """Returns string for url if short=False, else just the int"""
+    
+    min_unix_time = int(time.time()) #current time
+
+    return (int(min_unix_time - timedelta(days=max_time).total_seconds()))
+
+def test():
+    data = {
+    'name': ['John', 'Alice', 'Bob'],
+    'age': [30, 25, 35],
+    'city': ['New York', 'Los Angeles', 'Chicago']
+    }
+    df = pd.DataFrame(data)
+    #to_xlsx(df)
+
+if __name__ == "__main__":
+    test()
