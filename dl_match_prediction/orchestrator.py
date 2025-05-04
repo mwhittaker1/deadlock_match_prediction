@@ -7,7 +7,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 import services.fetch_data as fd
 import services.database_functions as dbf
-import services.utility_functions as u
+import dl_match_prediction.services.function_tools as u
 import services.transform_and_load as tal
 
 def run_etl_bulk_matches():
@@ -19,7 +19,7 @@ def run_etl_bulk_matches():
     
     # Normalize data
     print(f"*INFO* ETL: Normalizing data")
-    norm_matches, norm_players = tal.normalize_bulk_matches(matches_grouped_by_day)
+    normalized_data = tal.normalize_bulk_matches(matches_grouped_by_day)
     print(f"*INFO* ETL: Data normalized")
     
     # Load data into database

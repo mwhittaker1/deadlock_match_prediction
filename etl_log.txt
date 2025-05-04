@@ -1,0 +1,9 @@
+2025-05-04 00:16:31,301 [INFO] [root.<module>] Logger initialized.
+2025-05-04 00:16:31,301 [INFO] [root.<module>] Logger initialized.
+2025-05-04 00:16:31,302 [CRITICAL] [root.test_etl_bulk_matches] Fixture file c:\Code\Local Code\Deadlock Database\dl_match_prediction\tests\dl_match_prediction\tests\match_response.json not found. Exiting test.
+2025-05-04 00:17:16,740 [INFO] [root.<module>] Logger initialized.
+2025-05-04 00:17:16,740 [INFO] [root.<module>] Logger initialized.
+2025-05-04 00:17:16,740 [CRITICAL] [root.test_etl_bulk_matches] Fixture file c:\Code\Local Code\Deadlock Database\dl_match_prediction\tests\dl_match_prediction\tests\match_response.json not found. Exiting test.
+2025-05-04 00:18:08,078 [INFO] [root.<module>] Logger initialized.
+2025-05-04 00:18:08,081 [INFO] [root.<module>] Logger initialized.
+2025-05-04 00:18:40,327 [CRITICAL] [root.test_etl_bulk_matches] Fixture file c:\Code\Local Code\Deadlock Database\dl_match_prediction\tests\dl_match_prediction\tests\match_response.json not found. Exiting test.

@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Run Tests",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/dl_match_prediction/tests/function_tests.py",
+        "cwd": "${workspaceFolder}"
+      }
+    ]
+  }

@@ -1,7 +1,7 @@
 import requests
 import json
 import pandas as pd
-import services.utility_functions as u
+import dl_match_prediction.services.function_tools as u
 from urllib.parse import urlencode
 
 
@@ -68,7 +68,9 @@ def bulk_fetch_matches(max_days_fetch=90,min_days=0,max_days=1)->json:
         min_days +=1
 
     return batch_matches
-    
+
+####
+
 def fetch_hero_data(min_unix_time, min_average_badge):
     """fetches historical data for a hero @time @min badge"""
     #API connection information

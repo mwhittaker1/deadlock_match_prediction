@@ -1,27 +1,29 @@
+import os
+import sys
+
+# Add the parent directory to sys.path
+# This line should be at the top before any other imports
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, parent_dir)
+
+print(f"Current directory: {os.path.abspath(__file__)}")
+print(f"Parent directory added to path: {parent_dir}")
+print(f"Current sys.path: {sys.path}")
+
 import requests
 import json
 import pandas as pd
-import sys, os
-import json
+import logging
 import duckdb
 from pathlib import Path
-from datetime import datetime, timezone
-import sys, os
+from services import function_tools as u
+from services import database_functions as dbf
+from services import fetch_data as fd
+from services import transform_and_load as tal
 
-# tests/ → project root (dl_match_prediction)
-project_root = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), os.pardir)
-)
-sys.path.insert(0, project_root)
 
-import services.fetch_data as fd
-import services.database_functions as dbf
-
-class DummyResponse:
-    def __init__(self, data):
-        self._data = data
-    def json(self):
-        return self._data
+u.setup_logger()
+logging.info("Logger initialized.")
 
 def test_save_data(file,fname):
     tests_dir = Path(__file__).parent / "dl_match_prediction" / "tests"
@@ -134,11 +136,31 @@ def test_bulk_fetch_matches():
             assert "account_id" in players[0], "Each player needs an account_id"
     print(f"\n\n***Function Tests Complete****\n\n")
 
+def test_etl_bulk_matches():
+    
+    p = Path(__file__).parent / "dl_match_prediction" / "tests" / "match_response.json"
+    if not p.exists():
+        logging.critical(f"Fixture file {p} not found. Exiting test.")
+        return
+    
+    # Fetch data
+    print(f"*INFO* ETL: Fetching match data")
+    matches_grouped_by_day = match_fixture(p)
+    print(f"*INFO* ETL: Data fetched")
+    
+    # Normalize data
+    print(f"*INFO* ETL: Normalizing data")
+    normalized_data = tal.normalize_bulk_matches(matches_grouped_by_day)
+    print(f"*INFO* ETL: Data normalized")
+    u.df_to_csv(normalized_data, "normalized_matches")
+    # Load data into database
+    #print(f"*INFO* ETL: Loading data into database")
+    #dbf.load_bulk_matches(normalized_data)
+    #print(f"*INFO* ETL: Data loaded into database")
+
 def run_tests():
     print(f"\n\n***Starting Function Tests****\n\n")
-    con = duckdb.connect("c:/Code/Local Code/Deadlock Database/dl_match_prediction/deadlock.db")
-    dbf.reset_all_tables(con)
-    print(f"\n\n***Function Tests Complete****\n\n")
+    test_etl_bulk_matches()
     pass
 
 if __name__ == "__main__":  
