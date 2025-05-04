@@ -6,18 +6,38 @@ import pandas as pd
 con = duckdb.connect("c:/Code/Local Code/Deadlock Database/dl_match_prediction/deadlock.db")
 
 def drop_all_tables(con):
-    con.execute("DROP TABLE IF EXISTS matches")
-    con.execute("DROP TABLE IF EXISTS player_matches")
-    con.execute("DROP TABLE IF EXISTS player_trends")
-    con.execute("DROP TABLE IF EXISTS hero_trends")
+    tables_to_drop = {
+        "matches",
+        "player_matches",
+        "player_trends",
+        "player_hero_trends",
+        "hero_trends"
+        }
+    for table in tables_to_drop:
+        con.execute(f"DROP TABLE IF EXISTS {table}")
+    existing_tables = set(t[0] for t in con.execute("SHOW TABLES;").fetchall())
+    remaining = [t for t in tables_to_drop if t in existing_tables]
+    assert not remaining, f"***ERROR*** Tables not dropped: {remaining}"
     print(f"\n*INFO* all tables dropped")
 
 def create_all_tables(con):
+    print(f"\n*INFO* creating all tables, expecting:\n\ncreate_matches_table\ncreate_player_matches_table\ncreate_player_trends_table\ncreate_player_hero_trends\ncreate_hero_trends_table")
+    expected_tables = {
+        "matches",
+        "player_matches",
+        "player_trends",
+        "player_hero_trends",
+        "hero_trends"
+        }
+    
     create_matches_table(con)
     create_player_matches_table(con)
-    create_player_hero_trends
-    create_hero_trends_table(con)
     create_player_trends_table(con)
+    create_player_hero_trends(con)
+    create_hero_trends_table(con)
+    
+    result = set(t[0] for t in con.execute("SHOW TABLES;").fetchall())
+    assert expected_tables.issubset(result), f"Missing tables: {expected_tables - result}"
     print(f"\n*INFO* all tables created")
 
 def create_matches_table(con):
@@ -100,8 +120,7 @@ def create_hero_trends_table(con):
     )
     """)
 
-def reset_all_tables():
-    con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
+def reset_all_tables(con):
     drop_all_tables(con)
     create_all_tables(con)
     #create_player_profile(con)

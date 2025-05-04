@@ -3,6 +3,7 @@ import json
 import pandas as pd
 import sys, os
 import json
+import duckdb
 from pathlib import Path
 from datetime import datetime, timezone
 import sys, os
@@ -14,6 +15,7 @@ project_root = os.path.abspath(
 sys.path.insert(0, project_root)
 
 import services.fetch_data as fd
+import services.database_functions as dbf
 
 class DummyResponse:
     def __init__(self, data):
@@ -133,6 +135,11 @@ def test_bulk_fetch_matches():
     print(f"\n\n***Function Tests Complete****\n\n")
 
 def run_tests():
+    print(f"\n\n***Starting Function Tests****\n\n")
+    con = duckdb.connect("c:/Code/Local Code/Deadlock Database/dl_match_prediction/deadlock.db")
+    dbf.reset_all_tables(con)
+    print(f"\n\n***Function Tests Complete****\n\n")
     pass
+
 if __name__ == "__main__":  
     run_tests()
