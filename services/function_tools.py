@@ -5,7 +5,7 @@ from datetime import timedelta, datetime
 
 import logging
 
-def setup_logger(log_file="etl_log.txt"):
+def setup_logger(log_file="data/log.txt"):
     logging.basicConfig(
         filename=log_file,
         level=logging.INFO,

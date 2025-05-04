@@ -1,7 +1,7 @@
 import duckdb
 import pandas as pd
 import logging
-from services import db
+from data import db
 from services import function_tools as u
 
 u.setup_logger()

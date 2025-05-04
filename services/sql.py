@@ -1,7 +1,7 @@
 import pandas as pd
 import duckdb
 import logging
-import db
+import data.db as db
 import function_tools as u
 u.setup_logger()
 logging.info("Logger initialized.")

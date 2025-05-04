@@ -1,13 +1,11 @@
 import os
 import sys
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, parent_dir)
 import requests
 import json
 import pandas as pd
 import logging
 import duckdb
-from services import db
+from data import db
 from pathlib import Path
 from services import function_tools as u
 from services import database_functions as dbf

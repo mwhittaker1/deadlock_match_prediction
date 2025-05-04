@@ -2,7 +2,7 @@ import duckdb
 import pandas as pd
 import logging
 import dl_match_prediction.services.function_tools as u
-from services import db
+from data import db
 u.setup_logger()
 logging.info("Logger initialized.")
 
