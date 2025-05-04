@@ -4,7 +4,6 @@ import pandas as pd
 import dl_match_prediction.services.function_tools as u
 from urllib.parse import urlencode
 
-
 def fetch_match_data(
     min_average_badge: int = 100,
     max_unix_timestamp: int | None = None,
@@ -49,7 +48,7 @@ def fetch_match_data(
     print(f"*DEBUG* GET {full_url}")
     return requests.get(full_url).json()
 
-def bulk_fetch_matches(max_days_fetch=90,min_days=0,max_days=1)->json:
+def bulk_fetch_matches(max_days_fetch=90,min_days=1,max_days=0)->json:
     """fetches a batch of matches, 1 day per pull, returns json and exports.
 
     batch is unnormalized, 'players' contains a df of each matches 'players'

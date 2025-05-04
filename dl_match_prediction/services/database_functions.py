@@ -59,13 +59,12 @@ def create_player_matches_table(con):
     account_id BIGINT,
     match_id BIGINT,
     hero_id INTEGER,
-    player_team INTEGER,
-    player_kills INTEGER,
-    player_deaths INTEGER,
-    player_assists INTEGER,
+    team INTEGER,
+    kills INTEGER,
+    deaths INTEGER,
+    assists INTEGER,
     denies INTEGER,
     net_worth BIGINT,
-    team_abandoned BOOLEAN,
     PRIMARY KEY (account_id, match_id)
     )
     """)
@@ -123,7 +122,6 @@ def create_hero_trends_table(con):
 def reset_all_tables(con):
     drop_all_tables(con)
     create_all_tables(con)
-    #create_player_profile(con)
 
 def manage_tbl_temp_p_m_history(df,insert=False, create=False, clear=False):
     if clear:
@@ -147,8 +145,7 @@ def manage_tbl_temp_p_m_history(df,insert=False, create=False, clear=False):
 
 
 if __name__ == "__main__":
-    con = duckdb.connect("c:/Code/Local Code/Deadlock Database/Deadlock_Match_Prediction/deadlock.db")
-    #reset_all_tables()
+    reset_all_tables(con)
     #con.execute("ALTER TABLE player_trends drop COLUMN p_h_pick_per;")
     #con.execute("ALTER TABLE player_matches ADD COLUMN average_kd FLOAT;")
 

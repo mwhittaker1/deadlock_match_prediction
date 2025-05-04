@@ -19,10 +19,10 @@ def run_etl_bulk_matches():
     
     # Normalize data
     print(f"*INFO* ETL: Normalizing data")
-    normalized_data = tal.normalize_bulk_matches(matches_grouped_by_day)
+    normalized_matches, normalized_players  = tal.normalize_bulk_matches(matches_grouped_by_day)
     print(f"*INFO* ETL: Data normalized")
     
     # Load data into database
     print(f"*INFO* ETL: Loading data into database")
-    dbf.load_bulk_matches(normalized_data)
+    dbf.load_bulk_matches(normalized_matches, normalized_players)
     print(f"*INFO* ETL: Data loaded into database")

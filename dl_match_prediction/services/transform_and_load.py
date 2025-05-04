@@ -14,10 +14,10 @@ def normalize_bulk_matches(matches_grouped_by_day: dict) -> tuple[pd.DataFrame, 
     if not matches_grouped_by_day:
         logging.warning("No match data found — matches_grouped_by_day is empty.")
         return pd.DataFrame(), pd.DataFrame()
-    for day in matches_grouped_by_day: #day = key, match = value
-        logging.info(f"Processing matches for day: {day}")
+    for day_idx, day_matches in enumerate(matches_grouped_by_day): #day = key, match = value
+        logging.info(f"Processing day #{day_idx} with {len(day_matches)} matches")
         
-        for match in matches_grouped_by_day[day]: # match: day = key: value | match_id: 7432551
+        for match in day_matches: # match: day = key: value | match_id: 7432551
             try:
                 match_id = match["match_id"]
                 start_time = match["start_time"]
@@ -49,14 +49,12 @@ def normalize_bulk_matches(matches_grouped_by_day: dict) -> tuple[pd.DataFrame, 
                         "account_id": player["account_id"],
                         "match_id": match_id,
                         "team": player["team"],
-                        "hero": player["hero"],
+                        "hero_id": player["hero_id"],
                         "kills": player["kills"],
                         "deaths": player["deaths"],
                         "assists": player["assists"],
-                        "gold_per_minute": player["gold_per_minute"],
-                        "xp_per_minute": player["xp_per_minute"],
-                        "last_hits_per_minute": player["last_hits_per_minute"],
-                        "net_worth": player["net_worth"]
+                        "denies": player["denies"],
+                        "net_worth": player["net_worth"],
                     })
                 except KeyError as e:
                     logging.error(f"Player missing key {e}: {player.get('account_id', 'unknown')}", exc_info=True)

@@ -112,7 +112,6 @@ def test_bulk_fetch_matches():
     list_matches= test_bulk_fetch_matches(max_days_fetch=2)
     #save_response_to_file(list_matches, "match_response")
 
-
     #list_matches = match_fixture()
 
     # list_matches = [match_day1,match_day2] #json
@@ -136,9 +135,9 @@ def test_bulk_fetch_matches():
             assert "account_id" in players[0], "Each player needs an account_id"
     print(f"\n\n***Function Tests Complete****\n\n")
 
-def test_etl_bulk_matches():
+def test_local_etl_bulk_matches():
     
-    p = Path(__file__).parent / "dl_match_prediction" / "tests" / "match_response.json"
+    p = Path(__file__).parent / "match_response.json"
     if not p.exists():
         logging.critical(f"Fixture file {p} not found. Exiting test.")
         return
@@ -150,9 +149,28 @@ def test_etl_bulk_matches():
     
     # Normalize data
     print(f"*INFO* ETL: Normalizing data")
-    normalized_data = tal.normalize_bulk_matches(matches_grouped_by_day)
+    normalized_matches, normalized_players = tal.normalize_bulk_matches(matches_grouped_by_day)
     print(f"*INFO* ETL: Data normalized")
-    u.df_to_csv(normalized_data, "normalized_matches")
+    u.df_to_csv(normalized_matches, "normalized_matches")
+    u.df_to_csv(normalized_players, "normalized_players")
+    # Load data into database
+    #print(f"*INFO* ETL: Loading data into database")
+    #dbf.load_bulk_matches(normalized_data)
+    #print(f"*INFO* ETL: Data loaded into database")
+
+def test_fetch_etl_bulk_matches():
+    
+    # Fetch data
+    print(f"*INFO* ETL: Fetching match data")
+    matches_grouped_by_day = fd.bulk_fetch_matches(max_days_fetch=2,min_days=1,max_days=0)
+    print(f"*INFO* ETL: Data fetched")
+    
+    # Normalize data
+    print(f"*INFO* ETL: Normalizing data")
+    normalized_matches, normalized_players = tal.normalize_bulk_matches(matches_grouped_by_day)
+    print(f"*INFO* ETL: Data normalized")
+    u.df_to_csv(normalized_matches, "normalized_matches")
+    u.df_to_csv(normalized_players, "normalized_players")
     # Load data into database
     #print(f"*INFO* ETL: Loading data into database")
     #dbf.load_bulk_matches(normalized_data)
@@ -160,7 +178,7 @@ def test_etl_bulk_matches():
 
 def run_tests():
     print(f"\n\n***Starting Function Tests****\n\n")
-    test_etl_bulk_matches()
+    test_fetch_etl_bulk_matches()
     pass
 
 if __name__ == "__main__":  
