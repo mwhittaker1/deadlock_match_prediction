@@ -1,26 +1,18 @@
 import os
 import sys
-
-# Add the parent directory to sys.path
-# This line should be at the top before any other imports
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, parent_dir)
-
-print(f"Current directory: {os.path.abspath(__file__)}")
-print(f"Parent directory added to path: {parent_dir}")
-print(f"Current sys.path: {sys.path}")
-
 import requests
 import json
 import pandas as pd
 import logging
 import duckdb
+from services import db
 from pathlib import Path
 from services import function_tools as u
 from services import database_functions as dbf
 from services import fetch_data as fd
 from services import transform_and_load as tal
-
 
 u.setup_logger()
 logging.info("Logger initialized.")
@@ -176,9 +168,18 @@ def test_fetch_etl_bulk_matches():
     #dbf.load_bulk_matches(normalized_data)
     #print(f"*INFO* ETL: Data loaded into database")
 
+def test_load_bulk_matches():
+    # Load data into database
+    normalized_matches = pd.read_csv("normalized_matches.csv")
+    normalzed_players = pd.read_csv("normalized_players.csv")
+    logging.info("Loading data into database")
+    tal.load_bulk_matches(normalized_matches, normalzed_players)
+    logging.info("Data loaded into database")
+
 def run_tests():
     print(f"\n\n***Starting Function Tests****\n\n")
-    test_fetch_etl_bulk_matches()
+    dbf.reset_all_tables(db.con)
+    test_load_bulk_matches()
     pass
 
 if __name__ == "__main__":  

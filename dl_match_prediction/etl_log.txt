@@ -1,2 +1,0 @@
-2025-05-03 23:54:50,937 [INFO] [root.<module>] Logger initialized.
-2025-05-03 23:54:50,938 [CRITICAL] [root.test_etl_bulk_matches] Fixture file c:\Code\Local Code\Deadlock Database\dl_match_prediction\tests\dl_match_prediction\tests\match_response.json not found. Exiting test.

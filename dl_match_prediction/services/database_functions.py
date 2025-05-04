@@ -1,11 +1,14 @@
 import duckdb
 import pandas as pd
-import duckdb
-import pandas as pd
+import logging
+from services import db
+from services import function_tools as u
 
-con = duckdb.connect("c:/Code/Local Code/Deadlock Database/dl_match_prediction/deadlock.db")
+u.setup_logger()
+logging.info("Logger initialized.")
 
 def drop_all_tables(con):
+    
     tables_to_drop = {
         "matches",
         "player_matches",
@@ -15,13 +18,14 @@ def drop_all_tables(con):
         }
     for table in tables_to_drop:
         con.execute(f"DROP TABLE IF EXISTS {table}")
+        logging.info(f"Dropped table: {table}")
     existing_tables = set(t[0] for t in con.execute("SHOW TABLES;").fetchall())
     remaining = [t for t in tables_to_drop if t in existing_tables]
     assert not remaining, f"***ERROR*** Tables not dropped: {remaining}"
-    print(f"\n*INFO* all tables dropped")
+    logging.info(f"All tables dropped: {tables_to_drop}")
 
 def create_all_tables(con):
-    print(f"\n*INFO* creating all tables, expecting:\n\ncreate_matches_table\ncreate_player_matches_table\ncreate_player_trends_table\ncreate_player_hero_trends\ncreate_hero_trends_table")
+    logging.info("Creating all tables")
     expected_tables = {
         "matches",
         "player_matches",
@@ -37,8 +41,10 @@ def create_all_tables(con):
     create_hero_trends_table(con)
     
     result = set(t[0] for t in con.execute("SHOW TABLES;").fetchall())
+    logging.info(f"Resulting tables: {result}")
     assert expected_tables.issubset(result), f"Missing tables: {expected_tables - result}"
-    print(f"\n*INFO* all tables created")
+    
+    logging.info(f"All tables created: {expected_tables}")
 
 def create_matches_table(con):
     con.execute("""
@@ -59,7 +65,7 @@ def create_player_matches_table(con):
     account_id BIGINT,
     match_id BIGINT,
     hero_id INTEGER,
-    team INTEGER,
+    team VARCHAR,
     kills INTEGER,
     deaths INTEGER,
     assists INTEGER,
@@ -120,32 +126,12 @@ def create_hero_trends_table(con):
     """)
 
 def reset_all_tables(con):
+    logging.info("Resetting all tables")
     drop_all_tables(con)
     create_all_tables(con)
 
-def manage_tbl_temp_p_m_history(df,insert=False, create=False, clear=False):
-    if clear:
-        con.execute("DROP TABLE IF EXISTS temp_player_match_history;")
-    if create:
-        con.execute("""
-            CREATE TABLE temp_player_match_history (
-              account_id BIGINT,
-              match_id BIGINT,
-              hero_id INTEGER,
-              player_team INTEGER,
-              won BOOLEAN,
-              last4_matches_win_pct DOUBLE,
-              last4_hero_matches_win_pct DOUBLE
-        );""")
-    if insert:
-        con.execute("""INSERT OR IGNORE INTO 
-        temp_player_match_history
-        SELECT * FROM df""")
-    
-
-
 if __name__ == "__main__":
-    reset_all_tables(con)
+    reset_all_tables(db.con)
     #con.execute("ALTER TABLE player_trends drop COLUMN p_h_pick_per;")
     #con.execute("ALTER TABLE player_matches ADD COLUMN average_kd FLOAT;")
 
