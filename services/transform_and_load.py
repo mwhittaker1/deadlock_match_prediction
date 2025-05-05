@@ -225,7 +225,7 @@ def load_hero_trends(
     missing = HERO_TRENDS_COLUMNS - set(hero_trends.columns)
     extra   = set(hero_trends.columns) - HERO_TRENDS_COLUMNS
     
-    #check match_df
+    #check hero_trends
     if missing:
         logging.error(
             "Hero Trends DataFrame schema mismatch: "
