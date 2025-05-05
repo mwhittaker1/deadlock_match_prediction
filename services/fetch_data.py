@@ -69,7 +69,7 @@ def bulk_fetch_matches(max_days_fetch=90,min_days=1,max_days=0)->json:
 
     return batch_matches
 
-def fetch_hero_data(min_unix_time, min_average_badge)->pd.DataFrame:
+def fetch_hero_trends(min_unix_time, min_average_badge=100)->pd.DataFrame:
     """fetches historical data for a hero @time @min badge"""
     site = "https://api.deadlock-api.com"
     endpoint = "/v1/analytics/hero-stats?" 

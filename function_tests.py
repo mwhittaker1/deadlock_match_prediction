@@ -4,6 +4,7 @@ import logging
 import os
 from data import db
 from pathlib import Path
+from handlers import orchestrators as o
 from services import function_tools as u
 from services import database_functions as dbf
 from services import fetch_data as fd
@@ -184,7 +185,7 @@ def test_fetch_hero_trends()->pd.DataFrame:
     print(f"\n\nHero data fetched, hero_data = {hero_df.head()} hero_df len = {len(hero_df)}\n\n")
     return hero_df
 
-def run_tests():
+def test_etl_hero_trends_single():
     print(f"\n\n***Starting Function Tests****\n\n")
     dbf.reset_all_tables(db.con)
     base_hero_trends = test_fetch_hero_trends()
@@ -193,5 +194,9 @@ def run_tests():
     tal.load_hero_trends(transformed_hero_trends)    
     print(f"\n\n ***Function Tests Complete****\n\n")
 
+def test_orchestrators():
+    dbf.reset_all_tables(db.con)
+    o.run_etl_hero_trends()
+
 if __name__ == "__main__":  
-    run_tests()
+    test_orchestrators()

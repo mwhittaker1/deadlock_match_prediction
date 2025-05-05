@@ -240,8 +240,9 @@ def load_hero_trends(
             f" missing={missing or None}, extra={extra or None}"
         )
         raise ValueError("hero_trends columns do not align with matches schema, missing",missing)
+    
     if extra:
-        logging.info("Extra columns in hero_trends, extras:", extra)
+        logging.info(f"Extra columns in hero_trends, extras: {extra}")
 
     try:
         with duckdb.connect(database=db.DB_PATH) as con:
@@ -266,6 +267,7 @@ def load_hero_trends(
             """)
             after = con.execute("SELECT COUNT(*) FROM hero_trends").fetchone()[0]
             logging.info(f"Bulk load complete. rows inserted: {after}-{before}")
+            
     except Exception:
         logging.exception("Failed to load bulk match data")
         raise

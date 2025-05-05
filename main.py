@@ -14,6 +14,7 @@ logging.basicConfig(
 
 def main():
     o.run_etl_bulk_matches(max_days_fetch=3)
+    o.run_etl_hero_trends()
 
 if __name__ == "__main__":
     con = db.con

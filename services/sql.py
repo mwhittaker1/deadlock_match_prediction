@@ -45,7 +45,7 @@ def run_checks(con):
         SELECT count(hero_id)
         FROM hero_trends
     """).fetchone()
-    print(f"hero_trend_count, expection 26, actual is: {hero_trend_count}")
+    print(f"hero_trend_count, expection 26 or 52, actual is: {hero_trend_count}")
 
 if __name__ == "__main__":
     con = duckdb.connect("c:/Code/Local Code/deadlock_match_prediction/data/deadlock.db")

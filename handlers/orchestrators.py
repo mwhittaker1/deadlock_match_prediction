@@ -1,5 +1,7 @@
 import pandas as pd
 import logging
+import duckdb
+import services.database_functions as dbf
 import services.fetch_data as fd
 import services.transform_and_load as tal
 
@@ -28,23 +30,38 @@ def run_etl_bulk_matches(max_days_fetch=3):
 
 def run_etl_hero_trends():
     """ETL for 7-day and 30-day hero trends"""
+    logging.info("starting run_etl_hero_trends ETL without critical errors.")
     #extract 7d hero trends
-    hero_trends_7d = fd.fetch_hero_trends(min_days=7, max_days=0)
-    assert hero_trends_7d is not None and not hero_trends_7d.empty, (
+    trend_window = 7
+    raw_hero_trends_7d = fd.fetch_hero_trends(trend_window)
+    assert raw_hero_trends_7d is not None and not raw_hero_trends_7d.empty, (
     "ETL ERROR: hero_trends_7d DataFrame is empty")
 
     #transform 7d hero trends
-    hero_trends_7d = tal.transform_hero_trends(hero_trends_7d)
+    hero_trends_7d = tal.transform_hero_trends(trend_window,raw_hero_trends_7d)
     assert hero_trends_7d is not None and not hero_trends_7d.empty, (
     "ETL ERROR: transformed hero_trends_7d DataFrame is empty")
     
-    
+    #load 7d hero trends
+    tal.load_hero_trends(hero_trends_7d)
+
+    trend_window = 30
     #30d hero trends
-    hero_Trends_30d = fd.fetch_hero_trends(min_days=30, max_days=0)
-    assert hero_Trends_30d is not None and not hero_Trends_30d.empty, (
+    raw_hero_Trends_30d = fd.fetch_hero_trends(trend_window)
+    assert raw_hero_Trends_30d is not None and not raw_hero_Trends_30d.empty, (
     "ETL ERROR: hero_trends_30d DataFrame is empty")
 
+    #transform 30d hero trends
+    hero_trends_30d = tal.transform_hero_trends(trend_window,raw_hero_Trends_30d)
+    assert hero_trends_30d is not None and not hero_trends_30d.empty, (
+    "ETL ERROR: transformed hero_trends_30d DataFrame is empty")
+
+    #load 30d hero trends
+    tal.load_hero_trends(hero_trends_7d)
+    logging.info("completed 7d and 30d hero trends ETL without critical errors.")
 
 if __name__ == "__main__":
-    run_etl_bulk_matches()
+    con = duckdb.connect("c:/Code/Local Code/deadlock_match_prediction/data/deadlock.db")
+    dbf.reset_all_tables(con)
+    run_etl_hero_trends()
     
