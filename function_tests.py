@@ -174,12 +174,22 @@ def test_load_bulk_matches():
     tal.load_bulk_matches(normalized_matches, normalzed_players)
     logging.info("Data loaded into database")
 
+def test_fetch_hero_trends()->pd.DataFrame:
+    """fetches hero trends for 7 days, saves to csv data/test_data/hero_trends_7d.csv"""
+    hero_df = fd.fetch_hero_data(min_unix_time=7, min_average_badge=0)
+    assert isinstance(hero_df, pd.DataFrame), "Data should be a DataFrame"
+    assert len(hero_df) == 26, f"Data should have 26 rows, has {len(hero_df)} rows"
+    u.df_to_csv(hero_df, "data/test_data/hero_data")
+    print(f"\n\nHero data fetched, hero_data = {hero_df.head()} hero_df len = {len(hero_df)}\n\n")
+    return hero_df
+
 def run_tests():
     print(f"\n\n***Starting Function Tests****\n\n")
-    dbf.reset_all_tables(db.con)
-    test_fetch_etl_bulk_matches()
-    test_load_bulk_matches()
-    pass
+    base_hero_trends = test_fetch_hero_trends()
+    transformed_hero_trends = tal.transform_hero_trends(trend_range=7, hero_trends=base_hero_trends)
+    assert isinstance(transformed_hero_trends, pd.DataFrame), "Transformed data should be a DataFrame"
+    tal.load_hero_trends(transformed_hero_trends)    
+    print(f"\n\n ***Function Tests Complete****\n\n")
 
 if __name__ == "__main__":  
     run_tests()

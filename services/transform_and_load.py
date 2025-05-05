@@ -126,7 +126,7 @@ def load_bulk_matches(
             con.register("df_players", player_df)
 
             con.execute("""
-            INSERT INTO matches (
+            INSERT OR IGNORE INTO matches (
                 match_id, start_time, game_mode, match_mode,
                 duration_s, winning_team
             )
@@ -136,7 +136,7 @@ def load_bulk_matches(
             FROM df_matches
             """)
             con.execute("""
-            INSERT INTO player_matches (
+            INSERT OR IGNORE INTO player_matches (
                 account_id, match_id, hero_id, team,
                 kills, deaths, assists, denies, net_worth
             )
@@ -146,6 +146,118 @@ def load_bulk_matches(
             FROM df_players
             """)
             logging.info("Bulk load complete.")
+    except Exception:
+        logging.exception("Failed to load bulk match data")
+        raise
+
+def transform_hero_trends(
+        trend_range: int,
+        hero_trends: pd.DataFrame) -> pd.DataFrame:
+    """Transforms hero trends data into a format suitable for loading into the database."""
+    
+    logging.info("Transforming hero trends data")
+    
+    # Check if the DataFrame is empty
+    if hero_trends.empty:
+        logging.warning("Hero trends DataFrame is empty.")
+        return pd.DataFrame()
+
+    # Create trend timestamps
+    current_time = u.get_unix_time(0)
+    trend_start_time = u.get_unix_time(-trend_range)
+    trend_end_time = u.get_unix_time(0)
+    trend_window_days = f"{trend_range}"
+
+    logging.info(
+    f"Setting trend window: start={trend_start_time}, "
+    f"end={trend_end_time}, window_days={trend_window_days}"
+    )
+
+    hero_trends = hero_trends.assign(
+        trend_start_date = trend_start_time,
+        trend_end_date = trend_end_time,
+        trend_date = current_time,
+        trend_window_days=trend_window_days
+        )
+    
+    # calculate pick rate, win rate, average kills, deaths, assists, and K/D ratio
+    match_total = hero_trends['matches'].sum()
+
+    hero_trends['pick_rate'] = (
+        hero_trends['matches'].replace(0,1)
+        /match_total*100).round(2)
+    hero_trends['win_rate'] = (
+        hero_trends['wins'].replace(0,1)
+        /hero_trends['matches'].replace(0,1)*100).round(2)
+    hero_trends['average_kills'] = (
+        hero_trends['total_kills'].replace(0,1)
+        /hero_trends['matches'].replace(0,1)*100).round(2)
+    hero_trends['average_deaths'] = (
+        hero_trends['total_deaths'].replace(0,1)
+        /hero_trends['matches'].replace(0,1)*100).round(2)
+    hero_trends['average_assists'] = (
+        hero_trends['total_assists'].replace(0,1)
+        /hero_trends['matches'].replace(0,1)*100).round(2)
+    hero_trends['average_kd'] = (
+        hero_trends['total_kills'].replace(0,1)
+        /hero_trends['total_deaths'].replace(0,1)).round(2)
+
+    return hero_trends
+
+def load_hero_trends(
+        hero_trends: pd.DataFrame) -> None:
+    """Loads hero trends data into the database."""
+    
+    # expected schema
+    HERO_TRENDS_COLUMNS = {
+        "hero_id",
+        "trend_start_date",
+        "trend_end_date",
+        "trend_date",
+        "trend_window_days",
+        "pick_rate",
+        "win_rate",
+        "average_kills",
+        "average_deaths",
+        "average_assists",
+        "average_kd"
+    }
+    missing = HERO_TRENDS_COLUMNS - set(hero_trends.columns)
+    extra   = set(hero_trends.columns) - HERO_TRENDS_COLUMNS
+    
+    #check match_df
+    if missing:
+        logging.error(
+            "Hero Trends DataFrame schema mismatch: "
+            f" missing={missing or None}, extra={extra or None}"
+        )
+        raise ValueError("hero_trends columns do not align with matches schema, missing",missing)
+    if extra:
+        logging.info("Extra columns in hero_trends, extras:", extra)
+
+    try:
+        with duckdb.connect(database=db.DB_PATH) as con:
+            logging.info("connected to database: %s", db.DB_PATH)
+            con.register("df_hero_trends", hero_trends)
+            before = con.execute("SELECT COUNT(*) FROM hero_trends").fetchone()[0]
+            con.execute("""
+            INSERT OR IGNORE INTO hero_trends (
+                hero_id, trend_start_date, trend_end_date,
+                trend_date, trend_window_days,
+                pick_rate, win_rate,
+                average_kills, average_deaths,
+                average_assists, average_kd
+            )
+            SELECT
+                hero_id, trend_start_date, trend_end_date,
+                trend_date, trend_window_days,
+                pick_rate, win_rate,
+                average_kills, average_deaths,
+                average_assists, average_kd
+            FROM df_hero_trends
+            """)
+            after = con.execute("SELECT COUNT(*) FROM hero_trends").fetchone()[0]
+            logging.info(f"Bulk load complete. rows inserted: {after}-{before}")
     except Exception:
         logging.exception("Failed to load bulk match data")
         raise

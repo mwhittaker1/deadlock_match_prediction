@@ -76,3 +76,96 @@
 2025-05-04 20:31:38,740 [INFO] [root.load_bulk_matches] connected to database: c:/Code/Local Code/deadlock_match_prediction/data/deadlock.db
 2025-05-04 20:31:38,761 [INFO] [root.load_bulk_matches] Bulk load complete.
 2025-05-04 20:31:38,761 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Data loaded into database
+2025-05-04 20:53:34,240 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:53:34,249 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:53:34,249 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:53:34,249 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:53:34,249 [INFO] [root.fetch_hero_data] 
+
+Getting hero_data from full url: https://api.deadlock-api.com/v1/analytics/hero-stats?7&0
+
+
+2025-05-04 20:54:12,180 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:54:12,191 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:54:12,192 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:54:12,192 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:54:12,192 [INFO] [root.fetch_hero_data] 
+
+Getting hero_data from full url: https://api.deadlock-api.com/v1/analytics/hero-stats?7&0
+
+
+2025-05-04 20:54:12,244 [INFO] [root.fetch_hero_data] hero data found!
+2025-05-04 20:55:11,226 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:55:11,226 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:55:11,227 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:55:11,227 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:55:11,227 [INFO] [root.fetch_hero_data] 
+
+Getting hero_data from full url: https://api.deadlock-api.com/v1/analytics/hero-stats?7&0
+
+
+2025-05-04 20:55:11,275 [INFO] [root.fetch_hero_data] hero data found!
+2025-05-04 20:56:01,777 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:56:01,777 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:56:01,778 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:56:01,778 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:56:01,778 [INFO] [root.fetch_hero_data] 
+
+Getting hero_data from full url: https://api.deadlock-api.com/v1/analytics/hero-stats?7&0
+
+
+2025-05-04 20:56:01,827 [INFO] [root.fetch_hero_data] hero data found!
+2025-05-04 21:02:40,606 [INFO] [root.<module>] Logger initialized.
+2025-05-04 21:02:40,607 [INFO] [root.<module>] Logger initialized.
+2025-05-04 21:02:40,607 [INFO] [root.<module>] Logger initialized.
+2025-05-04 21:02:40,607 [INFO] [root.<module>] Logger initialized.
+2025-05-04 21:02:40,607 [INFO] [root.fetch_hero_data] 
+
+Getting hero_data from full url: https://api.deadlock-api.com/v1/analytics/hero-stats?7&0
+
+
+2025-05-04 21:02:40,701 [INFO] [root.fetch_hero_data] hero data found!
+2025-05-04 21:03:10,097 [INFO] [root.<module>] Logger initialized.
+2025-05-04 21:03:10,099 [INFO] [root.<module>] Logger initialized.
+2025-05-04 21:03:10,099 [INFO] [root.<module>] Logger initialized.
+2025-05-04 21:03:10,099 [INFO] [root.<module>] Logger initialized.
+2025-05-04 21:03:10,099 [INFO] [root.fetch_hero_data] 
+
+Getting hero_data from full url: https://api.deadlock-api.com/v1/analytics/hero-stats?7&0
+
+
+2025-05-04 21:03:10,162 [INFO] [root.fetch_hero_data] hero data found!
+2025-05-04 21:34:47,300 [INFO] [root.<module>] Logger initialized.
+2025-05-04 21:34:47,300 [INFO] [root.<module>] Logger initialized.
+2025-05-04 21:34:47,311 [INFO] [root.<module>] Logger initialized.
+2025-05-04 21:34:47,311 [INFO] [root.<module>] Logger initialized.
+2025-05-04 21:34:47,311 [INFO] [root.fetch_hero_data] 
+
+Getting hero_data from full url: https://api.deadlock-api.com/v1/analytics/hero-stats?7&0
+
+
+2025-05-04 21:34:47,524 [INFO] [root.fetch_hero_data] hero data found!
+2025-05-04 21:36:17,304 [INFO] [root.<module>] Logger initialized.
+2025-05-04 21:36:17,305 [INFO] [root.<module>] Logger initialized.
+2025-05-04 21:36:17,305 [INFO] [root.<module>] Logger initialized.
+2025-05-04 21:36:17,305 [INFO] [root.<module>] Logger initialized.
+2025-05-04 21:36:17,305 [INFO] [root.fetch_hero_data] 
+
+Getting hero_data from full url: https://api.deadlock-api.com/v1/analytics/hero-stats?7&0
+
+
+2025-05-04 21:36:17,360 [INFO] [root.fetch_hero_data] hero data found!
+2025-05-04 21:36:17,374 [INFO] [root.transform_hero_trends] Transforming hero trends data
+2025-05-04 21:36:17,374 [INFO] [root.transform_hero_trends] Setting trend window: start=1747013777, end=1746408977, window_days=7
+2025-05-04 21:36:17,390 [INFO] [root.load_hero_trends] connected to database: c:/Code/Local Code/deadlock_match_prediction/data/deadlock.db
+2025-05-04 21:36:17,395 [ERROR] [root.load_hero_trends] Failed to load bulk match data
+Traceback (most recent call last):
+  File "c:\Code\Local Code\deadlock_match_prediction\services\transform_and_load.py", line 239, in load_hero_trends
+    with duckdb.connect(database=db.DB_PATH) as con:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Code\Local Code\deadlock_match_prediction\services\transform_and_load.py", line 243, in load_hero_trends
+    con.execute("""
+duckdb.duckdb.ConversionException: Conversion Error: Unimplemented type for cast (BIGINT -> DATE)
+
+LINE 10:                 hero_id, trend_start_date, trend_end_date,
+                                  ^
