@@ -5,13 +5,6 @@ from datetime import timedelta, datetime
 
 import logging
 
-def setup_logger(log_file="data/log.txt"):
-    logging.basicConfig(
-        filename=log_file,
-        level=logging.INFO,
-        format="%(asctime)s [%(levelname)s] [%(name)s.%(funcName)s] %(message)s"
-    )
-
 #Accepts dict and saves to a .xlsx with the items name.
 def df_to_xlsx(file, fname):
     df = pd.DataFrame(file)

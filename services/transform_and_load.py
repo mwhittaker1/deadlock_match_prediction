@@ -3,8 +3,6 @@ import pandas as pd
 import logging
 import services.function_tools as u
 from data import db
-u.setup_logger()
-logging.info("Logger initialized.")
 
 def normalize_bulk_matches(
         matches_grouped_by_day: dict) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -180,6 +178,16 @@ def transform_hero_trends(
         trend_window_days=trend_window_days
         )
     
+    hero_trends['trend_start_date'] = pd.to_datetime(
+        hero_trends["trend_start_date"],unit="s",utc=True
+    )
+    hero_trends['trend_end_date'] = pd.to_datetime(
+        hero_trends['trend_end_date'],unit="s",utc=True
+    )
+    hero_trends['trend_date'] = pd.to_datetime(
+        hero_trends['trend_date'],unit="s",utc=True
+    )
+
     # calculate pick rate, win rate, average kills, deaths, assists, and K/D ratio
     match_total = hero_trends['matches'].sum()
 

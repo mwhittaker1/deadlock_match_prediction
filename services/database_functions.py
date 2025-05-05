@@ -4,9 +4,6 @@ import logging
 from data import db
 from services import function_tools as u
 
-u.setup_logger()
-logging.info("Logger initialized.")
-
 def drop_all_tables(con):
     
     tables_to_drop = {

@@ -1,10 +1,7 @@
-import os
-import sys
-import requests
 import json
 import pandas as pd
 import logging
-import duckdb
+import os
 from data import db
 from pathlib import Path
 from services import function_tools as u
@@ -12,8 +9,12 @@ from services import database_functions as dbf
 from services import fetch_data as fd
 from services import transform_and_load as tal
 
-u.setup_logger()
-logging.info("Logger initialized.")
+log_file = os.getenv("data/logs.txt")  
+logging.basicConfig(
+    filename=log_file,
+    level=logging.DEBUG,
+    format="%(asctime)s [%(levelname)s] [%(name)s.%(funcName)s] %(message)s"
+)
 
 def test_save_data(file,fname):
     tests_dir = Path(__file__).parent / "dl_match_prediction" / "tests"
@@ -185,6 +186,7 @@ def test_fetch_hero_trends()->pd.DataFrame:
 
 def run_tests():
     print(f"\n\n***Starting Function Tests****\n\n")
+    dbf.reset_all_tables(db.con)
     base_hero_trends = test_fetch_hero_trends()
     transformed_hero_trends = tal.transform_hero_trends(trend_range=7, hero_trends=base_hero_trends)
     assert isinstance(transformed_hero_trends, pd.DataFrame), "Transformed data should be a DataFrame"

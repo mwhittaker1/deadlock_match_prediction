@@ -2,8 +2,7 @@ import pandas as pd
 import logging
 import services.fetch_data as fd
 import services.transform_and_load as tal
-u.setup_logger()
-logging.info("Logger initialized.")
+
 
 def run_etl_bulk_matches(max_days_fetch=3):
     """ETL for bulk match data, fetches, normalizes and loads into db"""

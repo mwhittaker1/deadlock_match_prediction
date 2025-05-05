@@ -4,8 +4,6 @@ import pandas as pd
 import logging
 from services import function_tools as u
 from urllib.parse import urlencode
-u.setup_logger()
-logging.info("Logger initialized.")
 
 def fetch_match_data(
     min_average_badge: int = 100,
