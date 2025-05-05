@@ -95,7 +95,7 @@ def match_fixture(path)->json:
     with fixture_path.open("r", encoding="utf-8") as f:
         return json.load(f)
 
-def test_bulk_fetch_matches():
+def test_orc_bulk_fetch_matches():
 
     max_days_fetch = 2
     print(f"\n\n***Starting Function Tests****\n\n")
@@ -141,8 +141,8 @@ def test_local_etl_bulk_matches():
     print(f"*INFO* ETL: Normalizing data")
     normalized_matches, normalized_players = tal.normalize_bulk_matches(matches_grouped_by_day)
     print(f"*INFO* ETL: Data normalized")
-    u.df_to_csv(normalized_matches, "normalized_matches")
-    u.df_to_csv(normalized_players, "normalized_players")
+    u.df_to_csv(normalized_matches, "data/test_data/normalized_matches")
+    u.df_to_csv(normalized_players, "data/test_data/normalized_players")
     # Load data into database
     #print(f"*INFO* ETL: Loading data into database")
     #dbf.load_bulk_matches(normalized_data)
@@ -177,6 +177,7 @@ def test_load_bulk_matches():
 def run_tests():
     print(f"\n\n***Starting Function Tests****\n\n")
     dbf.reset_all_tables(db.con)
+    test_fetch_etl_bulk_matches()
     test_load_bulk_matches()
     pass
 

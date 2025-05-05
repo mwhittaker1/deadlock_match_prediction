@@ -1,8 +1,13 @@
-import handlers as h
+from handlers import orchestrators as o
+from data import db
+from services import database_functions as dbf
+import logging
 
 
 def main():
-    h.run_etl_bulk_matches()
+    o.run_etl_bulk_matches(max_days_fetch=3)
 
 if __name__ == "__main__":
+    con = db.con
+    dbf.reset_all_tables(con)
     main()

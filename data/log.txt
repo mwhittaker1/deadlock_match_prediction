@@ -1,0 +1,78 @@
+2025-05-04 14:25:08,360 [INFO] [root.<module>] Logger initialized.
+2025-05-04 14:25:08,361 [INFO] [root.<module>] Logger initialized.
+2025-05-04 14:25:08,361 [INFO] [root.reset_all_tables] Resetting all tables
+2025-05-04 14:25:08,366 [INFO] [root.drop_all_tables] Dropped table: player_hero_trends
+2025-05-04 14:25:08,374 [INFO] [root.drop_all_tables] Dropped table: player_trends
+2025-05-04 14:25:08,378 [INFO] [root.drop_all_tables] Dropped table: hero_trends
+2025-05-04 14:25:08,381 [INFO] [root.drop_all_tables] Dropped table: player_matches
+2025-05-04 14:25:08,386 [INFO] [root.drop_all_tables] Dropped table: matches
+2025-05-04 14:25:08,396 [INFO] [root.drop_all_tables] All tables dropped: {'player_hero_trends', 'player_trends', 'hero_trends', 'player_matches', 'matches'}
+2025-05-04 14:25:08,396 [INFO] [root.create_all_tables] Creating all tables
+2025-05-04 14:25:08,409 [INFO] [root.create_all_tables] Resulting tables: {'player_matches', 'hero_trends', 'matches', 'player_hero_trends', 'player_trends'}
+2025-05-04 14:25:08,409 [INFO] [root.create_all_tables] All tables created: {'player_hero_trends', 'player_trends', 'hero_trends', 'player_matches', 'matches'}
+2025-05-04 14:25:08,409 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Fetching data
+2025-05-04 14:25:09,752 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Data fetched
+2025-05-04 14:25:09,752 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Normalizing data
+2025-05-04 14:25:09,752 [INFO] [root.normalize_bulk_matches] Normalizing bulk match data
+2025-05-04 14:25:09,752 [INFO] [root.normalize_bulk_matches] Processing day #0 with 2 matches
+2025-05-04 20:26:33,916 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:26:33,917 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:26:33,917 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:26:33,917 [INFO] [root.reset_all_tables] Resetting all tables
+2025-05-04 20:26:33,927 [INFO] [root.drop_all_tables] Dropped table: hero_trends
+2025-05-04 20:26:33,931 [INFO] [root.drop_all_tables] Dropped table: player_hero_trends
+2025-05-04 20:26:33,935 [INFO] [root.drop_all_tables] Dropped table: matches
+2025-05-04 20:26:33,942 [INFO] [root.drop_all_tables] Dropped table: player_matches
+2025-05-04 20:26:33,946 [INFO] [root.drop_all_tables] Dropped table: player_trends
+2025-05-04 20:26:33,956 [INFO] [root.drop_all_tables] All tables dropped: {'hero_trends', 'player_hero_trends', 'matches', 'player_matches', 'player_trends'}
+2025-05-04 20:26:33,956 [INFO] [root.create_all_tables] Creating all tables
+2025-05-04 20:26:33,970 [INFO] [root.create_all_tables] Resulting tables: {'hero_trends', 'matches', 'player_trends', 'player_hero_trends', 'player_matches'}
+2025-05-04 20:26:33,970 [INFO] [root.create_all_tables] All tables created: {'hero_trends', 'player_hero_trends', 'matches', 'player_matches', 'player_trends'}
+2025-05-04 20:26:35,309 [INFO] [root.normalize_bulk_matches] Normalizing bulk match data
+2025-05-04 20:26:35,309 [INFO] [root.normalize_bulk_matches] Processing day #0 with 178 matches
+2025-05-04 20:26:35,310 [INFO] [root.normalize_bulk_matches] Processing day #1 with 179 matches
+2025-05-04 20:26:35,345 [INFO] [root.test_load_bulk_matches] Loading data into database
+2025-05-04 20:26:35,345 [INFO] [root.load_bulk_matches] connected to database: c:/Code/Local Code/deadlock_match_prediction/data/deadlock.db
+2025-05-04 20:26:35,370 [INFO] [root.load_bulk_matches] Bulk load complete.
+2025-05-04 20:26:35,370 [INFO] [root.test_load_bulk_matches] Data loaded into database
+2025-05-04 20:29:01,104 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:29:01,104 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:29:01,104 [INFO] [root.reset_all_tables] Resetting all tables
+2025-05-04 20:29:01,109 [INFO] [root.drop_all_tables] Dropped table: player_trends
+2025-05-04 20:29:01,114 [INFO] [root.drop_all_tables] Dropped table: player_matches
+2025-05-04 20:29:01,117 [INFO] [root.drop_all_tables] Dropped table: hero_trends
+2025-05-04 20:29:01,121 [INFO] [root.drop_all_tables] Dropped table: player_hero_trends
+2025-05-04 20:29:01,126 [INFO] [root.drop_all_tables] Dropped table: matches
+2025-05-04 20:29:01,137 [INFO] [root.drop_all_tables] All tables dropped: {'player_trends', 'player_matches', 'hero_trends', 'player_hero_trends', 'matches'}
+2025-05-04 20:29:01,137 [INFO] [root.create_all_tables] Creating all tables
+2025-05-04 20:29:01,150 [INFO] [root.create_all_tables] Resulting tables: {'player_matches', 'hero_trends', 'player_hero_trends', 'player_trends', 'matches'}
+2025-05-04 20:29:01,150 [INFO] [root.create_all_tables] All tables created: {'player_trends', 'player_matches', 'hero_trends', 'player_hero_trends', 'matches'}
+2025-05-04 20:29:01,150 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Fetching data
+2025-05-04 20:29:02,479 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Data fetched
+2025-05-04 20:29:02,479 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Normalizing data
+2025-05-04 20:29:02,479 [INFO] [root.normalize_bulk_matches] Normalizing bulk match data
+2025-05-04 20:29:02,479 [INFO] [root.normalize_bulk_matches] Processing day #0 with 2 matches
+2025-05-04 20:31:36,900 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:31:36,901 [INFO] [root.<module>] Logger initialized.
+2025-05-04 20:31:36,901 [INFO] [root.reset_all_tables] Resetting all tables
+2025-05-04 20:31:36,906 [INFO] [root.drop_all_tables] Dropped table: player_trends
+2025-05-04 20:31:36,910 [INFO] [root.drop_all_tables] Dropped table: hero_trends
+2025-05-04 20:31:36,914 [INFO] [root.drop_all_tables] Dropped table: matches
+2025-05-04 20:31:36,918 [INFO] [root.drop_all_tables] Dropped table: player_matches
+2025-05-04 20:31:36,922 [INFO] [root.drop_all_tables] Dropped table: player_hero_trends
+2025-05-04 20:31:36,932 [INFO] [root.drop_all_tables] All tables dropped: {'player_trends', 'hero_trends', 'matches', 'player_matches', 'player_hero_trends'}
+2025-05-04 20:31:36,932 [INFO] [root.create_all_tables] Creating all tables
+2025-05-04 20:31:36,944 [INFO] [root.create_all_tables] Resulting tables: {'player_trends', 'matches', 'player_hero_trends', 'hero_trends', 'player_matches'}
+2025-05-04 20:31:36,944 [INFO] [root.create_all_tables] All tables created: {'player_trends', 'hero_trends', 'matches', 'player_matches', 'player_hero_trends'}
+2025-05-04 20:31:36,944 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Fetching data
+2025-05-04 20:31:38,729 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Data fetched
+2025-05-04 20:31:38,729 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Normalizing data
+2025-05-04 20:31:38,729 [INFO] [root.normalize_bulk_matches] Normalizing bulk match data
+2025-05-04 20:31:38,729 [INFO] [root.normalize_bulk_matches] Processing day #0 with 178 matches
+2025-05-04 20:31:38,730 [INFO] [root.normalize_bulk_matches] Processing day #1 with 178 matches
+2025-05-04 20:31:38,731 [INFO] [root.normalize_bulk_matches] Processing day #2 with 166 matches
+2025-05-04 20:31:38,739 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Data normalized
+2025-05-04 20:31:38,739 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Loading data into database
+2025-05-04 20:31:38,740 [INFO] [root.load_bulk_matches] connected to database: c:/Code/Local Code/deadlock_match_prediction/data/deadlock.db
+2025-05-04 20:31:38,761 [INFO] [root.load_bulk_matches] Bulk load complete.
+2025-05-04 20:31:38,761 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Data loaded into database

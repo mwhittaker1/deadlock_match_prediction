@@ -1,7 +1,7 @@
 import requests
 import json
 import pandas as pd
-import dl_match_prediction.services.function_tools as u
+from services import function_tools as u
 from urllib.parse import urlencode
 
 def fetch_match_data(
