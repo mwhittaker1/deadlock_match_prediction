@@ -10,7 +10,7 @@ from services import database_functions as dbf
 from services import fetch_data as fd
 from services import transform_and_load as tal
 
-log_file = os.getenv("data/logs.txt")  
+log_file ="data/logs.txt"
 logging.basicConfig(
     filename=log_file,
     level=logging.DEBUG,
@@ -221,7 +221,7 @@ def test():
                 player_match_history = fd.fetch_player_match_history(account_id)
                 if not player_match_history.empty:
                     batch_players_trended.append(player_match_history)
-                    logging.debug(f"Processed match history for player {account_id}")
+                    logging.debug(f"Processed match history for player {account_id}, lenght = {len(player_match_history)}")
             except Exception as e:
                 logging.warning(f"Error processing player {account_id}, error: {e}")
     
@@ -230,21 +230,23 @@ def test():
         
         all_player_stats = []
         for player_history in batch_players_trended:
+            logging.debug(f"Calculating player base stats for player {player_history['account_id']} history: {player_history}")
             player_stats = tal.calcuate_player_base_stats(player_history)
             all_player_stats.append(player_stats)
-        
+        logging.debug(f"full all player stats: {all_player_stats}")
+        u.any_to_csv(all_player_stats, "data/test_data/player_statscsv")
         logging.debug(f"length of all_player_stats: {len(all_player_stats)}")
         df_player_stats = pd.DataFrame(all_player_stats)
         logging.debug(f"length of df_player_stats converted to df: {len(df_player_stats)}")
         logging.debug(f"Calculated player trends.\ndata type = {type(df_player_stats)} \nexample data:\n\n {all_player_stats[:2]}")
-        u.any_to_csv(df_player_stats, "data/test_data/player_stats")
+    u.any_to_csv(df_player_stats, "data/test_data/player_stats")
         
         
         #insert batch players into player_trends player_hero_trends tables
         #logging.info(f"Inserting {len(batch_players_trended)} player trends into database")
         #dbf.insert_player_trends(batch_players_trended)
         #logging.info(f"Inserted {len(batch_players_trended)} player trends into database")
-        logging.info(f"*TEST*completed player_trends")
+    logging.info(f"*TEST*completed player_trends")
         
 if __name__ == "__main__":  
     test()
