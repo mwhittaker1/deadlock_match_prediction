@@ -29,6 +29,11 @@ def run_checks(con):
         """).fetchall()
     print(f"hero_trends_table_columns: {hero_trends_table_columns}\n")
 
+    player_matches_table_columns = con.execute("""
+        PRAGMA table_info('player_matches');
+        """).fetchall()
+    print(f"player_matches_table_columns: {player_matches_table_columns}\n")
+
     match_count = con.execute("""
         SELECT COUNT(match_id)
         FROM matches
@@ -40,6 +45,18 @@ def run_checks(con):
         FROM player_matches
     """).fetchall()
     print(f"player_count: {player_count}\n")
+
+    player_match_count = con.execute("""
+        SELECT count(account_id)
+        FROM player_matches
+    """).fetchall()
+    print(f"player_match_count: {player_match_count}\n")  
+
+    player_match_d_count = con.execute("""
+        SELECT count(DISTINCT account_id)
+        FROM player_matches
+    """).fetchall()
+    print(f"player_match_d_count: {player_match_d_count}\n")  
 
     hero_trend_count = con.execute("""
         SELECT count(hero_id)

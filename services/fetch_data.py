@@ -90,46 +90,27 @@ def fetch_hero_trends(min_unix_time, min_average_badge=100)->pd.DataFrame:
 
     return m_hero_data
 
-def fetch_hero_info():
-    """Returns base information for heros, i.e. name, background"""
-    site = "https://assets.deadlock-api.com"
-    endpoint = "/v2/heroes/"
-    url = site+endpoint
-    
-    response = requests.get(url)
-    
-    # Check if the request was successful
-    if response.status_code == 200:
-        heroes_info = pd.DataFrame(response.json())
-    else:
-        print(f"Failed to retrieve data: {response.status_code}")
-    
-    df = pd.DataFrame(heroes_info)
-    return df
-
 def fetch_player_match_history(p_id):
     """For the account_id listed, fetches full match history of player"""
     site = "https://api.deadlock-api.com"
     endpoint = f"/v1/players/{p_id}/match-history?only_stored_history=true" 
 
     url = site+endpoint
-    #print(f"\n\nGetting player_match_history p_id: {p_id} from full url: {url}\n\n")
+    logging.debug(f"Getting player match history from full url: {url}")
 
-    #get json
     response = requests.get(url)
     if response.status_code == 200: #if 200, converts to pd.DataFrame: m_hero_data
         response_data = response.json()
-        #print(f"\n\nresponse_data[:5]\n\n")
-        history = pd.DataFrame(response_data)
+        player_match_history = pd.DataFrame(response_data)
     else: 
-        print(f"\n\nError fetch_player_match_history, code = {response.status_code}\n\n response= {response}\n\n")
-
+        logging.error(f"error fetching player match history, code = {response.status_code}\n\n")
+        
     #return DataFrame
-    if history is None:
-        print(f"\n\n**ERROR** history is blank in fetch_player_match_history, p_id: {p_id}\n\n")
-    if history.empty:
-        print(f"\n\n**ERROR** history is empty in fetch_player_match_history, p_id: {p_id}\n\n")
-    return history
+    if player_match_history is None:
+        logging.error(f"player_match_history is None in fetch_player_match_history, p_id: {p_id}")
+    if player_match_history.empty:
+        logging.error(f"player_match_history is empty in fetch_player_match_history, p_id: {p_id}")
+    return player_match_history
 
 def fetch_player_hero_stats(p_id,h_id=None):
     """Fetches players hero-stats, then filters by h_id if provided"""
@@ -161,6 +142,23 @@ def fetch_player_hero_stats(p_id,h_id=None):
         p_h_all_data = pd.DataFrame(p_h_data)
         return p_h_all_data
     return p_h_data
+
+def fetch_hero_info():
+    """Returns base information for heros, i.e. name, background"""
+    site = "https://assets.deadlock-api.com"
+    endpoint = "/v2/heroes/"
+    url = site+endpoint
+    
+    response = requests.get(url)
+    
+    # Check if the request was successful
+    if response.status_code == 200:
+        heroes_info = pd.DataFrame(response.json())
+    else:
+        print(f"Failed to retrieve data: {response.status_code}")
+    
+    df = pd.DataFrame(heroes_info)
+    return df
 
 def test():
     days = 5

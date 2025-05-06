@@ -4,7 +4,7 @@ import logging
 import os
 from data import db
 from pathlib import Path
-from handlers import orchestrators as o
+from services import orchestrators as o
 from services import function_tools as u
 from services import database_functions as dbf
 from services import fetch_data as fd
@@ -195,8 +195,56 @@ def test_etl_hero_trends_single():
     print(f"\n\n ***Function Tests Complete****\n\n")
 
 def test_orchestrators():
-    dbf.reset_all_tables(db.con)
-    o.run_etl_hero_trends()
+    #dbf.reset_all_tables(db.con)
+    o.run_etl_bulk_matches(max_days_fetch=2)
+    #o.run_etl_hero_trends()
 
+def test():
+    logging.info("Starting player statistics ETL process")
+    
+    players_to_trend = dbf.test_pull_players_to_trend(con=db.con)
+    logging.info(f"Found {len(players_to_trend)} players to process")
+    batch_size = 3
+    total_players_to_process = len(players_to_trend)
+
+    for i in range(0, total_players_to_process, batch_size):
+        batch_players = players_to_trend[i:i+batch_size]
+        logging.info(f"Processing batch of {len(batch_players)} players from total {total_players_to_process}")
+        logging.debug(f"Batch players: {batch_players}")
+        batch_players_trended = []
+        # Perform operations on the batch of players
+        for _,player in batch_players.iterrows():
+            account_id = player["account_id"]
+            logging.debug(f"Processing player with account_id: {account_id}")
+            # Fetch and process match data for the player
+            try:
+                player_match_history = fd.fetch_player_match_history(account_id)
+                if not player_match_history.empty:
+                    batch_players_trended.append(player_match_history)
+                    logging.debug(f"Processed match history for player {account_id}")
+            except Exception as e:
+                logging.warning(f"Error processing player {account_id}, error: {e}")
+    
+        #calculate player, player_hero trends
+        logging.info(f"Calculating player trends for {len(batch_players_trended)} of {len(players_to_trend)} players")
+        
+        all_player_stats = []
+        for player_history in batch_players_trended:
+            player_stats = tal.calcuate_player_base_stats(player_history)
+            all_player_stats.append(player_stats)
+        
+        logging.debug(f"length of all_player_stats: {len(all_player_stats)}")
+        df_player_stats = pd.DataFrame(all_player_stats)
+        logging.debug(f"length of df_player_stats converted to df: {len(df_player_stats)}")
+        logging.debug(f"Calculated player trends.\ndata type = {type(df_player_stats)} \nexample data:\n\n {all_player_stats[:2]}")
+        u.any_to_csv(df_player_stats, "data/test_data/player_stats")
+        
+        
+        #insert batch players into player_trends player_hero_trends tables
+        #logging.info(f"Inserting {len(batch_players_trended)} player trends into database")
+        #dbf.insert_player_trends(batch_players_trended)
+        #logging.info(f"Inserted {len(batch_players_trended)} player trends into database")
+        logging.info(f"*TEST*completed player_trends")
+        
 if __name__ == "__main__":  
-    test_orchestrators()
+    test()

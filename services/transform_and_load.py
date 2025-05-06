@@ -148,6 +148,60 @@ def load_bulk_matches(
         logging.exception("Failed to load bulk match data")
         raise
 
+def calcuate_player_base_stats(
+        player_history: pd.DataFrame) -> pd.DataFrame:
+    """Calculates additional hero_trend statistics."""
+    
+    p_stats = pd.Series()
+    match_total = player_history['match_id'].nunique()
+    total_kills = player_history['player_kills'].sum()
+    total_deaths = player_history['player_deaths'].sum()
+    logging.debug("stats for player %s", player_history['account_id'])
+    logging.debug("total_kills: %s", total_kills)
+    logging.debug("total_deaths: %s", total_deaths)
+    logging.debug("match_total: %s", match_total)
+    p_stats['account_id'] = player_history['account_id'].iloc[0]
+    player_history['won']= (
+        player_history['player_team'] == player_history['match_result']
+        )
+    p_stats['p_win_rate'] = (
+        player_history['won'].sum()
+        /match_total*100).round(2)
+    p_stats['average_kills'] = (
+        total_kills/match_total*100).round(2)
+    p_stats['average_deaths'] = (
+        total_deaths/match_total*100).round(2)
+    p_stats['average_kd'] = (total_kills/total_deaths).round(2)
+    p_stats['p_total_matches'] = match_total
+
+    return p_stats
+
+def calcuate_hero_trends(
+        hero_trends: pd.DataFrame) -> pd.DataFrame:
+    """Calculates additional hero_trend statistics."""
+    match_total = hero_trends['matches'].sum()
+
+    hero_trends['pick_rate'] = (
+        hero_trends['matches'].replace(0,1)
+        /match_total*100).round(2)
+    hero_trends['win_rate'] = (
+        hero_trends['wins'].replace(0,1)
+        /hero_trends['matches'].replace(0,1)*100).round(2)
+    hero_trends['average_kills'] = (
+        hero_trends['total_kills'].replace(0,1)
+        /hero_trends['matches'].replace(0,1)*100).round(2)
+    hero_trends['average_deaths'] = (
+        hero_trends['total_deaths'].replace(0,1)
+        /hero_trends['matches'].replace(0,1)*100).round(2)
+    hero_trends['average_assists'] = (
+        hero_trends['total_assists'].replace(0,1)
+        /hero_trends['matches'].replace(0,1)*100).round(2)
+    hero_trends['average_kd'] = (
+        hero_trends['total_kills'].replace(0,1)
+        /hero_trends['total_deaths'].replace(0,1)).round(2)
+
+    return hero_trends
+
 def transform_hero_trends(
         trend_range: int,
         hero_trends: pd.DataFrame) -> pd.DataFrame:
@@ -189,26 +243,7 @@ def transform_hero_trends(
     )
 
     # calculate pick rate, win rate, average kills, deaths, assists, and K/D ratio
-    match_total = hero_trends['matches'].sum()
-
-    hero_trends['pick_rate'] = (
-        hero_trends['matches'].replace(0,1)
-        /match_total*100).round(2)
-    hero_trends['win_rate'] = (
-        hero_trends['wins'].replace(0,1)
-        /hero_trends['matches'].replace(0,1)*100).round(2)
-    hero_trends['average_kills'] = (
-        hero_trends['total_kills'].replace(0,1)
-        /hero_trends['matches'].replace(0,1)*100).round(2)
-    hero_trends['average_deaths'] = (
-        hero_trends['total_deaths'].replace(0,1)
-        /hero_trends['matches'].replace(0,1)*100).round(2)
-    hero_trends['average_assists'] = (
-        hero_trends['total_assists'].replace(0,1)
-        /hero_trends['matches'].replace(0,1)*100).round(2)
-    hero_trends['average_kd'] = (
-        hero_trends['total_kills'].replace(0,1)
-        /hero_trends['total_deaths'].replace(0,1)).round(2)
+    hero_trends = calcuate_hero_trends(hero_trends)
 
     return hero_trends
 
@@ -271,3 +306,17 @@ def load_hero_trends(
     except Exception:
         logging.exception("Failed to load bulk match data")
         raise
+
+def get_player_trends():
+    """calculate player_trends"""
+    pass
+
+def calculate_player_trends(players_to_trend: pd.DataFrame) -> pd.DataFrame:
+    """calculate player_trends"""
+
+    pass
+
+def process_player_batch(batch):
+    """process player batch"""
+    results = []
+    

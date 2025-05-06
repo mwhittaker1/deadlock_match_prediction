@@ -76,12 +76,19 @@ def create_player_trends_table(con):
     con.execute("""
     CREATE TABLE player_trends (
     account_id BIGINT,
-    p_total_kills BIGINT,
-    p_total_deaths BIGINT,
+    p_average_kills FLOAT,
+    p_average_deaths FLOAT,
     p_avg_kd FLOAT,
     p_total_matches BIGINT,
+    p_win_rate FLOAT,
+    p_win_pct_2 FLOAT,
     p_win_pct_3 FLOAT,
+    p_win_pct_4 FLOAT,
     p_win_pct_5 FLOAT,
+    p_win_pct_6 FLOAT,
+    p_v_h_pick_pct FLOAT,
+    p_v_h_win_pct FLOAT,
+    p_v_h_kd_pct FLOAT,
     PRIMARY KEY (account_id)
     )
     """)
@@ -126,6 +133,32 @@ def reset_all_tables(con):
     logging.info("Resetting all tables")
     drop_all_tables(con)
     create_all_tables(con)
+
+def pull_players_to_trend(con):
+    """pulls players from player_matches table to trend"""
+
+    query = """
+    SELECT DISTINCT account_id
+    FROM player_matches
+    """
+    
+    players = con.execute(query).fetchdf()
+    print(f"players: {players}")
+    logging.info(f"Pulled {len(players)} players to trend")
+    return players
+
+def test_pull_players_to_trend(con):
+    """test for pull_players_to_trend"""
+    query = """
+    SELECT DISTINCT account_id
+    FROM player_matches
+    LIMIT 10
+    """
+    
+    players = con.execute(query).fetchdf()
+    print(f"players: {players}")
+    logging.info(f"Pulled {len(players)} players to trend")
+    return players
 
 if __name__ == "__main__":
     reset_all_tables(db.con)
