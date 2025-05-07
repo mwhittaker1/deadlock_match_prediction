@@ -199,7 +199,7 @@ def test_orchestrators():
     o.run_etl_bulk_matches(max_days_fetch=2)
     #o.run_etl_hero_trends()
 
-def test():
+def test_players_to_trend_from_db():
     logging.info("Starting player statistics ETL process")
     
     players_to_trend = dbf.test_pull_players_to_trend(con=db.con)
@@ -212,7 +212,7 @@ def test():
         batch_players = players_to_trend[i:i+batch_size]
         logging.info(f"Processing batch of {len(batch_players)} players from total {total_players_to_process}")
         logging.debug(f"Batch players: {batch_players}")
-        batch_players_trended = []
+        batch_players_histories = []
         # Perform operations on the batch of players
         for _,player in batch_players.iterrows():
             account_id = player["account_id"]
@@ -221,16 +221,16 @@ def test():
             try:
                 player_match_history = fd.fetch_player_match_history(account_id)
                 if not player_match_history.empty:
-                    batch_players_trended.append(player_match_history)
+                    batch_players_histories.append(player_match_history)
                     logging.debug(f"Processed match history for player {account_id}, lenght = {len(player_match_history)}")
             except Exception as e:
                 logging.warning(f"Error processing player {account_id}, error: {e}")
     
         #calculate player, player_hero trends
-        logging.info(f"Calculating player trends for {len(batch_players_trended)} of {len(players_to_trend)} players")
+        logging.info(f"Calculating player trends for {len(batch_players_histories)} of {len(players_to_trend)} players")
         
         
-        for player_history in batch_players_trended:
+        for player_history in batch_players_histories:
             logging.debug(f"Calculating player base stats for player {player_history['account_id']} \n**history:\n\n {player_history}")
             player_stats = tal.calcuate_player_base_stats(player_history)
             all_player_stats.append(player_stats)
@@ -241,13 +241,30 @@ def test():
         logging.debug(f"length of df_player_stats converted to df: {len(df_player_stats)}")
         logging.debug(f"Calculated player trends.\ndata type = {type(df_player_stats)} \nexample data:\n\n {all_player_stats[:2]}")
     u.any_to_csv(all_player_stats, "data/test_data/player_stats")
+    return all_player_stats
+
+def test_calculate_player_streak_trends(df)->pd.DataFrame:
+    """Calculates player streak trends from player match history"""
+    
+
+
+    return df
+
+
+def test():
+    logging.info("Starting function tests")
+    list_players_history_stats = test_players_to_trend_from_db()
+
+        #calculate player win trend / win history
         
-        
+        #calculate player_hero trends
+
         #insert batch players into player_trends player_hero_trends tables
+        
         #logging.info(f"Inserting {len(batch_players_trended)} player trends into database")
         #dbf.insert_player_trends(batch_players_trended)
         #logging.info(f"Inserted {len(batch_players_trended)} player trends into database")
     logging.info(f"*TEST*completed player_trends")
-        
+
 if __name__ == "__main__":  
     test()

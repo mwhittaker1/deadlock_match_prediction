@@ -1,0 +1,10 @@
+todos.
+
+Create player streak trends
+
+create player_hero trends
+
+insert all trends into player_trends and player_hero trends
+
+refactor players_to_trend_from_db function.
+

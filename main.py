@@ -17,6 +17,5 @@ def main():
     o.run_etl_hero_trends()
 
 if __name__ == "__main__":
-    con = db.con
-    dbf.reset_all_tables(con)
-    main()
+
+    #main()

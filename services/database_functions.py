@@ -81,14 +81,45 @@ def create_player_trends_table(con):
     p_avg_kd FLOAT,
     p_total_matches BIGINT,
     p_win_rate FLOAT,
+                
+    -- need to make below this line
     p_win_pct_2 FLOAT,
     p_win_pct_3 FLOAT,
     p_win_pct_4 FLOAT,
     p_win_pct_5 FLOAT,
     p_win_pct_6 FLOAT,
+                
+    -- Player hero trends
+    p_h_total_matches BIGINT,    
     p_v_h_pick_pct FLOAT,
     p_v_h_win_pct FLOAT,
     p_v_h_kd_pct FLOAT,
+
+    -- Win streaks
+    win_streaks_avg FLOAT,
+    win_streaks_2plus INTEGER,
+    win_streaks_3plus INTEGER,
+    win_streaks_4plus INTEGER,
+    win_streaks_5plus INTEGER,
+
+    -- Loss streaks
+    loss_streaks_avg FLOAT,
+    loss_streaks_2plus INTEGER,
+    loss_streaks_3plus INTEGER,
+    loss_streaks_4plus INTEGER,
+    loss_streaks_5plus INTEGER,
+
+    -- Recent win streaks (within 8 hours)
+    win_recency_2plus INTEGER,
+    win_recency_3plus INTEGER,
+    win_recency_4plus INTEGER,
+    win_recency_5plus INTEGER,
+
+    -- Recent loss streaks (within 8 hours)
+    loss_recency_2plus INTEGER,
+    loss_recency_3plus INTEGER,
+    loss_recency_4plus INTEGER,
+    loss_recency_5plus INTEGER,
     PRIMARY KEY (account_id)
     )
     """)
@@ -98,15 +129,21 @@ def create_player_hero_trends(con):
     CREATE TABLE player_hero_trends (
     account_id BIGINT,
     hero_id INTEGER,
-    trend_start_date DATE,
-    trend_end_date DATE,
-    trend_window_days INTEGER,
+
     p_h_total_matches BIGINT,
     p_h_pick_pct FLOAT,
     p_h_win_pct_3 FLOAT,
     p_h_win_pct_5 FLOAT,
-    p_h_streak_3 VARCHAR,
-    p_h_streak_5 VARCHAR,
+    p_h_avg_kd FLOAT,
+    p_h_average_kills FLOAT,
+    p_h_average_deaths FLOAT,
+    p_h_average_assists FLOAT,
+
+    trend_start_date DATE,
+    trend_end_date DATE,
+    trend_window_days INTEGER,
+    last_updated TIMESTAMP,
+
     PRIMARY KEY (account_id, hero_id, trend_start_date, trend_end_date, trend_window_days)
     )
     """)
@@ -161,7 +198,9 @@ def test_pull_players_to_trend(con):
     return players
 
 if __name__ == "__main__":
-    reset_all_tables(db.con)
+    #reset_all_tables(db.con)
+    con = db.con
+    con.execute("DROP TABLE IF EXISTS player_trends")
     #con.execute("ALTER TABLE player_trends drop COLUMN p_h_pick_per;")
     #con.execute("ALTER TABLE player_matches ADD COLUMN average_kd FLOAT;")
 
