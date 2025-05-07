@@ -87,7 +87,6 @@ def create_player_trends_table(con):
     p_win_pct_3 FLOAT,
     p_win_pct_4 FLOAT,
     p_win_pct_5 FLOAT,
-    p_win_pct_6 FLOAT,
                 
     -- Player hero trends
     p_h_total_matches BIGINT,    

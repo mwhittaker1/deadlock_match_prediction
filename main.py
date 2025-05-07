@@ -17,5 +17,5 @@ def main():
     o.run_etl_hero_trends()
 
 if __name__ == "__main__":
-
+    pass
     #main()
