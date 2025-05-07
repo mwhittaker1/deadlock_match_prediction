@@ -206,6 +206,7 @@ def test():
     logging.info(f"Found {len(players_to_trend)} players to process")
     batch_size = 3
     total_players_to_process = len(players_to_trend)
+    all_player_stats = []
 
     for i in range(0, total_players_to_process, batch_size):
         batch_players = players_to_trend[i:i+batch_size]
@@ -228,18 +229,18 @@ def test():
         #calculate player, player_hero trends
         logging.info(f"Calculating player trends for {len(batch_players_trended)} of {len(players_to_trend)} players")
         
-        all_player_stats = []
+        
         for player_history in batch_players_trended:
-            logging.debug(f"Calculating player base stats for player {player_history['account_id']} history: {player_history}")
+            logging.debug(f"Calculating player base stats for player {player_history['account_id']} \n**history:\n\n {player_history}")
             player_stats = tal.calcuate_player_base_stats(player_history)
             all_player_stats.append(player_stats)
-        logging.debug(f"full all player stats: {all_player_stats}")
+        logging.debug(f"\n**full all player stats:\n\n {all_player_stats}")
         u.any_to_csv(all_player_stats, "data/test_data/player_statscsv")
         logging.debug(f"length of all_player_stats: {len(all_player_stats)}")
         df_player_stats = pd.DataFrame(all_player_stats)
         logging.debug(f"length of df_player_stats converted to df: {len(df_player_stats)}")
         logging.debug(f"Calculated player trends.\ndata type = {type(df_player_stats)} \nexample data:\n\n {all_player_stats[:2]}")
-    u.any_to_csv(df_player_stats, "data/test_data/player_stats")
+    u.any_to_csv(all_player_stats, "data/test_data/player_stats")
         
         
         #insert batch players into player_trends player_hero_trends tables
