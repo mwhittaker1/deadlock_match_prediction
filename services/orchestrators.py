@@ -20,7 +20,7 @@ def run_etl_bulk_matches(max_days_fetch=3):
     
     # Load data into database
     logging.info(f"*INFO* ETL: Loading data into database")
-    tal.load_bulk_matches(normalized_matches, normalized_players)
+    tal.save_bulk_matches_to_db(normalized_matches, normalized_players)
     logging.info(f"*INFO* ETL: Data loaded into database")
 
 def run_etl_hero_trends():
@@ -31,15 +31,15 @@ def run_etl_hero_trends():
     trend_window = 7
     logging.info(f"*INFO* ETL: Fetching hero trends for {trend_window} days")
     raw_hero_trends_7d = fd.fetch_hero_trends(trend_window)
-    hero_trends_7d = tal.transform_hero_trends(trend_window,raw_hero_trends_7d)
-    tal.load_hero_trends(hero_trends_7d)
+    hero_trends_7d = tal.build_hero_trends(trend_window,raw_hero_trends_7d)
+    tal.save_hero_trends_to_db(hero_trends_7d)
 
     #ETL 30d hero trends
     trend_window = 30
     logging.info(f"*INFO* ETL: Fetching hero trends for {trend_window} days")
     raw_hero_Trends_30d = fd.fetch_hero_trends(trend_window)
-    hero_trends_30d = tal.transform_hero_trends(trend_window,raw_hero_Trends_30d)
-    tal.load_hero_trends(hero_trends_30d)
+    hero_trends_30d = tal.build_hero_trends(trend_window,raw_hero_Trends_30d)
+    tal.save_hero_trends_to_db(hero_trends_30d)
     logging.info("completed 7d and 30d hero trends ETL without critical errors.")
 
 def run_etl_player_hero_match_trends():
@@ -54,7 +54,7 @@ def run_etl_player_hero_match_trends():
     logging.info("Starting function tests")
     # pull distinct players from player_matches table
     try:
-        players_to_trend = dbf.pull_players_to_trend(con=db.con)
+        players_to_trend = dbf.pull_trend_players_from_db(con=db.con)
 
         if players_to_trend is None or players_to_trend.empty:
             raise ValueError("Players to trend is empty, expected a non-empty DataFrame")
@@ -84,10 +84,15 @@ def run_etl_player_hero_match_trends():
 
         #calculate player trends and streaks, insert into db
             # insertion not built yet
-        tal.transform_and_load_player_trends_streaks(player_match_history)
+        tal.tl_player_stats(player_match_history)
         
         # complete calculations for rolling stats and insert into db.
-        tal.transform_and_load_rolling_stats(player_match_history)
+            # needs recency trends and insertion built
+        tal.tl_rolling_stats(player_match_history)
+
+        # calculate player_hero trends and insert into db
+           # not built yet
+        tal.transform_and_load_player_hero_trends(player_match_history)
 
 
     print("Completed test run")

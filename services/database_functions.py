@@ -187,7 +187,7 @@ def reset_all_tables(con):
     drop_all_tables(con)
     create_all_tables(con)
 
-def pull_players_to_trend(con):
+def pull_trend_players_from_db(con):
     """pulls players from player_matches table to trend"""
 
     query = """

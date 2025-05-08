@@ -186,7 +186,7 @@ def test_load_bulk_matches():
     normalized_matches = pd.read_csv("normalized_matches.csv")
     normalzed_players = pd.read_csv("normalized_players.csv")
     logging.info("Loading data into database")
-    tal.load_bulk_matches(normalized_matches, normalzed_players)
+    tal.save_bulk_matches_to_db(normalized_matches, normalzed_players)
     logging.info("Data loaded into database")
 
 def test_fetch_hero_trends()->pd.DataFrame:
@@ -203,9 +203,9 @@ def test_etl_hero_trends_single():
     print(f"\n\n***Starting Function Tests****\n\n")
     dbf.reset_all_tables(db.con)
     base_hero_trends = test_fetch_hero_trends()
-    transformed_hero_trends = tal.transform_hero_trends(trend_range=7, hero_trends=base_hero_trends)
+    transformed_hero_trends = tal.build_hero_trends(trend_range=7, hero_trends=base_hero_trends)
     assert isinstance(transformed_hero_trends, pd.DataFrame), "Transformed data should be a DataFrame"
-    tal.load_hero_trends(transformed_hero_trends)    
+    tal.save_hero_trends_to_db(transformed_hero_trends)    
     print(f"\n\n ***Function Tests Complete****\n\n")
 
 def test_orchestrators():
@@ -254,7 +254,7 @@ def test_players_to_trend_from_db():
         
         for player_history in batch_players_histories:
             logging.debug(f"Calculating player base stats for player {player_history['account_id']} \n**history:\n\n {player_history}")
-            player_stats = tal.calcuate_player_trend_stats(player_history)
+            player_stats = tal.computer_player_stats(player_history)
             all_player_stats.append(player_stats)
         logging.debug(f"\n**full all player stats:\n\n {all_player_stats}")
         u.any_to_csv(all_player_stats, "data/test_data/player_statscsv")
@@ -375,7 +375,7 @@ def etl_player_player_match_trends():
     logging.info("Starting function tests")
     # pull distinct players from player_matches table
     try:
-        players_to_trend = dbf.pull_players_to_trend(con=db.con)
+        players_to_trend = dbf.pull_trend_players_from_db(con=db.con)
 
         if players_to_trend is None or players_to_trend.empty:
             raise ValueError("Players to trend is empty, expected a non-empty DataFrame")
@@ -402,12 +402,12 @@ def etl_player_player_match_trends():
        # caclulcate player won stat and add as new column
         player_match_history = test_calculate_won_column(player_match_history)
 
-        tal.transform_and_load_player_trends_streaks(player_match_history)
+        tal.tl_player_stats(player_match_history)
 
         # Calculate win per match and player trends
         
         # complete calculations for rolling stats and insert into db.
-        tal.transform_and_load_rolling_stats(player_match_history)
+        tal.tl_rolling_stats(player_match_history)
 
 
     print("Completed test run")
