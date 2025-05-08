@@ -754,3 +754,1572 @@ average_deaths          870.20
 average_kd                0.96
 p_total_matches         886.00
 dtype: float64]
+2025-05-07 20:33:45,321 [INFO] [root.test1] Starting function tests
+2025-05-07 20:38:22,216 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends
+2025-05-07 20:39:05,777 [INFO] [root.test1] Starting function tests
+2025-05-07 20:39:15,052 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends
+2025-05-07 20:42:47,118 [INFO] [root.test1] Starting function tests
+2025-05-07 20:42:47,131 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends
+2025-05-07 20:43:16,232 [INFO] [root.test1] Starting function tests
+2025-05-07 20:43:16,246 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends
+2025-05-07 20:43:27,779 [INFO] [root.test1] Starting function tests
+2025-05-07 20:43:27,792 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends
+2025-05-07 20:43:51,091 [INFO] [root.test1] Starting function tests
+2025-05-07 20:43:56,298 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends
+2025-05-07 20:45:01,198 [INFO] [root.test1] Starting function tests
+2025-05-07 20:45:14,196 [INFO] [root.test_calculate_batch_player_streak_trends] Calculating player streak trends
+2025-05-07 20:45:52,132 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 1208    78254031
+1209    78254031
+1210    78254031
+1211    78254031
+1212    78254031
+          ...   
+1578    78254031
+1579    78254031
+1580    78254031
+1581    78254031
+1582    78254031
+Name: account_id, Length: 375, dtype: int64
+2025-05-07 20:46:00,766 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends
+2025-05-07 20:46:41,312 [INFO] [root.test1] Starting function tests
+2025-05-07 20:46:43,172 [INFO] [root.test_calculate_batch_player_streak_trends] Calculating player streak trends
+2025-05-07 20:46:43,175 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 1208    78254031
+1209    78254031
+1210    78254031
+1211    78254031
+1212    78254031
+          ...   
+1578    78254031
+1579    78254031
+1580    78254031
+1581    78254031
+1582    78254031
+Name: account_id, Length: 375, dtype: int64
+2025-05-07 20:46:53,449 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends
+2025-05-07 20:47:44,330 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 1208    78254031
+1209    78254031
+1210    78254031
+1211    78254031
+1212    78254031
+          ...   
+1578    78254031
+1579    78254031
+1580    78254031
+1581    78254031
+1582    78254031
+Name: account_id, Length: 375, dtype: int64
+2025-05-07 20:51:42,561 [INFO] [root.test_players_to_trend_from_db] Starting player statistics ETL process
+2025-05-07 20:51:42,566 [INFO] [root.test_pull_players_to_trend] Pulled 10 players to trend
+2025-05-07 20:51:42,566 [INFO] [root.test_players_to_trend_from_db] Found 10 players to process
+2025-05-07 20:51:42,567 [INFO] [root.test_players_to_trend_from_db] Processing batch of 5 players from total 10
+2025-05-07 20:51:42,568 [DEBUG] [root.test_players_to_trend_from_db] Batch players:    account_id
+0  1729891921
+1   250489315
+2   213538655
+3     7910302
+4   924812291
+2025-05-07 20:51:42,568 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 1729891921
+2025-05-07 20:51:42,568 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/1729891921/match-history?only_stored_history=true
+2025-05-07 20:51:42,570 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:51:42,968 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/1729891921/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:51:42,970 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 1729891921, lenght = 290
+2025-05-07 20:51:42,970 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 250489315
+2025-05-07 20:51:42,970 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/250489315/match-history?only_stored_history=true
+2025-05-07 20:51:42,971 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:51:43,429 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/250489315/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:51:43,431 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 250489315, lenght = 179
+2025-05-07 20:51:43,431 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 213538655
+2025-05-07 20:51:43,431 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/213538655/match-history?only_stored_history=true
+2025-05-07 20:51:43,432 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:51:43,896 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/213538655/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:51:43,899 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 213538655, lenght = 507
+2025-05-07 20:51:43,899 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 7910302
+2025-05-07 20:51:43,899 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/7910302/match-history?only_stored_history=true
+2025-05-07 20:51:43,900 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:51:44,339 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/7910302/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:51:44,365 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 7910302, lenght = 959
+2025-05-07 20:51:44,365 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 924812291
+2025-05-07 20:51:44,365 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/924812291/match-history?only_stored_history=true
+2025-05-07 20:51:44,366 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:51:44,645 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/924812291/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:51:44,678 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 924812291, lenght = 1177
+2025-05-07 20:51:44,689 [INFO] [root.test_players_to_trend_from_db] Calculating player trends for 5 of 10 players
+2025-05-07 20:51:44,695 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0      1729891921
+1      1729891921
+2      1729891921
+3      1729891921
+4      1729891921
+          ...    
+285    1729891921
+286    1729891921
+287    1729891921
+288    1729891921
+289    1729891921
+Name: account_id, Length: 290, dtype: int64 
+**history:
+
+      account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0    1729891921  35431343       60          20  1746406914          1  ...            None               NaN              1152             0                  65519                   8260
+1    1729891921  35403290       35          33  1746330437          1  ...            None               NaN              1761             1                  41028                  65509
+2    1729891921  35364995       35          31  1746219444          1  ...            None               NaN              1737             1                   8260                  48965
+3    1729891921  35285429       13          22  1745962811          1  ...            None               NaN              1150             0                  65509                  41028
+4    1729891921  35182440       13          32  1745648393          1  ...            None               NaN              1947             0                  65253                   8260
+..          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+285  1729891921  26012950       35          29  1730522298          1  ...           False               0.0              1709             1                  32768                  65217
+286  1729891921  25360320       35          31  1730147505          1  ...           False               0.0              1329             0                  65225                      0
+287  1729891921  25192127        1          31  1730060006          1  ...           False               0.0              1222             1                      0                  53137
+288  1729891921  25152525       35          29  1730047430          1  ...           False               0.0              1081             1                      0                  65381
+289  1729891921  25063985        7          27  1730008807          1  ...           False               0.0              1308             0                  65481                  16384
+
+[290 rows x 20 columns]
+2025-05-07 20:51:44,695 [DEBUG] [root.calcuate_player_base_stats] stats for player 0      1729891921
+1      1729891921
+2      1729891921
+3      1729891921
+4      1729891921
+          ...    
+285    1729891921
+286    1729891921
+287    1729891921
+288    1729891921
+289    1729891921
+Name: account_id, Length: 290, dtype: int64
+2025-05-07 20:51:44,696 [DEBUG] [root.calcuate_player_base_stats] total_kills: 4340
+2025-05-07 20:51:44,696 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 1311
+2025-05-07 20:51:44,696 [DEBUG] [root.calcuate_player_base_stats] match_total: 290
+2025-05-07 20:51:44,703 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0      250489315
+1      250489315
+2      250489315
+3      250489315
+4      250489315
+         ...    
+174    250489315
+175    250489315
+176    250489315
+177    250489315
+178    250489315
+Name: account_id, Length: 179, dtype: int64 
+**history:
+
+      account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0     250489315  35345404       58           9  1746156176          1  ...            None             743.0               925             1                  41028                  65519
+1     250489315  35344660       58          33  1746153731          1  ...            None               NaN              2338             0                  12357                   8260
+2     250489315  35317403       58          24  1746067820          1  ...            None               NaN               975             1                  12388                  65493
+3     250489315  35316548       58          37  1746065231          1  ...            None               NaN              2453             0                  12357                   8260
+4     250489315  35314001       58          29  1746057238          1  ...            None               NaN              1404             1                   8260                  65509
+..          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+174   250489315  29747125       13          29  1733263898          1  ...           False               0.0              1052             1                  12384                  33025
+175   250489315  29745774       20          28  1733262544          1  ...           False               0.0              1162             0                  65521                      0
+176   250489315  29744592       13          26  1733261397          1  ...           False               0.0               958             1                      0                  65533
+177   250489315  29742281       13          29  1733259311          1  ...           False               0.0              1108             1                      0                  65485
+178   250489315  29343977       13          31  1732857687          1  ...           False               0.0              1209             1                      0                  65443
+
+[179 rows x 20 columns]
+2025-05-07 20:51:44,703 [DEBUG] [root.calcuate_player_base_stats] stats for player 0      250489315
+1      250489315
+2      250489315
+3      250489315
+4      250489315
+         ...    
+174    250489315
+175    250489315
+176    250489315
+177    250489315
+178    250489315
+Name: account_id, Length: 179, dtype: int64
+2025-05-07 20:51:44,704 [DEBUG] [root.calcuate_player_base_stats] total_kills: 1938
+2025-05-07 20:51:44,704 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 730
+2025-05-07 20:51:44,704 [DEBUG] [root.calcuate_player_base_stats] match_total: 179
+2025-05-07 20:51:44,710 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0      213538655
+1      213538655
+2      213538655
+3      213538655
+4      213538655
+         ...    
+502    213538655
+503    213538655
+504    213538655
+505    213538655
+506    213538655
+Name: account_id, Length: 507, dtype: int64 
+**history:
+
+      account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0     213538655  35340622       27          32  1746141312          1  ...            None               NaN              1751             1                   8260                  65125
+1     213538655  35340096       27          25  1746139666          1  ...            None               NaN              1391             1                  41028                  65509
+2     213538655  35320255       27          31  1746078145          1  ...            None               NaN              1923             1                  12356                  65509
+3     213538655  35319364       27          27  1746074681          1  ...            None               NaN              1680             0                  65221                   8260
+4     213538655  35312751       27          31  1746053461          1  ...            None               NaN              1695             0                  65509                   8260
+..          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+502   213538655   2978686       50          24  1724611887          1  ...           False               0.0              2129             0                      1                  49408
+503   213538655   2964433       11          21  1724609704          1  ...           False               0.0              2080             1                      0                  26177
+504   213538655   2953818       25          21  1724607957          1  ...           False               0.0              1503             0                  12417                      0
+505   213538655   2946505       50          19  1724606638          1  ...           False               0.0              1231             0                  32483                      0
+506   213538655   2824619       25          22  1724574011          1  ...           False               0.0              1978             1                      0                  44545
+
+[507 rows x 20 columns]
+2025-05-07 20:51:44,710 [DEBUG] [root.calcuate_player_base_stats] stats for player 0      213538655
+1      213538655
+2      213538655
+3      213538655
+4      213538655
+         ...    
+502    213538655
+503    213538655
+504    213538655
+505    213538655
+506    213538655
+Name: account_id, Length: 507, dtype: int64
+2025-05-07 20:51:44,710 [DEBUG] [root.calcuate_player_base_stats] total_kills: 4729
+2025-05-07 20:51:44,710 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 3308
+2025-05-07 20:51:44,710 [DEBUG] [root.calcuate_player_base_stats] match_total: 507
+2025-05-07 20:51:44,718 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0      7910302
+1      7910302
+2      7910302
+3      7910302
+4      7910302
+        ...   
+954    7910302
+955    7910302
+956    7910302
+957    7910302
+958    7910302
+Name: account_id, Length: 959, dtype: int64 
+**history:
+
+      account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0       7910302  35506575        7          32  1746661340          1  ...            None               NaN              1989             0                  65509                   8260
+1       7910302  35505745        7          37  1746658822          1  ...            None               NaN              2287             1                   8260                  45125
+2       7910302  35504604        7          30  1746655486          1  ...            None               NaN              1722             1                  41028                  65221
+3       7910302  35503528        7          33  1746652573          1  ...            None               NaN              1488             0                  65517                   8260
+4       7910302  35502189        7          33  1746649460          1  ...            None               NaN              2246             1                   8260                  65125
+..          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+954     7910302    404317        7          25  1721704696          1  ...           False               0.0              1825             1                  32768                  50689
+955     7910302    403685       10          24  1721699000          1  ...           False               0.0              2339             0                   5633                      0
+956     7910302    402675        7          24  1721689520          1  ...           False               0.0              2056             0                  14913                    256
+957     7910302    395104        4          16  1721626671          1  ...           False               0.0              1537             0                  28161                      0
+958     7910302    394863        2          21  1721624336          1  ...           False               0.0              1945             1                      0                  32449
+
+[959 rows x 20 columns]
+2025-05-07 20:51:44,718 [DEBUG] [root.calcuate_player_base_stats] stats for player 0      7910302
+1      7910302
+2      7910302
+3      7910302
+4      7910302
+        ...   
+954    7910302
+955    7910302
+956    7910302
+957    7910302
+958    7910302
+Name: account_id, Length: 959, dtype: int64
+2025-05-07 20:51:44,719 [DEBUG] [root.calcuate_player_base_stats] total_kills: 6438
+2025-05-07 20:51:44,719 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 4908
+2025-05-07 20:51:44,719 [DEBUG] [root.calcuate_player_base_stats] match_total: 959
+2025-05-07 20:51:44,725 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0       924812291
+1       924812291
+2       924812291
+3       924812291
+4       924812291
+          ...    
+1172    924812291
+1173    924812291
+1174    924812291
+1175    924812291
+1176    924812291
+Name: account_id, Length: 1177, dtype: int64 
+**history:
+
+       account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1    won
+0      924812291  35458893       16          31  1746498077          1  ...               NaN              1878             1                   8260                  65125  False
+1      924812291  35457830       27          32  1746494789          1  ...               NaN              2083             0                  65381                  12356  False
+2      924812291  35456603        3          37  1746490972          1  ...               NaN              2377             0                  44613                  41028   True
+3      924812291  35456026       27          28  1746489162          1  ...               NaN              1456             0                  65525                   8260   True
+4      924812291  35455466       25          27  1746487475          1  ...               NaN              1604             1                   8260                  65381  False
+...          ...       ...      ...         ...         ...        ...  ...               ...               ...           ...                    ...                    ...    ...
+1172   924812291  15735379        7          17  1726975534          1  ...               0.0              1331             1                  32768                  65253  False
+1173   924812291  15728553        1          22  1726974103          1  ...               0.0              1249             1                      0                  65525   True
+1174   924812291  15712007        1          22  1726970509          1  ...               0.0              1463             1                     32                  65217   True
+1175   924812291  15705925        3          19  1726969026          1  ...               0.0              1389             1                      0                  65249  False
+1176   924812291  15650581        1          27  1726955690          1  ...               0.0              2510             1                      0                      1  False
+
+[1177 rows x 21 columns]
+2025-05-07 20:51:44,725 [DEBUG] [root.calcuate_player_base_stats] stats for player 0       924812291
+1       924812291
+2       924812291
+3       924812291
+4       924812291
+          ...    
+1172    924812291
+1173    924812291
+1174    924812291
+1175    924812291
+1176    924812291
+Name: account_id, Length: 1177, dtype: int64
+2025-05-07 20:51:44,726 [DEBUG] [root.calcuate_player_base_stats] total_kills: 11226
+2025-05-07 20:51:44,726 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 7015
+2025-05-07 20:51:44,726 [DEBUG] [root.calcuate_player_base_stats] match_total: 1177
+2025-05-07 20:51:44,728 [DEBUG] [root.test_players_to_trend_from_db] 
+**full all player stats:
+
+ [account_id         1.729892e+09
+p_win_rate         7.172000e+01
+average_kills      1.496550e+03
+average_deaths     4.520700e+02
+average_kd         3.310000e+00
+p_total_matches    2.900000e+02
+dtype: float64, account_id         2.504893e+08
+p_win_rate         5.866000e+01
+average_kills      1.082680e+03
+average_deaths     4.078200e+02
+average_kd         2.650000e+00
+p_total_matches    1.790000e+02
+dtype: float64, account_id         2.135387e+08
+p_win_rate         5.779000e+01
+average_kills      9.327400e+02
+average_deaths     6.524700e+02
+average_kd         1.430000e+00
+p_total_matches    5.070000e+02
+dtype: float64, account_id         7910302.00
+p_win_rate              53.18
+average_kills          671.32
+average_deaths         511.78
+average_kd               1.31
+p_total_matches        959.00
+dtype: float64, account_id         9.248123e+08
+p_win_rate         5.811000e+01
+average_kills      9.537800e+02
+average_deaths     5.960100e+02
+average_kd         1.600000e+00
+p_total_matches    1.177000e+03
+dtype: float64]
+2025-05-07 20:51:44,729 [DEBUG] [root.test_players_to_trend_from_db] length of all_player_stats: 5
+2025-05-07 20:51:44,729 [DEBUG] [root.test_players_to_trend_from_db] length of df_player_stats converted to df: 5
+2025-05-07 20:51:44,730 [DEBUG] [root.test_players_to_trend_from_db] Calculated player trends.
+data type = <class 'pandas.core.frame.DataFrame'> 
+example data:
+
+ [account_id         1.729892e+09
+p_win_rate         7.172000e+01
+average_kills      1.496550e+03
+average_deaths     4.520700e+02
+average_kd         3.310000e+00
+p_total_matches    2.900000e+02
+dtype: float64, account_id         2.504893e+08
+p_win_rate         5.866000e+01
+average_kills      1.082680e+03
+average_deaths     4.078200e+02
+average_kd         2.650000e+00
+p_total_matches    1.790000e+02
+dtype: float64]
+2025-05-07 20:51:44,730 [INFO] [root.test_players_to_trend_from_db] Processing batch of 5 players from total 10
+2025-05-07 20:51:44,731 [DEBUG] [root.test_players_to_trend_from_db] Batch players:    account_id
+5    97652111
+6   342100891
+7   171862597
+8   449874472
+9   118027127
+2025-05-07 20:51:44,731 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 97652111
+2025-05-07 20:51:44,731 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/97652111/match-history?only_stored_history=true
+2025-05-07 20:51:44,732 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:51:45,321 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/97652111/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:51:45,341 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 97652111, lenght = 1764
+2025-05-07 20:51:45,341 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 342100891
+2025-05-07 20:51:45,341 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/342100891/match-history?only_stored_history=true
+2025-05-07 20:51:45,342 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:51:45,890 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/342100891/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:51:46,012 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 342100891, lenght = 2290
+2025-05-07 20:51:46,012 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 171862597
+2025-05-07 20:51:46,012 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/171862597/match-history?only_stored_history=true
+2025-05-07 20:51:46,012 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:51:46,501 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/171862597/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:51:46,507 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 171862597, lenght = 908
+2025-05-07 20:51:46,507 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 449874472
+2025-05-07 20:51:46,507 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/449874472/match-history?only_stored_history=true
+2025-05-07 20:51:46,507 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:51:47,033 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/449874472/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:51:47,108 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 449874472, lenght = 1244
+2025-05-07 20:51:47,108 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 118027127
+2025-05-07 20:51:47,108 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/118027127/match-history?only_stored_history=true
+2025-05-07 20:51:47,109 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:51:47,635 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/118027127/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:51:47,718 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 118027127, lenght = 1600
+2025-05-07 20:51:47,740 [INFO] [root.test_players_to_trend_from_db] Calculating player trends for 5 of 10 players
+2025-05-07 20:51:47,746 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0       97652111
+1       97652111
+2       97652111
+3       97652111
+4       97652111
+          ...   
+1759    97652111
+1760    97652111
+1761    97652111
+1762    97652111
+1763    97652111
+Name: account_id, Length: 1764, dtype: int64 
+**history:
+
+       account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0       97652111  35486086       13          37  1746591283          1  ...            None               NaN              2201             0                  58949                  41028
+1       97652111  35485180       16          31  1746587945          1  ...            None               NaN              1885             0                  65509                   8260
+2       97652111  35484437       13          37  1746585350          1  ...            None               NaN              2321             0                  31301                  41028
+3       97652111  35483658       31          28  1746582798          1  ...            None               NaN              1821             0                  65253                   8260
+4       97652111  35482825       16          37  1746580178          1  ...            None               NaN              2433             1                   8260                  45125
+...          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+1759    97652111     99472       50          25  1718416852          1  ...           False               0.0              2380             0                  65281                      0
+1760    97652111     99242       17          21  1718414767          1  ...           False               0.0              1722             1                      0                  65473
+1761    97652111     99093       13          14  1718413025          1  ...           False               0.0              1510             0                  65257                  32768
+1762    97652111     96104        2          18  1718347504          1  ...           False               0.0              1996             0                  65153                      0
+1763    97652111     96029        3          12  1718345826          1  ...           False               0.0              1587             1                  32768                  65477
+
+[1764 rows x 20 columns]
+2025-05-07 20:51:47,746 [DEBUG] [root.calcuate_player_base_stats] stats for player 0       97652111
+1       97652111
+2       97652111
+3       97652111
+4       97652111
+          ...   
+1759    97652111
+1760    97652111
+1761    97652111
+1762    97652111
+1763    97652111
+Name: account_id, Length: 1764, dtype: int64
+2025-05-07 20:51:47,746 [DEBUG] [root.calcuate_player_base_stats] total_kills: 14330
+2025-05-07 20:51:47,747 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 10825
+2025-05-07 20:51:47,747 [DEBUG] [root.calcuate_player_base_stats] match_total: 1764
+2025-05-07 20:51:47,753 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0       342100891
+1       342100891
+2       342100891
+3       342100891
+4       342100891
+          ...    
+2285    342100891
+2286    342100891
+2287    342100891
+2288    342100891
+2289    342100891
+Name: account_id, Length: 2290, dtype: int64 
+**history:
+
+       account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0      342100891  35432582       31          36  1746410585          1  ...            None               NaN              2545             0                  32325                   8260
+1      342100891  35431945       31          29  1746408654          1  ...            None               NaN              1750             0                  65477                  45124
+2      342100891  35431325        2          28  1746406842          1  ...            None               NaN              1499             1                   8260                  65485
+3      342100891  35430627        2          30  1746404712          1  ...            None               NaN              1774             0                  65509                  45124
+4      342100891  35429911        2          32  1746402553          1  ...            None               NaN              1981             0                  65509                   8260
+...          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+2285   342100891    843507       17          18  1723432805          1  ...           False               0.0              1388             0                  28361                      0
+2286   342100891    841535       15          21  1723430518          1  ...           False               0.0              2012             1                      0                  18049
+2287   342100891    839965        2          21  1723428494          1  ...           False               0.0              1912             0                  65345                      0
+2288   342100891    832457        3          21  1723419681          1  ...           False               0.0              1790             0                  65185                      0
+2289   342100891    829988        1          22  1723417269          1  ...           False               0.0              2243             0                  32385                      0
+
+[2290 rows x 20 columns]
+2025-05-07 20:51:47,753 [DEBUG] [root.calcuate_player_base_stats] stats for player 0       342100891
+1       342100891
+2       342100891
+3       342100891
+4       342100891
+          ...    
+2285    342100891
+2286    342100891
+2287    342100891
+2288    342100891
+2289    342100891
+Name: account_id, Length: 2290, dtype: int64
+2025-05-07 20:51:47,753 [DEBUG] [root.calcuate_player_base_stats] total_kills: 16508
+2025-05-07 20:51:47,753 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 12015
+2025-05-07 20:51:47,753 [DEBUG] [root.calcuate_player_base_stats] match_total: 2290
+2025-05-07 20:51:47,760 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0      171862597
+1      171862597
+2      171862597
+3      171862597
+4      171862597
+         ...    
+903    171862597
+904    171862597
+905    171862597
+906    171862597
+907    171862597
+Name: account_id, Length: 908, dtype: int64 
+**history:
+
+      account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0     171862597  35318134       58          36  1746070255          1  ...            None               NaN              2410             1                   8260                  41541
+1     171862597  35317327       58          35  1746067589          1  ...            None               NaN              2285             1                   8260                  48997
+2     171862597  35316813       58          25  1746066053          1  ...            None               NaN              1223             0                  65535                   8260
+3     171862597  35303579       58          34  1746031346          1  ...            None               NaN              2536             0                  65349                  41028
+4     171862597  35302922       58          31  1746029662          1  ...            None               NaN              1526             1                   8260                  65477
+..          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+903   171862597  13188022       15          26  1726453487          1  ...           False               0.0              2036             1                      0                  65153
+904   171862597  12647126       15          29  1726356906          1  ...           False               0.0              2376             0                   2561                      0
+905   171862597   9369249       15          13  1725743065          1  ...           False            1035.0              1791             0                  61057                      0
+906   171862597   9356738        1          17  1725741619          1  ...           False               0.0              1227             1                      0                  65361
+907   171862597   9338257        7          16  1725739445          1  ...           False               0.0              1224             0                  65509                      0
+
+[908 rows x 20 columns]
+2025-05-07 20:51:47,761 [DEBUG] [root.calcuate_player_base_stats] stats for player 0      171862597
+1      171862597
+2      171862597
+3      171862597
+4      171862597
+         ...    
+903    171862597
+904    171862597
+905    171862597
+906    171862597
+907    171862597
+Name: account_id, Length: 908, dtype: int64
+2025-05-07 20:51:47,761 [DEBUG] [root.calcuate_player_base_stats] total_kills: 7442
+2025-05-07 20:51:47,761 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 6281
+2025-05-07 20:51:47,761 [DEBUG] [root.calcuate_player_base_stats] match_total: 908
+2025-05-07 20:51:47,768 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0       449874472
+1       449874472
+2       449874472
+3       449874472
+4       449874472
+          ...    
+1239    449874472
+1240    449874472
+1241    449874472
+1242    449874472
+1243    449874472
+Name: account_id, Length: 1244, dtype: int64 
+**history:
+
+       account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0      449874472  35483063       14          23  1746580903          1  ...            None               NaN              1198             0                  65511                  12356
+1      449874472  35482106       14          35  1746577845          1  ...            None               NaN              2212             1                   8260                  65509
+2      449874472  35481109       14          29  1746574597          1  ...            None               NaN              1816             1                   8260                  65525
+3      449874472  35480410       15          29  1746572406          1  ...            None               NaN              1928             1                  12356                  57669
+4      449874472  35460205       13          37  1746502341          1  ...            None               NaN              2223             1                   8260                  41541
+...          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+1239   449874472   4332119        3          17  1724897625          1  ...           False               0.0              1212             1                      0                  65521
+1240   449874472   3941298        3          26  1724821624          1  ...           False               0.0              2987             0                      1                      0
+1241   449874472   3930797        3          24  1724818861          1  ...           False               0.0              2560             0                    513                      0
+1242   449874472   3922847        3          19  1724816977          1  ...           False               0.0              1610             1                      0                  50689
+1243   449874472   3919547        2          12  1724816241          1  ...           False               0.0               670             1                      0                  65533
+
+[1244 rows x 20 columns]
+2025-05-07 20:51:47,768 [DEBUG] [root.calcuate_player_base_stats] stats for player 0       449874472
+1       449874472
+2       449874472
+3       449874472
+4       449874472
+          ...    
+1239    449874472
+1240    449874472
+1241    449874472
+1242    449874472
+1243    449874472
+Name: account_id, Length: 1244, dtype: int64
+2025-05-07 20:51:47,768 [DEBUG] [root.calcuate_player_base_stats] total_kills: 9519
+2025-05-07 20:51:47,768 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 6728
+2025-05-07 20:51:47,768 [DEBUG] [root.calcuate_player_base_stats] match_total: 1244
+2025-05-07 20:51:47,775 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0       118027127
+1       118027127
+2       118027127
+3       118027127
+4       118027127
+          ...    
+1595    118027127
+1596    118027127
+1597    118027127
+1598    118027127
+1599    118027127
+Name: account_id, Length: 1600, dtype: int64 
+**history:
+
+       account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1    won
+0      118027127  35430396       60          30  1746404019          1  ...               NaN              1980             1                  45124                  57925  False
+1      118027127  35429505       60          33  1746401429          1  ...               NaN              2370             1                   8260                   8261   True
+2      118027127  35428339       20          35  1746398186          1  ...               NaN              2462             0                  65093                   8260   True
+3      118027127  35427383        3          31  1746395760          1  ...               NaN              2334             0                  65093                  41028   True
+4      118027127  35426734       14          26  1746394226          1  ...               NaN              1332             0                  65519                   8260   True
+...          ...       ...      ...         ...         ...        ...  ...               ...               ...           ...                    ...                    ...    ...
+1595   118027127   2122964       35          19  1724199949          1  ...               0.0              1887             1                  32768                  23169  False
+1596   118027127   1995925        4          22  1724120997          1  ...               0.0              1805             1                      0                  40449   True
+1597   118027127   1991166        4          21  1724118711          1  ...               0.0              2090             1                      0                  37377  False
+1598   118027127   1667616        3          21  1723954775          1  ...               0.0              1954             1                      0                  32257   True
+1599   118027127   1664734        4          17  1723953109          1  ...               0.0              1237             0                  24225                      0   True
+
+[1600 rows x 21 columns]
+2025-05-07 20:51:47,775 [DEBUG] [root.calcuate_player_base_stats] stats for player 0       118027127
+1       118027127
+2       118027127
+3       118027127
+4       118027127
+          ...    
+1595    118027127
+1596    118027127
+1597    118027127
+1598    118027127
+1599    118027127
+Name: account_id, Length: 1600, dtype: int64
+2025-05-07 20:51:47,775 [DEBUG] [root.calcuate_player_base_stats] total_kills: 16192
+2025-05-07 20:51:47,775 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 9021
+2025-05-07 20:51:47,775 [DEBUG] [root.calcuate_player_base_stats] match_total: 1600
+2025-05-07 20:51:47,779 [DEBUG] [root.test_players_to_trend_from_db] 
+**full all player stats:
+
+ [account_id         1.729892e+09
+p_win_rate         7.172000e+01
+average_kills      1.496550e+03
+average_deaths     4.520700e+02
+average_kd         3.310000e+00
+p_total_matches    2.900000e+02
+dtype: float64, account_id         2.504893e+08
+p_win_rate         5.866000e+01
+average_kills      1.082680e+03
+average_deaths     4.078200e+02
+average_kd         2.650000e+00
+p_total_matches    1.790000e+02
+dtype: float64, account_id         2.135387e+08
+p_win_rate         5.779000e+01
+average_kills      9.327400e+02
+average_deaths     6.524700e+02
+average_kd         1.430000e+00
+p_total_matches    5.070000e+02
+dtype: float64, account_id         7910302.00
+p_win_rate              53.18
+average_kills          671.32
+average_deaths         511.78
+average_kd               1.31
+p_total_matches        959.00
+dtype: float64, account_id         9.248123e+08
+p_win_rate         5.811000e+01
+average_kills      9.537800e+02
+average_deaths     5.960100e+02
+average_kd         1.600000e+00
+p_total_matches    1.177000e+03
+dtype: float64, account_id         97652111.00
+p_win_rate               54.54
+average_kills           812.36
+average_deaths          613.66
+average_kd                1.32
+p_total_matches        1764.00
+dtype: float64, account_id         3.421009e+08
+p_win_rate         5.240000e+01
+average_kills      7.208700e+02
+average_deaths     5.246700e+02
+average_kd         1.370000e+00
+p_total_matches    2.290000e+03
+dtype: float64, account_id         1.718626e+08
+p_win_rate         5.496000e+01
+average_kills      8.196000e+02
+average_deaths     6.917400e+02
+average_kd         1.180000e+00
+p_total_matches    9.080000e+02
+dtype: float64, account_id         4.498745e+08
+p_win_rate         6.198000e+01
+average_kills      7.651900e+02
+average_deaths     5.408400e+02
+average_kd         1.410000e+00
+p_total_matches    1.244000e+03
+dtype: float64, account_id         1.180271e+08
+p_win_rate         5.294000e+01
+average_kills      1.012000e+03
+average_deaths     5.638100e+02
+average_kd         1.790000e+00
+p_total_matches    1.600000e+03
+dtype: float64]
+2025-05-07 20:51:47,780 [DEBUG] [root.test_players_to_trend_from_db] length of all_player_stats: 10
+2025-05-07 20:51:47,781 [DEBUG] [root.test_players_to_trend_from_db] length of df_player_stats converted to df: 10
+2025-05-07 20:51:47,781 [DEBUG] [root.test_players_to_trend_from_db] Calculated player trends.
+data type = <class 'pandas.core.frame.DataFrame'> 
+example data:
+
+ [account_id         1.729892e+09
+p_win_rate         7.172000e+01
+average_kills      1.496550e+03
+average_deaths     4.520700e+02
+average_kd         3.310000e+00
+p_total_matches    2.900000e+02
+dtype: float64, account_id         2.504893e+08
+p_win_rate         5.866000e+01
+average_kills      1.082680e+03
+average_deaths     4.078200e+02
+average_kd         2.650000e+00
+p_total_matches    1.790000e+02
+dtype: float64]
+2025-05-07 20:53:04,935 [INFO] [root.test_players_to_trend_from_db] Starting player statistics ETL process
+2025-05-07 20:53:04,948 [INFO] [root.test_pull_players_to_trend] Pulled 10 players to trend
+2025-05-07 20:53:04,948 [INFO] [root.test_players_to_trend_from_db] Found 10 players to process
+2025-05-07 20:53:04,948 [INFO] [root.test_players_to_trend_from_db] Processing batch of 5 players from total 10
+2025-05-07 20:53:04,950 [DEBUG] [root.test_players_to_trend_from_db] Batch players:    account_id
+0   256188916
+1    11201280
+2   222709733
+3   105305228
+4    89259295
+2025-05-07 20:53:04,950 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 256188916
+2025-05-07 20:53:04,950 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/256188916/match-history?only_stored_history=true
+2025-05-07 20:53:04,955 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:53:05,476 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/256188916/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:53:05,495 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 256188916, lenght = 690
+2025-05-07 20:53:05,495 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 11201280
+2025-05-07 20:53:05,495 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/11201280/match-history?only_stored_history=true
+2025-05-07 20:53:05,496 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:53:05,843 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/11201280/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:53:05,869 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 11201280, lenght = 886
+2025-05-07 20:53:05,870 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 222709733
+2025-05-07 20:53:05,870 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/222709733/match-history?only_stored_history=true
+2025-05-07 20:53:05,872 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:53:06,368 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/222709733/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:53:06,372 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 222709733, lenght = 559
+2025-05-07 20:53:06,372 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 105305228
+2025-05-07 20:53:06,372 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/105305228/match-history?only_stored_history=true
+2025-05-07 20:53:06,373 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:53:06,962 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/105305228/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:53:06,970 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 105305228, lenght = 1315
+2025-05-07 20:53:06,970 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 89259295
+2025-05-07 20:53:06,970 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/89259295/match-history?only_stored_history=true
+2025-05-07 20:53:06,971 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:53:07,472 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/89259295/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:53:07,476 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 89259295, lenght = 745
+2025-05-07 20:54:35,252 [INFO] [root.test_players_to_trend_from_db] Starting player statistics ETL process
+2025-05-07 20:54:35,264 [INFO] [root.test_pull_players_to_trend] Pulled 10 players to trend
+2025-05-07 20:54:35,264 [INFO] [root.test_players_to_trend_from_db] Found 10 players to process
+2025-05-07 20:58:03,420 [INFO] [root.test_players_to_trend_from_db] Starting player statistics ETL process
+2025-05-07 20:58:03,426 [INFO] [root.test_pull_players_to_trend] Pulled 10 players to trend
+2025-05-07 20:58:03,426 [INFO] [root.test_players_to_trend_from_db] Found 10 players to process
+2025-05-07 20:58:03,426 [INFO] [root.test_players_to_trend_from_db] Processing batch of 5 players from total 10
+2025-05-07 20:58:03,428 [DEBUG] [root.test_players_to_trend_from_db] Batch players:    account_id
+0  1110203230
+1  1131491949
+2    31357831
+3  1065996175
+4   352231929
+2025-05-07 20:58:03,428 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 1110203230
+2025-05-07 20:58:03,428 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/1110203230/match-history?only_stored_history=true
+2025-05-07 20:58:03,430 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:58:04,011 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/1110203230/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:58:04,086 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 1110203230, lenght = 1296
+2025-05-07 20:58:04,087 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 1131491949
+2025-05-07 20:58:04,087 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/1131491949/match-history?only_stored_history=true
+2025-05-07 20:58:04,088 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:58:04,561 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/1131491949/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:58:04,566 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 1131491949, lenght = 697
+2025-05-07 20:58:04,566 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 31357831
+2025-05-07 20:58:04,566 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/31357831/match-history?only_stored_history=true
+2025-05-07 20:58:04,567 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:58:05,097 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/31357831/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:58:05,175 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 31357831, lenght = 1257
+2025-05-07 20:58:05,175 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 1065996175
+2025-05-07 20:58:05,175 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/1065996175/match-history?only_stored_history=true
+2025-05-07 20:58:05,175 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:58:05,467 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/1065996175/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:58:05,482 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 1065996175, lenght = 1060
+2025-05-07 20:58:05,482 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 352231929
+2025-05-07 20:58:05,482 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/352231929/match-history?only_stored_history=true
+2025-05-07 20:58:05,482 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:58:05,733 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/352231929/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:58:05,778 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 352231929, lenght = 648
+2025-05-07 20:58:05,793 [INFO] [root.test_players_to_trend_from_db] Calculating player trends for 5 of 10 players
+2025-05-07 20:58:05,800 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0       1110203230
+1       1110203230
+2       1110203230
+3       1110203230
+4       1110203230
+           ...    
+1291    1110203230
+1292    1110203230
+1293    1110203230
+1294    1110203230
+1295    1110203230
+Name: account_id, Length: 1296, dtype: int64 
+**history:
+
+       account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0     1110203230  35431058        6          31  1746406043          1  ...            None               NaN              1637             0                  65509                   8260
+1     1110203230  35428301       13          29  1746398080          1  ...            None               NaN              1596             0                  65253                   8260
+2     1110203230  35428020       19          15  1746397357          1  ...            None               NaN               562             0                  65535                  12388
+3     1110203230  35403532       14          33  1746331160          1  ...            None               NaN              2399             1                  41028                  28229
+4     1110203230  35402503       19          33  1746327982          1  ...            None               NaN              2084             0                  65477                  41028
+...          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+1291  1110203230   6755170        4          33  1725304334          1  ...           False               0.0              2475             1                  32768                  65217
+1292  1110203230   6699249       15          29  1725298781          1  ...           False               0.0              1939             1                      0                  65473
+1293  1110203230   6460834       27          33  1725255439          1  ...           False               0.0              3019             0                  48641                      0
+1294  1110203230   6445609        3          28  1725252241          1  ...           False               0.0              1468             1                      0                  65121
+1295  1110203230   6399609       11          33  1725244031          1  ...           False               0.0              2485             1                      0                      1
+
+[1296 rows x 20 columns]
+2025-05-07 20:58:05,800 [DEBUG] [root.calcuate_player_base_stats] stats for player 0       1110203230
+1       1110203230
+2       1110203230
+3       1110203230
+4       1110203230
+           ...    
+1291    1110203230
+1292    1110203230
+1293    1110203230
+1294    1110203230
+1295    1110203230
+Name: account_id, Length: 1296, dtype: int64
+2025-05-07 20:58:05,800 [DEBUG] [root.calcuate_player_base_stats] total_kills: 9957
+2025-05-07 20:58:05,800 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 8013
+2025-05-07 20:58:05,800 [DEBUG] [root.calcuate_player_base_stats] match_total: 1296
+2025-05-07 20:58:05,808 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0      1131491949
+1      1131491949
+2      1131491949
+3      1131491949
+4      1131491949
+          ...    
+692    1131491949
+693    1131491949
+694    1131491949
+695    1131491949
+696    1131491949
+Name: account_id, Length: 697, dtype: int64 
+**history:
+
+      account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0    1131491949  35437388       50          33  1746430651          1  ...            None               NaN              2241             1                  41028                  65093
+1    1131491949  35437039       50          32  1746428542          1  ...            None               NaN              1829             1                   8260                  65509
+2    1131491949  35436567       50          37  1746425858          1  ...            None               NaN              2414             0                  65125                   8260
+3    1131491949  35436073        3          35  1746423340          1  ...            None               NaN              2374             0                  42565                  12356
+4    1131491949  35432979       19          29  1746411841          1  ...            None               NaN              2113             1                  12356                  65349
+..          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+692  1131491949  21279858       12          26  1728443382          1  ...           False               0.0              1773             1                      0                  48929
+693  1131491949  21272459       12          26  1728440496          1  ...           False               0.0              1900             1                      0                  65057
+694  1131491949  21104712       12          26  1728383426          1  ...           False               0.0              1733             1                      0                   8449
+695  1131491949  21102132       31          21  1728382054          1  ...           False               0.0              1072             1                      0                  65533
+696  1131491949  21098396       31          25  1728379963          1  ...           False               0.0              1823             1                  24576                  33281
+
+[697 rows x 20 columns]
+2025-05-07 20:58:05,808 [DEBUG] [root.calcuate_player_base_stats] stats for player 0      1131491949
+1      1131491949
+2      1131491949
+3      1131491949
+4      1131491949
+          ...    
+692    1131491949
+693    1131491949
+694    1131491949
+695    1131491949
+696    1131491949
+Name: account_id, Length: 697, dtype: int64
+2025-05-07 20:58:05,809 [DEBUG] [root.calcuate_player_base_stats] total_kills: 6185
+2025-05-07 20:58:05,809 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 3718
+2025-05-07 20:58:05,809 [DEBUG] [root.calcuate_player_base_stats] match_total: 697
+2025-05-07 20:58:05,815 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0       31357831
+1       31357831
+2       31357831
+3       31357831
+4       31357831
+          ...   
+1252    31357831
+1253    31357831
+1254    31357831
+1255    31357831
+1256    31357831
+Name: account_id, Length: 1257, dtype: int64 
+**history:
+
+       account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0       31357831  35485434       50          28  1746588873          1  ...            None               NaN              1492             1                  12356                  65525
+1       31357831  35461202       14          27  1746505962          1  ...            None               NaN              1464             0                  65509                   8260
+2       31357831  35460770        6          27  1746504327          1  ...            None               NaN              1573             1                  45380                  65125
+3       31357831  35460155        6          32  1746502207          1  ...            None               NaN              2049             1                  41028                  65093
+4       31357831  35459453       31          35  1746499841          1  ...            None               NaN              2315             0                  27205                   8260
+...          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+1252    31357831   5173730       19           9  1725057443          1  ...           False               0.0               901             1                  33024                  65519
+1253    31357831   5158768       50          27  1725055322          1  ...           False               0.0              1986             1                      0                  65025
+1254    31357831   5145627       27          23  1725053490          1  ...           False               0.0              1599             1                      0                  65377
+1255    31357831   5137234       13          16  1725052395          1  ...           False               0.0               965             0                  65481                  53632
+1256    31357831   5131505        4           8  1725051632          1  ...           False               0.0               693             1                  49536                  65535
+
+[1257 rows x 20 columns]
+2025-05-07 20:58:05,815 [DEBUG] [root.calcuate_player_base_stats] stats for player 0       31357831
+1       31357831
+2       31357831
+3       31357831
+4       31357831
+          ...   
+1252    31357831
+1253    31357831
+1254    31357831
+1255    31357831
+1256    31357831
+Name: account_id, Length: 1257, dtype: int64
+2025-05-07 20:58:05,815 [DEBUG] [root.calcuate_player_base_stats] total_kills: 11428
+2025-05-07 20:58:05,815 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 8115
+2025-05-07 20:58:05,815 [DEBUG] [root.calcuate_player_base_stats] match_total: 1257
+2025-05-07 20:58:05,823 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0       1065996175
+1       1065996175
+2       1065996175
+3       1065996175
+4       1065996175
+           ...    
+1055    1065996175
+1056    1065996175
+1057    1065996175
+1058    1065996175
+1059    1065996175
+Name: account_id, Length: 1060, dtype: int64 
+**history:
+
+       account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0     1065996175  35436890        7          24  1746427643          1  ...            None               NaN               975             0                  65535                  12356
+1     1065996175  35436589       13          27  1746425984          1  ...            None               NaN              1548             1                   8260                  65509
+2     1065996175  35436108        2          32  1746423498          1  ...            None               NaN              2073             1                   8260                  65349
+3     1065996175  35434489       13          30  1746416944          1  ...            None               NaN              1822             0                  65253                   8260
+4     1065996175  35432666       27          31  1746410809          1  ...            None               NaN              1716             0                  65477                  12356
+...          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+1055  1065996175  15295986       27          23  1726896640          1  ...           False               0.0              1526             0                  65249                      0
+1056  1065996175  15236544        1          29  1726884822          1  ...           False               0.0              1820             0                  65153                      0
+1057  1065996175  14902190        3          26  1726819278          1  ...           False               0.0              1547             1                      0                  41537
+1058  1065996175  14896637       27          25  1726817583          1  ...           False               0.0              1653             1                      0                  65057
+1059  1065996175  14854705        1          21  1726806114          1  ...           False               0.0              1150             0                  65523                  16384
+
+[1060 rows x 20 columns]
+2025-05-07 20:58:05,823 [DEBUG] [root.calcuate_player_base_stats] stats for player 0       1065996175
+1       1065996175
+2       1065996175
+3       1065996175
+4       1065996175
+           ...    
+1055    1065996175
+1056    1065996175
+1057    1065996175
+1058    1065996175
+1059    1065996175
+Name: account_id, Length: 1060, dtype: int64
+2025-05-07 20:58:05,824 [DEBUG] [root.calcuate_player_base_stats] total_kills: 8901
+2025-05-07 20:58:05,824 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 5932
+2025-05-07 20:58:05,824 [DEBUG] [root.calcuate_player_base_stats] match_total: 1060
+2025-05-07 20:58:05,830 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0      352231929
+1      352231929
+2      352231929
+3      352231929
+4      352231929
+         ...    
+643    352231929
+644    352231929
+645    352231929
+646    352231929
+647    352231929
+Name: account_id, Length: 648, dtype: int64 
+**history:
+
+      account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0     352231929  35344201       11          31  1746152248          1  ...            None               NaN              2060             1                   8260                  65093
+1     352231929  35343552       11          29  1746150145          1  ...            None               NaN              1926             1                  24644                  63045
+2     352231929  35315054       11          37  1746060569          1  ...            None               NaN              3098             1                   8260                  12357
+3     352231929  35314571       11          22  1746059046          1  ...            None               NaN              1357             1                  12356                  65511
+4     352231929  35290074       11          33  1745977728          1  ...            None               NaN              2185             1                  12356                  41029
+..          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+643   352231929   6821806       11          29  1725311233          1  ...           False               0.0              2761             1                      0                      1
+644   352231929   6805156       20          22  1725309370          1  ...           False               0.0              1674             1                      0                  65217
+645   352231929   6783798       20          24  1725307149          1  ...           False               0.0              1616             0                  32289                  16384
+646   352231929   6699495       20          21  1725298806          1  ...           False               0.0              1143             0                  65505                      0
+647   352231929   6670783        8          30  1725295684          1  ...           False               0.0              2897             1                      0                      1
+
+[648 rows x 20 columns]
+2025-05-07 20:58:05,831 [DEBUG] [root.calcuate_player_base_stats] stats for player 0      352231929
+1      352231929
+2      352231929
+3      352231929
+4      352231929
+         ...    
+643    352231929
+644    352231929
+645    352231929
+646    352231929
+647    352231929
+Name: account_id, Length: 648, dtype: int64
+2025-05-07 20:58:05,831 [DEBUG] [root.calcuate_player_base_stats] total_kills: 3266
+2025-05-07 20:58:05,831 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 2789
+2025-05-07 20:58:05,831 [DEBUG] [root.calcuate_player_base_stats] match_total: 648
+2025-05-07 20:58:05,833 [DEBUG] [root.test_players_to_trend_from_db] 
+**full all player stats:
+
+ [account_id         1.110203e+09
+p_win_rate         5.478000e+01
+average_kills      7.682900e+02
+average_deaths     6.182900e+02
+average_kd         1.240000e+00
+p_total_matches    1.296000e+03
+dtype: float64, account_id         1.131492e+09
+p_win_rate         5.710000e+01
+average_kills      8.873700e+02
+average_deaths     5.334300e+02
+average_kd         1.660000e+00
+p_total_matches    6.970000e+02
+dtype: float64, account_id         31357831.00
+p_win_rate               51.95
+average_kills           909.15
+average_deaths          645.58
+average_kd                1.41
+p_total_matches        1257.00
+dtype: float64, account_id         1.065996e+09
+p_win_rate         5.689000e+01
+average_kills      8.397200e+02
+average_deaths     5.596200e+02
+average_kd         1.500000e+00
+p_total_matches    1.060000e+03
+dtype: float64, account_id         3.522319e+08
+p_win_rate         5.633000e+01
+average_kills      5.040100e+02
+average_deaths     4.304000e+02
+average_kd         1.170000e+00
+p_total_matches    6.480000e+02
+dtype: float64]
+2025-05-07 20:58:05,834 [DEBUG] [root.test_players_to_trend_from_db] length of all_player_stats: 5
+2025-05-07 20:58:05,834 [DEBUG] [root.test_players_to_trend_from_db] length of df_player_stats converted to df: 5
+2025-05-07 20:58:05,835 [DEBUG] [root.test_players_to_trend_from_db] Calculated player trends.
+data type = <class 'pandas.core.frame.DataFrame'> 
+example data:
+
+ [account_id         1.110203e+09
+p_win_rate         5.478000e+01
+average_kills      7.682900e+02
+average_deaths     6.182900e+02
+average_kd         1.240000e+00
+p_total_matches    1.296000e+03
+dtype: float64, account_id         1.131492e+09
+p_win_rate         5.710000e+01
+average_kills      8.873700e+02
+average_deaths     5.334300e+02
+average_kd         1.660000e+00
+p_total_matches    6.970000e+02
+dtype: float64]
+2025-05-07 20:58:05,835 [INFO] [root.test_players_to_trend_from_db] Processing batch of 5 players from total 10
+2025-05-07 20:58:05,836 [DEBUG] [root.test_players_to_trend_from_db] Batch players:    account_id
+5    90711877
+6   301648888
+7   150454291
+8  1676299122
+9    54456193
+2025-05-07 20:58:05,836 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 90711877
+2025-05-07 20:58:05,836 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/90711877/match-history?only_stored_history=true
+2025-05-07 20:58:05,837 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:58:06,108 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/90711877/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:58:06,122 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 90711877, lenght = 1031
+2025-05-07 20:58:06,122 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 301648888
+2025-05-07 20:58:06,122 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/301648888/match-history?only_stored_history=true
+2025-05-07 20:58:06,123 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:58:06,323 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/301648888/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:58:06,330 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 301648888, lenght = 884
+2025-05-07 20:58:06,330 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 150454291
+2025-05-07 20:58:06,330 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/150454291/match-history?only_stored_history=true
+2025-05-07 20:58:06,330 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:58:06,787 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/150454291/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:58:06,792 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 150454291, lenght = 872
+2025-05-07 20:58:06,792 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 1676299122
+2025-05-07 20:58:06,792 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/1676299122/match-history?only_stored_history=true
+2025-05-07 20:58:06,792 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:58:07,283 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/1676299122/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:58:07,381 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 1676299122, lenght = 1984
+2025-05-07 20:58:07,381 [DEBUG] [root.test_players_to_trend_from_db] Processing player with account_id: 54456193
+2025-05-07 20:58:07,381 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/54456193/match-history?only_stored_history=true
+2025-05-07 20:58:07,381 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-07 20:58:07,666 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/54456193/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-07 20:58:07,769 [DEBUG] [root.test_players_to_trend_from_db] Processed match history for player 54456193, lenght = 1714
+2025-05-07 20:58:07,786 [INFO] [root.test_players_to_trend_from_db] Calculating player trends for 5 of 10 players
+2025-05-07 20:58:07,792 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0       90711877
+1       90711877
+2       90711877
+3       90711877
+4       90711877
+          ...   
+1026    90711877
+1027    90711877
+1028    90711877
+1029    90711877
+1030    90711877
+Name: account_id, Length: 1031, dtype: int64 
+**history:
+
+       account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0       90711877  35433921       27          25  1746414969          1  ...            None               NaN              1618             1                   8260                  65253
+1       90711877  35433236       27          28  1746412712          1  ...            None               NaN              2067             0                  65093                   8260
+2       90711877  35430491       27          32  1746404305          1  ...            None               NaN              2214             0                  65349                  24644
+3       90711877  35428339       10          32  1746398186          1  ...            None               NaN              2462             0                  65093                   8260
+4       90711877  35427195        2          32  1746395332          1  ...            None               NaN              2675             1                   8260                  65125
+...          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+1026    90711877   4388535       10           3  1724910635          1  ...           False             280.0              1738             0                  65089                      0
+1027    90711877   4376532       17          24  1724907440          1  ...           False               0.0              2577             1                      0                   6657
+1028    90711877   4373338        2          13  1724906621          1  ...           False               0.0               867             1                      0                  65529
+1029    90711877   4363776       13          20  1724904340          1  ...           False               0.0              1922             1                      0                  65217
+1030    90711877   4248603        7          21  1724882203          1  ...           False               0.0              1891             0                   4097                      0
+
+[1031 rows x 20 columns]
+2025-05-07 20:58:07,793 [DEBUG] [root.calcuate_player_base_stats] stats for player 0       90711877
+1       90711877
+2       90711877
+3       90711877
+4       90711877
+          ...   
+1026    90711877
+1027    90711877
+1028    90711877
+1029    90711877
+1030    90711877
+Name: account_id, Length: 1031, dtype: int64
+2025-05-07 20:58:07,793 [DEBUG] [root.calcuate_player_base_stats] total_kills: 8031
+2025-05-07 20:58:07,793 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 7178
+2025-05-07 20:58:07,793 [DEBUG] [root.calcuate_player_base_stats] match_total: 1031
+2025-05-07 20:58:07,800 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0      301648888
+1      301648888
+2      301648888
+3      301648888
+4      301648888
+         ...    
+879    301648888
+880    301648888
+881    301648888
+882    301648888
+883    301648888
+Name: account_id, Length: 884, dtype: int64 
+**history:
+
+      account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0     301648888  35485434       11          24  1746588873          1  ...            None               NaN              1492             1                  12356                  65525
+1     301648888  35484791       11          31  1746586571          1  ...            None               NaN              2113             1                  12356                  59205
+2     301648888  35484201       11          29  1746584594          1  ...            None               NaN              1816             0                  65511                   8260
+3     301648888  35481850       27          27  1746577068          1  ...            None               NaN              1561             1                   8260                  65477
+4     301648888  35481302        6          28  1746575216          1  ...            None               NaN              1621             1                  41028                  64229
+..          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+879   301648888   6866152       10          27  1725317202          1  ...           False               0.0              1762             0                  65249                      0
+880   301648888   6855448       10          22  1725315664          1  ...           False               0.0              1365             1                   4096                  65525
+881   301648888   6828572       10          23  1725312026          1  ...           False               0.0              1150             1                      0                  65527
+882   301648888   6763485        7          25  1725305146          1  ...           False               0.0              1467             0                  65377                      0
+883   301648888   6751360       15          22  1725303974          1  ...           False               0.0              1011             0                  65525                     32
+
+[884 rows x 20 columns]
+2025-05-07 20:58:07,800 [DEBUG] [root.calcuate_player_base_stats] stats for player 0      301648888
+1      301648888
+2      301648888
+3      301648888
+4      301648888
+         ...    
+879    301648888
+880    301648888
+881    301648888
+882    301648888
+883    301648888
+Name: account_id, Length: 884, dtype: int64
+2025-05-07 20:58:07,800 [DEBUG] [root.calcuate_player_base_stats] total_kills: 6166
+2025-05-07 20:58:07,800 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 6411
+2025-05-07 20:58:07,800 [DEBUG] [root.calcuate_player_base_stats] match_total: 884
+2025-05-07 20:58:07,808 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0      150454291
+1      150454291
+2      150454291
+3      150454291
+4      150454291
+         ...    
+867    150454291
+868    150454291
+869    150454291
+870    150454291
+871    150454291
+Name: account_id, Length: 872, dtype: int64 
+**history:
+
+      account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0     150454291  35457708       17          30  1746494412          1  ...            None               NaN              1899             0                  65253                  45124
+1     150454291  35456959       17          33  1746492063          1  ...            None               NaN              2140             1                   8260                  65093
+2     150454291  35456484       17          24  1746490609          1  ...            None               NaN              1279             0                  65525                   8260
+3     150454291  35455729       17          29  1746488201          1  ...            None               NaN              1887             0                  65509                   8260
+4     150454291  35454900       17          34  1746485696          1  ...            None               NaN              2295             1                  41028                  65093
+..          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+867   150454291   5199881       13          23  1725061893          1  ...           False               0.0              1675             0                  65025                      0
+868   150454291   5191597       17          16  1725060289          1  ...           False               0.0              1339             0                  65217                      0
+869   150454291   4714299        2          21  1724973821          1  ...           False               0.0              2204             1                      0                   4641
+870   150454291   4708666        1          15  1724972840          1  ...           False               0.0               883             0                  65515                      0
+871   150454291   4294501        2          23  1724890185          1  ...           False               0.0              1971             1                      0                  15873
+
+[872 rows x 20 columns]
+2025-05-07 20:58:07,808 [DEBUG] [root.calcuate_player_base_stats] stats for player 0      150454291
+1      150454291
+2      150454291
+3      150454291
+4      150454291
+         ...    
+867    150454291
+868    150454291
+869    150454291
+870    150454291
+871    150454291
+Name: account_id, Length: 872, dtype: int64
+2025-05-07 20:58:07,808 [DEBUG] [root.calcuate_player_base_stats] total_kills: 6008
+2025-05-07 20:58:07,808 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 4929
+2025-05-07 20:58:07,808 [DEBUG] [root.calcuate_player_base_stats] match_total: 872
+2025-05-07 20:58:07,815 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0       1676299122
+1       1676299122
+2       1676299122
+3       1676299122
+4       1676299122
+           ...    
+1979    1676299122
+1980    1676299122
+1981    1676299122
+1982    1676299122
+1983    1676299122
+Name: account_id, Length: 1984, dtype: int64 
+**history:
+
+       account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0     1676299122  35487728        6          34  1746598544          1  ...            None               NaN              2211             1                  12356                  65093
+1     1676299122  35486970       31          36  1746594848          1  ...            None               NaN              2611             1                   8260                  47685
+2     1676299122  35486371       31          37  1746592404          1  ...            None               NaN              2066             1                  12356                  65093
+3     1676299122  35485981        6          25  1746590873          1  ...            None               NaN              1295             1                   8260                  65511
+4     1676299122  35485048        6          29  1746587477          1  ...            None               NaN              1941             0                  65349                  41028
+...          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+1979  1676299122    123456       50          18  1718859622          1  ...           False               0.0              1329             0                  65531                      0
+1980  1676299122    123140        7          19  1718855457          1  ...           False               0.0              1964             1                      0                  65249
+1981  1676299122    122935       50          21  1718853045          1  ...           False               0.0              2299             0                  56993                  37120
+1982  1676299122    122762        4          17  1718850844          1  ...           False               0.0              1858             0                  32417                      0
+1983  1676299122    122553       50          24  1718848815          1  ...           False               0.0              1881             1                      0                  40705
+
+[1984 rows x 20 columns]
+2025-05-07 20:58:07,815 [DEBUG] [root.calcuate_player_base_stats] stats for player 0       1676299122
+1       1676299122
+2       1676299122
+3       1676299122
+4       1676299122
+           ...    
+1979    1676299122
+1980    1676299122
+1981    1676299122
+1982    1676299122
+1983    1676299122
+Name: account_id, Length: 1984, dtype: int64
+2025-05-07 20:58:07,816 [DEBUG] [root.calcuate_player_base_stats] total_kills: 20118
+2025-05-07 20:58:07,816 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 13237
+2025-05-07 20:58:07,816 [DEBUG] [root.calcuate_player_base_stats] match_total: 1984
+2025-05-07 20:58:07,823 [DEBUG] [root.test_players_to_trend_from_db] Calculating player base stats for player 0       54456193
+1       54456193
+2       54456193
+3       54456193
+4       54456193
+          ...   
+1709    54456193
+1710    54456193
+1711    54456193
+1712    54456193
+1713    54456193
+Name: account_id, Length: 1714, dtype: int64 
+**history:
+
+       account_id  match_id  hero_id  hero_level  start_time  game_mode  ...  team_abandoned  abandoned_time_s  match_duration_s  match_result  objectives_mask_team0  objectives_mask_team1
+0       54456193  35498215       25          29  1746640381          1  ...            None               NaN              1626             1                   8260                  65253
+1       54456193  35497162       31          31  1746637743          1  ...            None               NaN              2176             0                  65093                  45124
+2       54456193  35490076       25          37  1746612416          1  ...            None               NaN              2456             1                  45124                   8261
+3       54456193  35489724       31          28  1746610521          1  ...            None               NaN              1763             0                  65509                  41028
+4       54456193  35489381       25          29  1746608516          1  ...            None               NaN              1692             1                  12356                  65509
+...          ...       ...      ...         ...         ...        ...  ...             ...               ...               ...           ...                    ...                    ...
+1709    54456193   1066663        8          25  1723624589          1  ...           False               0.0              2592             0                  32257                      0
+1710    54456193   1064729        8          23  1723622610          1  ...           False               0.0              1794             1                      0                  32353
+1711    54456193   1062403        8          22  1723620232          1  ...           False               0.0              2234             0                   7681                      0
+1712    54456193   1060674        8          10  1723618405          1  ...           False               0.0              1222             0                  65505                      0
+1713    54456193   1059475        8          19  1723617097          1  ...           False               0.0              1224             0                  65505                      0
+
+[1714 rows x 20 columns]
+2025-05-07 20:58:07,824 [DEBUG] [root.calcuate_player_base_stats] stats for player 0       54456193
+1       54456193
+2       54456193
+3       54456193
+4       54456193
+          ...   
+1709    54456193
+1710    54456193
+1711    54456193
+1712    54456193
+1713    54456193
+Name: account_id, Length: 1714, dtype: int64
+2025-05-07 20:58:07,824 [DEBUG] [root.calcuate_player_base_stats] total_kills: 12882
+2025-05-07 20:58:07,824 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 14489
+2025-05-07 20:58:07,824 [DEBUG] [root.calcuate_player_base_stats] match_total: 1714
+2025-05-07 20:58:07,829 [DEBUG] [root.test_players_to_trend_from_db] 
+**full all player stats:
+
+ [account_id         1.110203e+09
+p_win_rate         5.478000e+01
+average_kills      7.682900e+02
+average_deaths     6.182900e+02
+average_kd         1.240000e+00
+p_total_matches    1.296000e+03
+dtype: float64, account_id         1.131492e+09
+p_win_rate         5.710000e+01
+average_kills      8.873700e+02
+average_deaths     5.334300e+02
+average_kd         1.660000e+00
+p_total_matches    6.970000e+02
+dtype: float64, account_id         31357831.00
+p_win_rate               51.95
+average_kills           909.15
+average_deaths          645.58
+average_kd                1.41
+p_total_matches        1257.00
+dtype: float64, account_id         1.065996e+09
+p_win_rate         5.689000e+01
+average_kills      8.397200e+02
+average_deaths     5.596200e+02
+average_kd         1.500000e+00
+p_total_matches    1.060000e+03
+dtype: float64, account_id         3.522319e+08
+p_win_rate         5.633000e+01
+average_kills      5.040100e+02
+average_deaths     4.304000e+02
+average_kd         1.170000e+00
+p_total_matches    6.480000e+02
+dtype: float64, account_id         90711877.00
+p_win_rate               52.86
+average_kills           778.95
+average_deaths          696.22
+average_kd                1.12
+p_total_matches        1031.00
+dtype: float64, account_id         3.016489e+08
+p_win_rate         5.452000e+01
+average_kills      6.975100e+02
+average_deaths     7.252300e+02
+average_kd         9.600000e-01
+p_total_matches    8.840000e+02
+dtype: float64, account_id         1.504543e+08
+p_win_rate         5.103000e+01
+average_kills      6.889900e+02
+average_deaths     5.652500e+02
+average_kd         1.220000e+00
+p_total_matches    8.720000e+02
+dtype: float64, account_id         1.676299e+09
+p_win_rate         5.383000e+01
+average_kills      1.014010e+03
+average_deaths     6.671900e+02
+average_kd         1.520000e+00
+p_total_matches    1.984000e+03
+dtype: float64, account_id         54456193.00
+p_win_rate               55.25
+average_kills           751.58
+average_deaths          845.33
+average_kd                0.89
+p_total_matches        1714.00
+dtype: float64]
+2025-05-07 20:58:07,830 [DEBUG] [root.test_players_to_trend_from_db] length of all_player_stats: 10
+2025-05-07 20:58:07,830 [DEBUG] [root.test_players_to_trend_from_db] length of df_player_stats converted to df: 10
+2025-05-07 20:58:07,831 [DEBUG] [root.test_players_to_trend_from_db] Calculated player trends.
+data type = <class 'pandas.core.frame.DataFrame'> 
+example data:
+
+ [account_id         1.110203e+09
+p_win_rate         5.478000e+01
+average_kills      7.682900e+02
+average_deaths     6.182900e+02
+average_kd         1.240000e+00
+p_total_matches    1.296000e+03
+dtype: float64, account_id         1.131492e+09
+p_win_rate         5.710000e+01
+average_kills      8.873700e+02
+average_deaths     5.334300e+02
+average_kd         1.660000e+00
+p_total_matches    6.970000e+02
+dtype: float64]
+2025-05-07 20:59:02,484 [INFO] [root.test1] Starting function tests
+2025-05-07 20:59:02,501 [INFO] [root.test_calculate_batch_player_streak_trends] Calculating player streak trends
+2025-05-07 20:59:02,502 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 4771    54456193
+4772    54456193
+4773    54456193
+4774    54456193
+4775    54456193
+          ...   
+6480    54456193
+6481    54456193
+6482    54456193
+6483    54456193
+6484    54456193
+Name: account_id, Length: 1714, dtype: int64
+2025-05-07 20:59:02,502 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends
+2025-05-07 21:04:49,343 [INFO] [root.test1] Starting function tests
+2025-05-07 21:04:49,353 [INFO] [root.test_calculate_batch_player_streak_trends] Calculating player streak trends
+2025-05-07 21:05:42,194 [INFO] [root.test1] Starting function tests
+2025-05-07 21:05:42,204 [INFO] [root.test_calculate_batch_player_streak_trends] Calculating player streak trends
+2025-05-07 21:05:42,204 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 54456193
+2025-05-07 21:05:42,204 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends
+2025-05-07 21:05:57,962 [INFO] [root.test1] Starting function tests
+2025-05-07 21:05:57,980 [INFO] [root.test_calculate_batch_player_streak_trends] Calculating player streak trends
+2025-05-07 21:06:40,369 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 54456193
+2025-05-07 21:06:44,359 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends
+2025-05-07 21:07:55,346 [INFO] [root.test1] Starting function tests
+2025-05-07 21:07:55,357 [INFO] [root.test_calculate_batch_player_streak_trends] Calculating player streak trends
+2025-05-07 21:07:55,357 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 54456193
+2025-05-07 21:07:55,357 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:07:55,357 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends
+2025-05-07 21:07:55,359 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 54456193
+2025-05-07 21:07:55,359 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 54456193
+2025-05-07 21:07:55,359 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:07:55,368 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 90711877
+2025-05-07 21:07:55,368 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:07:55,368 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends
+2025-05-07 21:07:55,369 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 90711877
+2025-05-07 21:07:55,369 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 90711877
+2025-05-07 21:07:55,369 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:07:55,373 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 150454291
+2025-05-07 21:07:55,373 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:07:55,373 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends
+2025-05-07 21:07:55,374 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 150454291
+2025-05-07 21:07:55,374 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 150454291
+2025-05-07 21:07:55,374 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:07:55,378 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 301648888
+2025-05-07 21:07:55,378 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:07:55,378 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends
+2025-05-07 21:07:55,379 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 301648888
+2025-05-07 21:07:55,379 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 301648888
+2025-05-07 21:07:55,379 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:07:55,382 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 1676299122
+2025-05-07 21:07:55,383 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:07:55,383 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends
+2025-05-07 21:07:55,384 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 1676299122
+2025-05-07 21:07:55,384 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 1676299122
+2025-05-07 21:07:55,384 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:07:55,387 [INFO] [root.test1] *TEST*completed player_trends
+2025-05-07 21:08:47,530 [INFO] [root.test1] Starting function tests
+2025-05-07 21:08:47,540 [INFO] [root.test_calculate_batch_player_streak_trends] Calculating player streak trends
+2025-05-07 21:08:47,540 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 54456193
+2025-05-07 21:08:47,540 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:08:47,541 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:08:47,542 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 54456193
+2025-05-07 21:08:47,542 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 54456193
+2025-05-07 21:08:47,542 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:08:47,547 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 90711877
+2025-05-07 21:08:47,547 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:08:47,548 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:08:47,549 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 90711877
+2025-05-07 21:08:47,549 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 90711877
+2025-05-07 21:08:47,549 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:08:47,552 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 150454291
+2025-05-07 21:08:47,552 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:08:47,553 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:08:47,554 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 150454291
+2025-05-07 21:08:47,554 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 150454291
+2025-05-07 21:08:47,554 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:08:47,557 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 301648888
+2025-05-07 21:08:47,557 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:08:47,557 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:08:47,558 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 301648888
+2025-05-07 21:08:47,558 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 301648888
+2025-05-07 21:08:47,558 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:08:47,561 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 1676299122
+2025-05-07 21:08:47,562 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:08:47,562 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:08:47,563 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 1676299122
+2025-05-07 21:08:47,563 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 1676299122
+2025-05-07 21:08:47,563 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:09:43,097 [INFO] [root.test1] Starting function tests
+2025-05-07 21:09:43,107 [INFO] [root.test_calculate_batch_player_streak_trends] Calculating player streak trends
+2025-05-07 21:09:43,107 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 54456193
+2025-05-07 21:09:43,107 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:09:43,107 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:09:43,110 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 54456193
+2025-05-07 21:09:43,110 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 54456193
+2025-05-07 21:09:43,110 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:09:43,114 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 90711877
+2025-05-07 21:09:43,114 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:09:43,115 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:09:43,116 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 90711877
+2025-05-07 21:09:43,116 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 90711877
+2025-05-07 21:09:43,116 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:09:43,119 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 150454291
+2025-05-07 21:09:43,119 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:09:43,119 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:09:43,120 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 150454291
+2025-05-07 21:09:43,120 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 150454291
+2025-05-07 21:09:43,120 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:09:43,124 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 301648888
+2025-05-07 21:09:43,124 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:09:43,124 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:09:43,125 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 301648888
+2025-05-07 21:09:43,126 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 301648888
+2025-05-07 21:09:43,126 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:09:43,129 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 1676299122
+2025-05-07 21:09:43,129 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:09:43,130 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:09:43,131 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 1676299122
+2025-05-07 21:09:43,131 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 1676299122
+2025-05-07 21:09:43,131 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:09:43,191 [INFO] [root.test1] *TEST*completed player_trends
+2025-05-07 21:14:08,097 [INFO] [root.test1] Starting function tests
+2025-05-07 21:14:08,115 [INFO] [root.test_calculate_batch_player_streak_trends] Calculating player streak trends
+2025-05-07 21:14:13,837 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 54456193
+2025-05-07 21:14:20,605 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:14:31,155 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:14:37,387 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 54456193
+2025-05-07 21:14:41,072 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 54456193
+2025-05-07 21:14:43,576 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:29:07,489 [INFO] [root.test1] Starting function tests
+2025-05-07 21:29:07,506 [INFO] [root.test_calculate_batch_player_streak_trends] Calculating player streak trends
+2025-05-07 21:29:07,506 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 54456193
+2025-05-07 21:29:07,507 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:29:07,508 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:29:07,511 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 54456193
+2025-05-07 21:29:07,511 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 54456193
+2025-05-07 21:29:07,511 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:33:26,620 [INFO] [root.test1] Starting function tests
+2025-05-07 21:33:26,637 [INFO] [root.test_calculate_batch_player_streak_trends] Calculating player streak trends
+2025-05-07 21:33:26,638 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 54456193
+2025-05-07 21:33:26,638 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:33:26,639 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:33:26,641 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 54456193
+2025-05-07 21:33:26,641 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 54456193
+2025-05-07 21:33:26,641 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:47:36,951 [INFO] [root.test1] Starting function tests
+2025-05-07 21:47:36,960 [INFO] [root.test_calculate_batch_player_streak_trends] Calculating player streak trends
+2025-05-07 21:47:36,960 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 54456193
+2025-05-07 21:47:36,960 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:47:36,960 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:47:36,962 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 54456193
+2025-05-07 21:47:36,962 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 54456193
+2025-05-07 21:47:36,962 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:47:36,968 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 90711877
+2025-05-07 21:47:36,968 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:47:36,968 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:47:36,969 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 90711877
+2025-05-07 21:47:36,969 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 90711877
+2025-05-07 21:47:36,969 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:47:36,972 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 150454291
+2025-05-07 21:47:36,972 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:47:36,972 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:47:36,973 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 150454291
+2025-05-07 21:47:36,973 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 150454291
+2025-05-07 21:47:36,974 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:47:36,977 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 301648888
+2025-05-07 21:47:36,977 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:47:36,977 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:47:36,978 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 301648888
+2025-05-07 21:47:36,978 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 301648888
+2025-05-07 21:47:36,978 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:47:36,982 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 1676299122
+2025-05-07 21:47:36,982 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:47:36,982 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:47:36,983 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 1676299122
+2025-05-07 21:47:36,983 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 1676299122
+2025-05-07 21:47:36,983 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:47:37,046 [INFO] [root.test1] *TEST*completed player_trends
+2025-05-07 21:53:11,051 [INFO] [root.test1] Starting function tests
+2025-05-07 21:53:11,062 [INFO] [root.test_calculate_batch_player_streak_trends] Calculating player streak trends
+2025-05-07 21:53:11,062 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 54456193
+2025-05-07 21:53:11,062 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:53:11,062 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:53:11,064 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 54456193
+2025-05-07 21:53:11,073 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 54456193
+2025-05-07 21:53:11,073 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:55:24,451 [INFO] [root.test1] Starting function tests
+2025-05-07 21:55:24,460 [INFO] [root.test_calculate_batch_player_streak_trends] Calculating player streak trends
+2025-05-07 21:55:24,461 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 54456193
+2025-05-07 21:55:24,461 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:55:24,461 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:55:24,462 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 54456193
+2025-05-07 21:55:24,471 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 54456193
+2025-05-07 21:55:24,471 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 21:56:07,664 [INFO] [root.test1] Starting function tests
+2025-05-07 21:56:07,674 [INFO] [root.test_calculate_batch_player_streak_trends] Calculating player streak trends
+2025-05-07 21:56:07,674 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculating player streaks for: 54456193
+2025-05-07 21:56:07,674 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-07 21:56:07,675 [INFO] [root.test_calculate_player_streak_trends] Calculating player streak trends.
+2025-05-07 21:56:07,676 [DEBUG] [root.test_calculate_player_streak_trends] Calculated player streak trends for player 54456193
+2025-05-07 21:56:07,685 [DEBUG] [root.test_calculate_batch_player_streak_trends] Calculated player count streaks for: 54456193
+2025-05-07 21:56:07,685 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-07 22:44:00,883 [INFO] [root.etl_player_player_match_trends] Starting function tests
+2025-05-07 22:44:00,889 [INFO] [root.test_pull_players_to_trend] Pulled 10 players to trend
+2025-05-07 22:44:00,890 [INFO] [root.etl_player_player_match_trends] *TEST*completed player_trends

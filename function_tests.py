@@ -24,6 +24,19 @@ def test_save_data(file,fname):
     with out_file.open("w", encoding="utf-8") as f:
         json.dump(file, f, ensure_ascii=False, indent=2)
 
+def test_pull_players_to_trend(con):
+    """test for pull_players_to_trend"""
+    query = """
+    SELECT DISTINCT account_id
+    FROM player_matches
+    LIMIT 10
+    """
+    
+    players = con.execute(query).fetchdf()
+    print(f"players: {players}")
+    logging.info(f"Pulled {len(players)} players to trend")
+    return players
+
 def test_live_match_fetch_data():
 
     print(f"*TEST* Test #1, fetch_match_data with just limit")
@@ -199,6 +212,12 @@ def test_orchestrators():
     o.run_etl_bulk_matches(max_days_fetch=2)
     #o.run_etl_hero_trends()
 
+def test_calculate_won_column(df)->pd.DataFrame:
+    """Calculates the 'won' column based on 'match_result' and 'player_team'."""
+    logging.info("Calculating 'won' column")
+    df['won'] = df['match_result'] == df['player_team']
+    return df
+
 def test_players_to_trend_from_db():
     logging.info("Starting player statistics ETL process")
     
@@ -227,7 +246,7 @@ def test_players_to_trend_from_db():
                     logging.debug(f"Processed match history for player {account_id}, lenght = {len(player_match_history)}")
             except Exception as e:
                 logging.warning(f"Error processing player {account_id}, error: {e}")
-        player_match_history['won'] = player_match_history['match_result'] == player_match_history['player_team']
+
         u.any_to_csv(batch_players_histories, "data/test_data/normalized_player_histories")
         #calculate player, player_hero trends
         logging.info(f"Calculating player trends for {len(batch_players_histories)} of {len(players_to_trend)} players")
@@ -254,6 +273,7 @@ def test_count_player_streaks(player_history: pd.DataFrame)->pd.DataFrame:
         logging.warning("Player history is empty")
         return None
     
+    #calculate win from match_result and player_team
     player_history = player_history.sort_values(by=['start_time'])
     #creates unique identifier for each streak
     player_history['won_int'] = player_history['won'].astype(int)
@@ -282,23 +302,25 @@ def test_count_player_streaks(player_history: pd.DataFrame)->pd.DataFrame:
     loss_4 = (loss_streaks >= 4).sum()
     loss_5 = (loss_streaks >= 5).sum()
 
-    return pd.Series({
-        'account_id': player_history['account_id'].iloc[0],
-        'win_streaks_avg': win_avg,
-        'win_streaks_2plus': win_2,
-        'win_streaks_3plus': win_3,
-        'win_streaks_4plus': win_4,
-        'win_streaks_5plus': win_5,
-        'loss_streaks_avg': loss_avg,
-        'loss_streaks_2plus': loss_2,
-        'loss_streaks_3plus': loss_3,
-        'loss_streaks_4plus': loss_4,
-        'loss_streaks_5plus': loss_5
-    })
+    player_history = player_history.drop(columns=['won_int', 'streak_change', 'streak_id'])
+    player_history = player_history.assign(
+        win_streaks_2plus=win_2,
+        win_streaks_3plus=win_3,
+        win_streaks_4plus=win_4,
+        win_streaks_5plus=win_5,
+        loss_streaks_2plus=loss_2,
+        loss_streaks_3plus=loss_3,
+        loss_streaks_4plus=loss_4,
+        loss_streaks_5plus=loss_5
+        win_streaks_avg=win_avg,
+        loss_streaks_avg=loss_avg
+    )
+    player_history, "data/test_data/in_func_counted_streaks")
+    return player_history
 
-def test_calculate_player_streak_trends(player_history: pd.DataFrame)->pd.DataFrame:
+def test_calculate_player_match_rolling_stats(player_history: pd.DataFrame)->pd.DataFrame:
     """Calculates player streak trends from player match history"""
-    logging.info("Calculating player streak trends")
+    logging.info("Calculating player streak trends.")
     # Check if the player history is empty
     if player_history.empty:
         logging.warning("Player history is empty")
@@ -308,8 +330,9 @@ def test_calculate_player_streak_trends(player_history: pd.DataFrame)->pd.DataFr
     
     # calculates rolling player win percentage
     for w in range(2, 7):
-        player_history[f'p_win_pct_{w}'] = player_history['won'].rolling(window=w).mean()
-    logging.debug(f"Calculated player streak trends for player {player_history['account_id']}")
+        player_history[f'p_win_pct_{w}'] = player_history['won'].rolling(window=w).mean()*100
+        player_history[f'p_loss_pct_{w}'] = (1 - player_history['won'].rolling(window=w).mean())*100
+    logging.debug(f"Calculated player streak trends for player {player_history['account_id'].iloc[0]}")
     
     return player_history
 
@@ -321,19 +344,27 @@ def test_calculate_batch_player_streak_trends(list_dfs_player_history)->list:
     logging.info("Calculating player streak trends")
 
     batch_player_streaks = []
+    batch_player_streaks_wl_avg = []
+    # for each player histry in the list, calculate player streaks and streak counts
     for player_history in list_dfs_player_history:
-        logging.debug(f"Calculating player streaks for: {player_history['account_id']}")
+        logging.debug(f"Calculating player streaks for: {player_history['account_id'].iloc[0]}")
+        #create won column
+        player_history = test_calculate_won_column(player_history)
+        #from player_history 
+        # create p_win_pct_x columns
         player_stats = test_calculate_player_streak_trends(player_history)
 
-        logging.debug(f"Calculated player count streaks for: {player_history['account_id']}")
-        player_streaks = test_count_player_streaks(player_history)
+        logging.debug(f"Calculated player count streaks for: {player_history['account_id'].iloc[0]}")
+        #from player_history 
+        # create steak counts and averages
+        player_streaks, player_streak_wl_avg = test_count_player_streaks(player_history)
+        batch_player_streaks.append(player_streaks)
+        batch_player_streaks_wl_avg.append(player_streak_wl_avg)
 
-        player_stats = pd.concat([player_stats, player_streaks], axis=1)
-        batch_player_streaks.append(player_stats)
 
-    return batch_player_streaks
+    return batch_player_streaks, batch_player_streaks_wl_avg
 
-def test1():
+def v1_calculate_player_trends():
     logging.info("Starting function tests")
     
     #unsing sample data
@@ -343,20 +374,71 @@ def test1():
     list_batch_players_histories = [group for _, group in batch_players_histories.groupby("account_id")]
 
     #returns the player stats, consumes the player history dataframes
-    players_calculated_stats = test_calculate_player_streak_trends(list_batch_players_histories)    
-        
+    batch_player_streaks, batch_player_streaks_wl_avg  = test_calculate_batch_player_streak_trends(list_batch_players_histories)    
+
+
         #fetch hero trends from db
         #handled in main handler.
         
         #calculate player_hero trends and return list of stats
-    players_hero_calculated_stats = calculate_player_hero_trends(list_batch_players_histories)
+    #players_hero_calculated_stats = calculate_player_hero_trends(list_batch_players_histories)
 
     #insert batch players into player_trends player_hero_trends tables
-    
+    print("Completed test run")
     logging.info(f"*TEST*completed player_trends")
+
+def etl_player_player_match_trends():
+    """ETL a list of players from player_matches table, transform, and re-insert
+    
+    Extracts distinct players from player matches table,
+    for each player (account_id) fetch their match history,
+    calculates player trends, calculate streaks and counts,
+    calculate player_hero trends, and insert into approriate tables.
+    """
+    logging.info("Starting function tests")
+    # pull distinct players from player_matches table
+    try:
+        players_to_trend = dbf.pull_players_to_trend(con=db.con)
+
+        if players_to_trend is None or players_to_trend.empty:
+            raise ValueError("Players to trend is empty, expected a non-empty DataFrame")
+        
+    except Exception as e:
+        logging.error(f"Error fetching players to trend: {e}")
+        return
+
+    total_players_to_process = len(players_to_trend)
+    for player in players_to_trend.itertuples():
+        logging.debug(f"Processing player {player} of {total_players_to_process}")
+        account_id = player.account_id
+
+        #fetch player match history from API endpoint
+        try:
+            player_match_history = fd.fetch_player_match_history(account_id)
+            if player_match_history.empty or player_match_history is None:
+                logging.warning(f"No match history found for player {account_id}")
+                continue
+
+        except Exception as e:
+            logging.error(f"Error processing player {account_id}: {e}")
+
+       # caclulcate player won stat and add as new column
+        player_match_history = test_calculate_won_column(player_match_history)
+
+        tal.transform_and_load_player_trends_streaks(player_match_history)
+
+        # Calculate win per match and player trends
+        
+        # complete calculations for rolling stats and insert into db.
+        tal.transform_and_load_rolling_stats(player_match_history)
+
+
+    print("Completed test run")
+    logging.info(f"*TEST*completed player_trends")
+    return
 
 def test():
     pass
 
-if __name__ == "__main__":  
-    test()
+if __name__ == "__main__":
+    etl_player_player_match_trends()

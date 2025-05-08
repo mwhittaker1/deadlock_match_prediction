@@ -13,9 +13,9 @@ logging.basicConfig(
 )
 
 def main():
-    o.run_etl_bulk_matches(max_days_fetch=3)
-    o.run_etl_hero_trends()
-
-if __name__ == "__main__":
+    #o.run_etl_bulk_matches(max_days_fetch=3)
+    #o.run_etl_hero_trends()
+    #dbf.create_player_rolling_stats(db.con)
     pass
-    #main()
+if __name__ == "__main__":
+    main()

@@ -36,6 +36,7 @@ def create_all_tables(con):
     create_player_trends_table(con)
     create_player_hero_trends(con)
     create_hero_trends_table(con)
+    create_player_rolling_stats(con)
     
     result = set(t[0] for t in con.execute("SHOW TABLES;").fetchall())
     logging.info(f"Resulting tables: {result}")
@@ -82,12 +83,6 @@ def create_player_trends_table(con):
     p_total_matches BIGINT,
     p_win_rate FLOAT,
                 
-    -- need to make below this line
-    p_win_pct_2 FLOAT,
-    p_win_pct_3 FLOAT,
-    p_win_pct_4 FLOAT,
-    p_win_pct_5 FLOAT,
-                
     -- Player hero trends
     p_h_total_matches BIGINT,    
     p_v_h_pick_pct FLOAT,
@@ -119,6 +114,9 @@ def create_player_trends_table(con):
     loss_recency_3plus INTEGER,
     loss_recency_4plus INTEGER,
     loss_recency_5plus INTEGER,
+                
+    p_win_streak_avg FLOAT,
+    p_loss_streak_avg FLOAT,
     PRIMARY KEY (account_id)
     )
     """)
@@ -145,6 +143,25 @@ def create_player_hero_trends(con):
 
     PRIMARY KEY (account_id, hero_id, trend_start_date, trend_end_date, trend_window_days)
     )
+    """)
+
+def create_player_rolling_stats(con):
+    con.execute("""
+    CREATE TABLE player_rolling_stats (
+    account_id BIGINT,
+    match_id BIGINT,
+    start_time TIMESTAMP,
+    p_win_pct_2 FLOAT,
+    p_win_pct_3 FLOAT,
+    p_win_pct_4 FLOAT,
+    p_win_pct_5 FLOAT,
+    p_loss_pct_2 FLOAT,
+    p_loss_pct_3 FLOAT,
+    p_loss_pct_4 FLOAT,
+    p_loss_pct_5 FLOAT,
+    PRIMARY KEY (account_id, match_id),
+    FOREIGN KEY (account_id, match_id) REFERENCES player_matches(account_id, match_id)
+    )         
     """)
 
 def create_hero_trends_table(con):  
@@ -183,23 +200,12 @@ def pull_players_to_trend(con):
     logging.info(f"Pulled {len(players)} players to trend")
     return players
 
-def test_pull_players_to_trend(con):
-    """test for pull_players_to_trend"""
-    query = """
-    SELECT DISTINCT account_id
-    FROM player_matches
-    LIMIT 10
-    """
-    
-    players = con.execute(query).fetchdf()
-    print(f"players: {players}")
-    logging.info(f"Pulled {len(players)} players to trend")
-    return players
+
 
 if __name__ == "__main__":
     #reset_all_tables(db.con)
     con = db.con
-    con.execute("DROP TABLE IF EXISTS player_trends")
+    con.execute(create_player_rolling_stats(con))
     #con.execute("ALTER TABLE player_trends drop COLUMN p_h_pick_per;")
     #con.execute("ALTER TABLE player_matches ADD COLUMN average_kd FLOAT;")
 

@@ -2,6 +2,8 @@ import duckdb
 import pandas as pd
 import logging
 import services.function_tools as u
+import services.database_functions as dbf
+import function_tests as ft
 from data import db
 
 def normalize_bulk_matches(
@@ -320,3 +322,52 @@ def process_player_batch(batch):
     """process player batch"""
     results = []
     
+def transform_and_load_rolling_stats(player_match_history: pd.DataFrame) -> pd.DataFrame:
+    """Calculates rolling win/loss % stats and inserts to player_rolling_stats table."""
+    if player_match_history.empty:
+        logging.warning("Player history DataFrame is empty.")
+        return pd.DataFrame()
+    
+    #calculate player streaks
+    try:
+        player_match_rolling_stats = ft.test_calculate_player_match_rolling_stats(player_match_history)
+        if player_match_rolling_stats is None or player_match_rolling_stats is None:
+            logging.warning(f"No player streaks calculated for player {player_match_rolling_stats['account_id']}")      
+    
+    except Exception as e:
+        logging.error(f"Error calculating player streaks for {player_match_rolling_stats['account_id']}: {e}")
+    
+    #not built yet
+    dbf.insert_player_match_rolling_stats(player_match_rolling_stats)
+    
+    return 
+
+def transform_and_load_player_trends_streaks(player_match_history) -> pd.DataFrame:
+    """Calculates rolling win/loss % stats and inserts to player_rolling_stats table."""
+    if player_match_history.empty:
+        logging.warning("Player history DataFrame is empty.")
+        return pd.DataFrame()
+    
+    # calculte player trend stats
+    try:
+        player_stats = calcuate_player_base_stats(player_match_history)
+        if player_stats is None or player_stats.empty:
+            logging.warning(f"No player stats calculated for player {player_match_history['account_id']}")
+
+    except Exception as e:
+        logging.error(f"Error calculating player stats for {player_match_history['account_id']}: {e}")       
+
+    #calculate player streak counts and averages
+    try:
+        player_trends = ft.test_count_player_streaks(player_match_history)
+        if player_trends is None or player_trends is None:
+            logging.warning(f"No player streaks calculated for player {player_match_history['account_id']}")
+
+    except Exception as e:
+        logging.error(f"Error calculating player streaks for {player_match_history['account_id']}: {e}")
+
+    #combine player stats and trends
+    
+    #insert player trends into database
+
+    return
