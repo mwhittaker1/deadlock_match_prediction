@@ -193,6 +193,7 @@ def pull_players_to_trend(con):
     query = """
     SELECT DISTINCT account_id
     FROM player_matches
+    LIMIT 50
     """
     
     players = con.execute(query).fetchdf()

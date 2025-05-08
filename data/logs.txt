@@ -2323,3 +2323,30 @@ Name: account_id, Length: 1714, dtype: int64
 2025-05-07 22:44:00,883 [INFO] [root.etl_player_player_match_trends] Starting function tests
 2025-05-07 22:44:00,889 [INFO] [root.test_pull_players_to_trend] Pulled 10 players to trend
 2025-05-07 22:44:00,890 [INFO] [root.etl_player_player_match_trends] *TEST*completed player_trends
+2025-05-08 00:45:47,854 [INFO] [root.etl_player_player_match_trends] Starting function tests
+2025-05-08 00:45:58,484 [INFO] [root.pull_players_to_trend] Pulled 1651 players to trend
+2025-05-08 00:47:08,217 [INFO] [root.etl_player_player_match_trends] Starting function tests
+2025-05-08 00:47:09,678 [INFO] [root.pull_players_to_trend] Pulled 50 players to trend
+2025-05-08 00:47:18,318 [DEBUG] [root.etl_player_player_match_trends] Processing player Pandas(Index=0, account_id=1110203230) of 50
+2025-05-08 00:47:25,170 [DEBUG] [root.fetch_player_match_history] Getting player match history from full url: https://api.deadlock-api.com/v1/players/1110203230/match-history?only_stored_history=true
+2025-05-08 00:47:25,529 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-08 00:47:26,174 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/players/1110203230/match-history?only_stored_history=true HTTP/1.1" 200 None
+2025-05-08 00:48:20,731 [INFO] [root.test_calculate_won_column] Calculating 'won' column
+2025-05-08 00:48:44,083 [DEBUG] [root.calcuate_player_base_stats] stats for player 0       1110203230
+1       1110203230
+2       1110203230
+3       1110203230
+4       1110203230
+           ...    
+1291    1110203230
+1292    1110203230
+1293    1110203230
+1294    1110203230
+1295    1110203230
+Name: account_id, Length: 1296, dtype: int64
+2025-05-08 00:48:44,278 [DEBUG] [root.calcuate_player_base_stats] total_kills: 9957
+2025-05-08 00:48:44,465 [DEBUG] [root.calcuate_player_base_stats] total_deaths: 8013
+2025-05-08 00:48:44,654 [DEBUG] [root.calcuate_player_base_stats] match_total: 1296
+2025-05-08 00:49:47,702 [INFO] [root.test_count_player_streaks] Counting player streaks
+2025-05-08 00:51:37,562 [INFO] [root.test_calculate_player_match_rolling_stats] Calculating player streak trends.
+2025-05-08 00:51:50,257 [DEBUG] [root.test_calculate_player_match_rolling_stats] Calculated player streak trends for player 1110203230

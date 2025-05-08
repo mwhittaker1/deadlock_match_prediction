@@ -311,11 +311,10 @@ def test_count_player_streaks(player_history: pd.DataFrame)->pd.DataFrame:
         loss_streaks_2plus=loss_2,
         loss_streaks_3plus=loss_3,
         loss_streaks_4plus=loss_4,
-        loss_streaks_5plus=loss_5
+        loss_streaks_5plus=loss_5,
         win_streaks_avg=win_avg,
         loss_streaks_avg=loss_avg
-    )
-    player_history, "data/test_data/in_func_counted_streaks")
+        )
     return player_history
 
 def test_calculate_player_match_rolling_stats(player_history: pd.DataFrame)->pd.DataFrame:
