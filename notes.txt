@@ -41,10 +41,10 @@ def create_player_matches_table(con):
     )
     """)
 }}
+
 {{
 def create_player_trends_table(con):
-    con.execute("""
-    CREATE TABLE player_trends (
+    CREATE TABLE player_trends 
     account_id BIGINT,
     p_average_kills FLOAT,
     p_average_deaths FLOAT,

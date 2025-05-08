@@ -150,34 +150,6 @@ def load_bulk_matches(
         logging.exception("Failed to load bulk match data")
         raise
 
-def calcuate_player_base_stats(
-        player_history: pd.DataFrame) -> pd.DataFrame:
-    """Calculates additional hero_trend statistics."""
-    
-    p_stats = pd.Series()
-    match_total = player_history['match_id'].nunique()
-    total_kills = player_history['player_kills'].sum()
-    total_deaths = player_history['player_deaths'].sum()
-    logging.debug("stats for player %s", player_history['account_id'])
-    logging.debug("total_kills: %s", total_kills)
-    logging.debug("total_deaths: %s", total_deaths)
-    logging.debug("match_total: %s", match_total)
-    p_stats['account_id'] = player_history['account_id'].iloc[0]
-    player_history['won']= (
-        player_history['player_team'] == player_history['match_result']
-        )
-    p_stats['p_win_rate'] = (
-        player_history['won'].sum()
-        /match_total*100).round(2)
-    p_stats['average_kills'] = (
-        total_kills/match_total*100).round(2)
-    p_stats['average_deaths'] = (
-        total_deaths/match_total*100).round(2)
-    p_stats['average_kd'] = (total_kills/total_deaths).round(2)
-    p_stats['p_total_matches'] = match_total
-
-    return p_stats
-
 def calcuate_hero_trends(
         hero_trends: pd.DataFrame) -> pd.DataFrame:
     """Calculates additional hero_trend statistics."""
@@ -309,19 +281,111 @@ def load_hero_trends(
         logging.exception("Failed to load bulk match data")
         raise
 
-def get_player_trends():
-    """calculate player_trends"""
-    pass
+def calculate_won_column(df)->pd.DataFrame:
+    """Calculates the 'won' column based on 'match_result' and 'player_team'."""
+    logging.info("Calculating 'won' column")
+    df['won'] = df['match_result'] == df['player_team']
+    return df
 
-def calculate_player_trends(players_to_trend: pd.DataFrame) -> pd.DataFrame:
-    """calculate player_trends"""
-
-    pass
-
-def process_player_batch(batch):
-    """process player batch"""
-    results = []
+def calcuate_player_trend_stats(
+        player_history: pd.DataFrame) -> pd.DataFrame:
+    """Calculates additional hero_trend statistics."""
     
+    p_stats = pd.Series()
+    match_total = player_history['match_id'].nunique()
+    total_kills = player_history['player_kills'].sum()
+    total_deaths = player_history['player_deaths'].sum()
+    logging.debug("stats for player %s", player_history['account_id'])
+    logging.debug("total_kills: %s", total_kills)
+    logging.debug("total_deaths: %s", total_deaths)
+    logging.debug("match_total: %s", match_total)
+    p_stats['account_id'] = player_history['account_id'].iloc[0]
+    player_history['won']= (
+        player_history['player_team'] == player_history['match_result']
+        )
+    p_stats['p_win_rate'] = (
+        player_history['won'].sum()
+        /match_total*100).round(2)
+    p_stats['average_kills'] = (
+        total_kills/match_total*100).round(2)
+    p_stats['average_deaths'] = (
+        total_deaths/match_total*100).round(2)
+    p_stats['average_kd'] = (total_kills/total_deaths).round(2)
+    p_stats['p_total_matches'] = match_total
+
+    return p_stats
+
+def count_player_streaks(player_history: pd.DataFrame)->pd.DataFrame:
+    """counts player streaks from match history"""
+    
+    logging.info("Counting player streaks")
+    # Check if the player history is empty
+    if player_history.empty:
+        logging.warning("Player history is empty")
+        return None
+    
+    #calculate win from match_result and player_team
+    player_history = player_history.sort_values(by=['start_time'])
+    #creates unique identifier for each streak
+    player_history['won_int'] = player_history['won'].astype(int)
+    player_history['streak_change'] = (player_history['won'] != player_history['won']
+                                    .shift()).astype(int)
+    player_history['streak_id'] = player_history['streak_change'].cumsum()
+
+    #group by streak_id and win to count streaks
+    streaks = player_history.groupby('streak_id').agg(
+        streak_len=('won', 'size'),
+        won=('won', 'first'))
+
+    # Win streak stats
+    win_streaks = streaks[streaks['won'] == True]['streak_len']
+    win_avg = win_streaks.mean()
+    win_2 = (win_streaks >= 2).sum()
+    win_3 = (win_streaks >= 3).sum()
+    win_4 = (win_streaks >= 4).sum()
+    win_5 = (win_streaks >= 5).sum()
+
+     # Loss streak stats
+    loss_streaks = streaks[streaks['won'] == False]['streak_len']
+    loss_avg = loss_streaks.mean()
+    loss_2 = (loss_streaks >= 2).sum()
+    loss_3 = (loss_streaks >= 3).sum()
+    loss_4 = (loss_streaks >= 4).sum()
+    loss_5 = (loss_streaks >= 5).sum()
+
+    player_history = player_history.drop(columns=['won_int', 'streak_change', 'streak_id'])
+    player_history = player_history.assign(
+        win_streaks_2plus=win_2,
+        win_streaks_3plus=win_3,
+        win_streaks_4plus=win_4,
+        win_streaks_5plus=win_5,
+        loss_streaks_2plus=loss_2,
+        loss_streaks_3plus=loss_3,
+        loss_streaks_4plus=loss_4,
+        loss_streaks_5plus=loss_5,
+        win_streaks_avg=win_avg,
+        loss_streaks_avg=loss_avg
+        )
+    return player_history
+
+def calculate_player_match_rolling_stats(player_history: pd.DataFrame)->pd.DataFrame:
+    """Calculates player streak trends from player match history"""
+    logging.info("Calculating player streak trends.")
+    # Check if the player history is empty
+    if player_history.empty:
+        logging.warning("Player history is empty")
+        return None
+
+    player_history = player_history.sort_values(by='start_time', ascending=False)
+    
+    # calculates rolling player win percentage
+    for w in range(2, 7):
+        player_history[f'p_win_pct_{w}'] = player_history['won'].rolling(window=w).mean()*100
+        player_history[f'p_loss_pct_{w}'] = (1 - player_history['won'].rolling(window=w).mean())*100
+    logging.debug(f"Calculated player streak trends for player {player_history['account_id'].iloc[0]}")
+    
+    return player_history
+
 def transform_and_load_rolling_stats(player_match_history: pd.DataFrame) -> pd.DataFrame:
     """Calculates rolling win/loss % stats and inserts to player_rolling_stats table."""
     if player_match_history.empty:
@@ -330,7 +394,7 @@ def transform_and_load_rolling_stats(player_match_history: pd.DataFrame) -> pd.D
     
     #calculate player streaks
     try:
-        player_match_rolling_stats = ft.test_calculate_player_match_rolling_stats(player_match_history)
+        player_match_rolling_stats = calculate_player_match_rolling_stats(player_match_history)
         if player_match_rolling_stats is None or player_match_rolling_stats is None:
             logging.warning(f"No player streaks calculated for player {player_match_rolling_stats['account_id']}")      
     
@@ -350,7 +414,7 @@ def transform_and_load_player_trends_streaks(player_match_history) -> pd.DataFra
     
     # calculte player trend stats
     try:
-        player_stats = calcuate_player_base_stats(player_match_history)
+        player_stats = calcuate_player_trend_stats(player_match_history)
         if player_stats is None or player_stats.empty:
             logging.warning(f"No player stats calculated for player {player_match_history['account_id']}")
 
@@ -359,7 +423,7 @@ def transform_and_load_player_trends_streaks(player_match_history) -> pd.DataFra
 
     #calculate player streak counts and averages
     try:
-        player_trends = ft.test_count_player_streaks(player_match_history)
+        player_trends = count_player_streaks(player_match_history)
         if player_trends is None or player_trends is None:
             logging.warning(f"No player streaks calculated for player {player_match_history['account_id']}")
 
@@ -367,7 +431,16 @@ def transform_and_load_player_trends_streaks(player_match_history) -> pd.DataFra
         logging.error(f"Error calculating player streaks for {player_match_history['account_id']}: {e}")
 
     #combine player stats and trends
-    
+    try:
+        player_trends_and_steraks = combine_player_trends_and_streaks()
+        if player_trends_and_steraks is None or player_trends_and_steraks.empty:
+            logging.warning(f"No player trends and streaks calculated for player {player_match_history['account_id']}")
+        
+    except Exception as e:
+        logging.error(f"Error calculating player trends and streaks for {player_match_history['account_id']}: {e}")
     #insert player trends into database
 
     return
+
+
+

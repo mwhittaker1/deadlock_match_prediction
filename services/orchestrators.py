@@ -42,6 +42,58 @@ def run_etl_hero_trends():
     tal.load_hero_trends(hero_trends_30d)
     logging.info("completed 7d and 30d hero trends ETL without critical errors.")
 
+def run_etl_player_hero_match_trends():
+    """ETL all players for a set of matches.
+    
+    Extracts distinct players from player matches table,
+    for each player (account_id) fetch their match history,
+    calculates player trends, calculate streaks and counts,
+    calculate player_hero trends, calcualte recent match history,
+    and insert into approriate tables.
+    """
+    logging.info("Starting function tests")
+    # pull distinct players from player_matches table
+    try:
+        players_to_trend = dbf.pull_players_to_trend(con=db.con)
+
+        if players_to_trend is None or players_to_trend.empty:
+            raise ValueError("Players to trend is empty, expected a non-empty DataFrame")
+        
+    except Exception as e:
+        logging.error(f"Error fetching players to trend: {e}")
+        return
+    
+    #fetch match history for each player
+    total_players_to_process = len(players_to_trend)
+    for player in players_to_trend.itertuples():
+        logging.debug(f"Processing player {player} of {total_players_to_process}")
+        account_id = player.account_id
+
+        #fetch player match history from API endpoint
+        try:
+            player_match_history = fd.fetch_player_match_history(account_id)
+            if player_match_history.empty or player_match_history is None:
+                logging.warning(f"No match history found for player {account_id}")
+                continue
+
+        except Exception as e:
+            logging.error(f"Error processing player {account_id}: {e}")
+
+       # caclulcate player won stat and add as new column
+        player_match_history = tal.calculate_won_column(player_match_history)
+
+        #calculate player trends and streaks, insert into db
+            # insertion not built yet
+        tal.transform_and_load_player_trends_streaks(player_match_history)
+        
+        # complete calculations for rolling stats and insert into db.
+        tal.transform_and_load_rolling_stats(player_match_history)
+
+
+    print("Completed test run")
+    logging.info(f"*TEST*completed player_trends")
+    return
+
 if __name__ == "__main__":
     pass
     
