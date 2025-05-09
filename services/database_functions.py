@@ -83,8 +83,7 @@ def create_player_trends_table(con):
     p_total_matches BIGINT,
     p_win_rate FLOAT,
                 
-    -- Player hero trends
-    p_h_total_matches BIGINT,    
+    -- Player hero trends 
     p_v_h_pick_pct FLOAT,
     p_v_h_win_pct FLOAT,
     p_v_h_kd_pct FLOAT,
@@ -102,18 +101,6 @@ def create_player_trends_table(con):
     loss_streaks_3plus INTEGER,
     loss_streaks_4plus INTEGER,
     loss_streaks_5plus INTEGER,
-
-    -- Recent win streaks (within 8 hours)
-    win_recency_2plus INTEGER,
-    win_recency_3plus INTEGER,
-    win_recency_4plus INTEGER,
-    win_recency_5plus INTEGER,
-
-    -- Recent loss streaks (within 8 hours)
-    loss_recency_2plus INTEGER,
-    loss_recency_3plus INTEGER,
-    loss_recency_4plus INTEGER,
-    loss_recency_5plus INTEGER,
                 
     p_win_streak_avg FLOAT,
     p_loss_streak_avg FLOAT,
@@ -201,7 +188,33 @@ def pull_trend_players_from_db(con):
     logging.info(f"Pulled {len(players)} players to trend")
     return players
 
-
+def pull_hero_trends_from_db(con,trend_window_days,trend_start_date=None,):
+    """pulls hero trends from hero_trends table to trend"""
+    try: 
+        if trend_start_date is None:
+            query = f"""
+            SELECT DISTINCT hero_id
+            FROM hero_trends
+            WHERE trend_window_days = {trend_window_days}
+            """
+        else:
+            query = f"""
+            SELECT DISTINCT hero_id
+            FROM hero_trends
+            WHERE trend_start_date = '{trend_start_date}'
+            AND trend_window_days = {trend_window_days}
+            """
+        
+    
+        heroes = con.execute(query).fetchdf()
+        if len(heroes) != 26:
+            logging.warning("Query length is not 26 characters, expect 26 heros.")
+    
+    except Exception as e:
+            logging.error(f"Error pulling hero trends from DB: {e}")
+            return None
+    
+    return heroes
 
 if __name__ == "__main__":
     #reset_all_tables(db.con)

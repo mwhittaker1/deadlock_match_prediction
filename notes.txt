@@ -1,9 +1,12 @@
 todos.
 
-Check DB tracker below {{done}}
+Check DB tracker below {{are done}}
 
+create player recency trends
+transform_and_load_rolling_stats->calculate_player_match_recency()
 
 create player_hero trends
+orchestrators -> transform_and_load_player_hero_trends
 
 insert all trends into player_trends and player_hero trends
 
@@ -53,11 +56,12 @@ def create_player_trends_table(con):
     p_win_rate FLOAT,
 }}
                 
+{{    
     -- Player hero trends
-    p_h_total_matches BIGINT,    
     p_v_h_pick_pct FLOAT,
     p_v_h_win_pct FLOAT,
-    p_v_h_kd_pct FLOAT,
+    p_v_h_kd_pct FLOAT
+    }}
 
 {{
     -- Win streaks
@@ -74,48 +78,11 @@ def create_player_trends_table(con):
     loss_streaks_4plus INTEGER,
     loss_streaks_5plus INTEGER,
 }}
-
-    -- Recent win streaks (within 8 hours)
-    win_recency_2plus INTEGER,
-    win_recency_3plus INTEGER,
-    win_recency_4plus INTEGER,
-    win_recency_5plus INTEGER,
-
-    -- Recent loss streaks (within 8 hours)
-    loss_recency_2plus INTEGER,
-    loss_recency_3plus INTEGER,
-    loss_recency_4plus INTEGER,
-    loss_recency_5plus INTEGER,
-                
 {{    
     p_win_streak_avg FLOAT,
     p_loss_streak_avg FLOAT,
     PRIMARY KEY (account_id)
  }}
- 
-def create_player_hero_trends(con):
-    con.execute("""
-    CREATE TABLE player_hero_trends (
-    account_id BIGINT,
-    hero_id INTEGER,
-
-    p_h_total_matches BIGINT,
-    p_h_pick_pct FLOAT,
-    p_h_win_pct_3 FLOAT,
-    p_h_win_pct_5 FLOAT,
-    p_h_avg_kd FLOAT,
-    p_h_average_kills FLOAT,
-    p_h_average_deaths FLOAT,
-    p_h_average_assists FLOAT,
-
-    trend_start_date DATE,
-    trend_end_date DATE,
-    trend_window_days INTEGER,
-    last_updated TIMESTAMP,
-
-    PRIMARY KEY (account_id, hero_id, trend_start_date, trend_end_date, trend_window_days)
-    )
-    """)
 {{
 def create_player_rolling_stats(con):
     con.execute("""

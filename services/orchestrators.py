@@ -4,6 +4,7 @@ import duckdb
 from services import database_functions as dbf
 from services import fetch_data as fd
 from services import transform_and_load as tal
+import data.db as db
 
 
 def run_etl_bulk_matches(max_days_fetch=3):
@@ -82,17 +83,21 @@ def run_etl_player_hero_match_trends():
        # caclulcate player won stat and add as new column
         player_match_history = tal.calculate_won_column(player_match_history)
 
-        #calculate player trends and streaks, insert into db
-            # insertion not built yet
-        tal.tl_player_stats(player_match_history)
+        #calculate player trends and streaks
+        player_stats = tal.compute_player_stats(player_match_history)
+
+        # combine player_stats and player_hero trends, then insert into db
+        hero_trends = dbf.pull_hero_trends_from_db(db.con,trend_window_days=30)
+        player_stats = tal.process_player_hero_stats(player_stats,hero_trends)
+        tal.save_player_trends_to_db(player_stats)
         
         # complete calculations for rolling stats and insert into db.
-            # needs recency trends and insertion built
-        tal.tl_rolling_stats(player_match_history)
+        player_rolling_stats = tal.compute_player_rolling_stats(player_match_history)
+        tal.save_player_rolling_stats_to_db(player_rolling_stats)
 
-        # calculate player_hero trends and insert into db
+
            # not built yet
-        tal.transform_and_load_player_hero_trends(player_match_history)
+
 
 
     print("Completed test run")

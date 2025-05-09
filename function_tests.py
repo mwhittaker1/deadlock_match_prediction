@@ -402,12 +402,12 @@ def etl_player_player_match_trends():
        # caclulcate player won stat and add as new column
         player_match_history = test_calculate_won_column(player_match_history)
 
-        tal.tl_player_stats(player_match_history)
+        tal.compute_player_stats(player_match_history)
 
         # Calculate win per match and player trends
         
         # complete calculations for rolling stats and insert into db.
-        tal.tl_rolling_stats(player_match_history)
+        tal.compute_rolling_stats(player_match_history)
 
 
     print("Completed test run")
