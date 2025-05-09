@@ -25,7 +25,6 @@ def fetch_match_data(
 
         query = urlencode(params)
         full_url = f"{path}?{query}" if query else path
-        print(f"*DEBUG* GET {full_url}")
         return requests.get(full_url).json()
 
 
@@ -46,7 +45,6 @@ def fetch_match_data(
 
     query = urlencode(params)
     full_url = f"{path}?{query}" if query else path
-    print(f"*DEBUG* GET {full_url}")
     return requests.get(full_url).json()
 
 def bulk_fetch_matches(max_days_fetch=90,min_days=1,max_days=0)->json:
@@ -56,12 +54,11 @@ def bulk_fetch_matches(max_days_fetch=90,min_days=1,max_days=0)->json:
     limit = max matches within a day to pull
     max_days_fetch = how many days to cycle through for total fetch"""
 
-    #print(f"start")
     limit = 5000
     batch_matches = []
     
     for batch in range(max_days_fetch):
-        print(f"\n*day:{batch} min ={min_days} max = {max_days}")
+        logging.debug(f"\n*day:{batch} min ={min_days} max = {max_days}")
         fetched_matches = fetch_match_data(min_unix_timestamp=min_days, max_unix_timestamp=max_days, limit=limit)
         batch_matches.append(fetched_matches)
         max_days +=1
@@ -119,14 +116,11 @@ def fetch_player_hero_stats(p_id,h_id=None):
     site = "https://api.deadlock-api.com"
     endpoint = f"/v1/players/{p_id}/hero-stats"
     url = site+endpoint
-    
-    print(f"\n\nsending request for response")
+    logging.debug(f"Getting player hero stats from full url: {url}")
     response = requests.get(url)
     if response.status_code == 200:
-        p_h_data = (response.json()) #player all hero data
-        #response_data = (response.json()) #player all hero data
-        #p_h_data = pd.DataFrame(response_data)
-        #print(f"\n\n found player data! player: {p_id}")    
+        p_h_data = (response.json()) #
+
     else:
         print(f"\n\nFailed to retrieve match data: {response.status_code}")
     if h_id:

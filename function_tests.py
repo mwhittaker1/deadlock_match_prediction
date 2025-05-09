@@ -254,7 +254,7 @@ def test_players_to_trend_from_db():
         
         for player_history in batch_players_histories:
             logging.debug(f"Calculating player base stats for player {player_history['account_id']} \n**history:\n\n {player_history}")
-            player_stats = tal.computer_player_stats(player_history)
+            player_stats = tal.generate_player_performance_metrics(player_history)
             all_player_stats.append(player_stats)
         logging.debug(f"\n**full all player stats:\n\n {all_player_stats}")
         u.any_to_csv(all_player_stats, "data/test_data/player_statscsv")

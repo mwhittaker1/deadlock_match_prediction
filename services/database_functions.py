@@ -6,21 +6,12 @@ from services import function_tools as u
 
 def drop_all_tables(con):
     
-    tables_to_drop = {
-        "matches",
-        "player_matches",
-        "player_trends",
-        "player_hero_trends",
-        "hero_trends",
-        "player_rolling_stats"
-        }
-    for table in tables_to_drop:
-        con.execute(f"DROP TABLE IF EXISTS {table}")
-        logging.info(f"Dropped table: {table}")
-    existing_tables = set(t[0] for t in con.execute("SHOW TABLES;").fetchall())
-    remaining = [t for t in tables_to_drop if t in existing_tables]
-    assert not remaining, f"***ERROR*** Tables not dropped: {remaining}"
-    logging.info(f"All tables dropped: {tables_to_drop}")
+    con.execute(f"DROP TABLE IF EXISTS player_rolling_stats;")
+    con.execute(f"DROP TABLE IF EXISTS player_hero_trends;")
+    con.execute(f"DROP TABLE IF EXISTS player_trends;")
+    con.execute(f"DROP TABLE IF EXISTS player_matches;")
+    con.execute(f"DROP TABLE IF EXISTS matches;")
+    con.execute(f"DROP TABLE IF EXISTS hero_trends;")
 
 def create_all_tables(con):
     logging.info("Creating all tables")
@@ -29,7 +20,8 @@ def create_all_tables(con):
         "player_matches",
         "player_trends",
         "player_hero_trends",
-        "hero_trends"
+        "hero_trends",
+        "player_rolling_stats"
         }
     
     create_matches_table(con)
@@ -85,19 +77,15 @@ def create_player_trends_table(con):
     p_win_rate FLOAT,
                 
     -- Player hero trends 
-    p_v_h_pick_pct FLOAT,
-    p_v_h_win_pct FLOAT,
     p_v_h_kd_pct FLOAT,
 
     -- Win streaks
-    win_streaks_avg FLOAT,
     win_streaks_2plus INTEGER,
     win_streaks_3plus INTEGER,
     win_streaks_4plus INTEGER,
     win_streaks_5plus INTEGER,
 
     -- Loss streaks
-    loss_streaks_avg FLOAT,
     loss_streaks_2plus INTEGER,
     loss_streaks_3plus INTEGER,
     loss_streaks_4plus INTEGER,
@@ -148,7 +136,6 @@ def create_player_rolling_stats(con):
     p_loss_pct_4 FLOAT,
     p_loss_pct_5 FLOAT,
     PRIMARY KEY (account_id, match_id),
-    FOREIGN KEY (account_id, match_id) REFERENCES player_matches(account_id, match_id)
     )         
     """)
 
@@ -181,11 +168,10 @@ def pull_trend_players_from_db(con):
     query = """
     SELECT DISTINCT account_id
     FROM player_matches
-    LIMIT 50
+    LIMIT 250
     """
     
     players = con.execute(query).fetchdf()
-    print(f"players: {players}")
     logging.info(f"Pulled {len(players)} players to trend")
     return players
 
@@ -194,13 +180,13 @@ def pull_hero_trends_from_db(con,trend_window_days,trend_start_date=None,):
     try: 
         if trend_start_date is None:
             query = f"""
-            SELECT DISTINCT hero_id
+            SELECT *
             FROM hero_trends
             WHERE trend_window_days = {trend_window_days}
             """
         else:
             query = f"""
-            SELECT DISTINCT hero_id
+            SELECT *
             FROM hero_trends
             WHERE trend_start_date = '{trend_start_date}'
             AND trend_window_days = {trend_window_days}

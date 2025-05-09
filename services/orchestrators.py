@@ -1,6 +1,7 @@
 import pandas as pd
 import logging
 import duckdb
+import time
 from services import database_functions as dbf
 from services import fetch_data as fd
 from services import transform_and_load as tal
@@ -54,6 +55,7 @@ def run_etl_player_hero_match_trends():
     """
     logging.info("Starting function tests")
     # pull distinct players from player_matches table
+    start = time.time()
     try:
         players_to_trend = dbf.pull_trend_players_from_db(con=db.con)
 
@@ -67,6 +69,10 @@ def run_etl_player_hero_match_trends():
     #fetch match history for each player
     total_players_to_process = len(players_to_trend)
     for player in players_to_trend.itertuples():
+        if player.Index % 10 == 0:
+            elapsed_time = time.time() - start
+            print(f"Time passed = {elapsed_time:.2f}seconds. Processed {player.Index} of {total_players_to_process} players")
+            logging.info(f"Time passed = {elapsed_time:.2f}seconds. Processed {player.Index} of {total_players_to_process} players")
         logging.debug(f"Processing player {player} of {total_players_to_process}")
         account_id = player.account_id
 
@@ -85,10 +91,12 @@ def run_etl_player_hero_match_trends():
 
         #calculate player trends and streaks
         player_stats = tal.compute_player_stats(player_match_history)
+        logging.debug(f"Player stats columns: {player_stats.columns}")
 
         # combine player_stats and player_hero trends, then insert into db
         hero_trends = dbf.pull_hero_trends_from_db(db.con,trend_window_days=30)
         player_stats = tal.process_player_hero_stats(player_stats,hero_trends)
+        logging.debug(f"POST MERGE, Player stats columns: {player_stats.columns}")
         tal.save_player_trends_to_db(player_stats)
         
         # complete calculations for rolling stats and insert into db.
