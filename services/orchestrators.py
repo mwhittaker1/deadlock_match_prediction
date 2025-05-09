@@ -8,7 +8,7 @@ from services import transform_and_load as tal
 import data.db as db
 
 
-def run_etl_bulk_matches(max_days_fetch=3):
+def run_etl_bulk_matches(max_days_fetch=2):
     """ETL for bulk match data, fetches, normalizes and loads into db"""
     # Fetch data
     logging.info(f"*INFO* ETL: Fetching data")

@@ -73,7 +73,7 @@ def normalize_bulk_matches(
 
 def save_bulk_matches_to_db(
         match_df: pd.DataFrame, 
-        player_df: pd.DataFrame) -> None:
+        player_df: pd.DataFrame,) -> None:
     """Loads normalized match and player data into the database."""
     # expected schema
     MATCH_COLUMNS = {
@@ -291,7 +291,7 @@ def generate_player_performance_metrics(
         player_history: pd.DataFrame) -> pd.DataFrame:
     """Calculates additional hero_trend statistics."""
     
-    p_stats = pd.DataFrame()
+    p_stats = pd.Series()
     match_total = player_history['match_id'].nunique()
     total_kills = player_history['player_kills'].sum()
     total_deaths = player_history['player_deaths'].sum()
@@ -353,20 +353,19 @@ def count_player_streaks(player_history: pd.DataFrame)->pd.DataFrame:
     loss_4 = (loss_streaks >= 4).sum()
     loss_5 = (loss_streaks >= 5).sum()
 
-    player_history = player_history.drop(columns=['won_int', 'streak_change', 'streak_id'])
-    player_history = player_history.assign(
-        win_streaks_2plus=win_2,
-        win_streaks_3plus=win_3,
-        win_streaks_4plus=win_4,
-        win_streaks_5plus=win_5,
-        loss_streaks_2plus=loss_2,
-        loss_streaks_3plus=loss_3,
-        loss_streaks_4plus=loss_4,
-        loss_streaks_5plus=loss_5,
-        p_win_streak_avg=win_avg,
-        p_loss_streak_avg=loss_avg
-        )
-    return player_history
+    player_streak_trends = pd.Series({
+        'win_streaks_2plus': win_2,
+        "win_streaks_3plus": win_3,
+        "win_streaks_4plus": win_4,
+        "win_streaks_5plus": win_5,
+        "loss_streaks_2plus": loss_2,
+        "loss_streaks_3plus": loss_3,
+        "loss_streaks_4plus": loss_4,
+        "loss_streaks_5plus": loss_5,
+        "p_win_streak_avg": win_avg,
+        "p_loss_streak_avg": loss_avg
+        })
+    return player_streak_trends
 
 def compute_player_rolling_stats(player_history: pd.DataFrame)->pd.DataFrame:
     """Calculates player streak trends from player match history"""
@@ -411,8 +410,8 @@ def compute_player_stats(player_match_history) -> pd.DataFrame:
         logging.error(f"Error calculating player streaks for {player_match_history['account_id']}: {e}")
 
     #combine player stats and trends
-    player_trends_and_streaks = player_trends.merge(
-        player_stats, on='account_id', how='left')
+    player_trends_and_streaks = pd.concat(
+        [player_trends, player_stats]).to_frame().T
 
     return player_trends_and_streaks
 
