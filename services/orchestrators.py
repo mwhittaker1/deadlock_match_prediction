@@ -95,11 +95,6 @@ def run_etl_player_hero_match_trends():
         player_rolling_stats = tal.compute_player_rolling_stats(player_match_history)
         tal.save_player_rolling_stats_to_db(player_rolling_stats)
 
-
-           # not built yet
-
-
-
     print("Completed test run")
     logging.info(f"*TEST*completed player_trends")
     return

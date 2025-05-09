@@ -2350,3 +2350,70 @@ Name: account_id, Length: 1296, dtype: int64
 2025-05-08 00:49:47,702 [INFO] [root.test_count_player_streaks] Counting player streaks
 2025-05-08 00:51:37,562 [INFO] [root.test_calculate_player_match_rolling_stats] Calculating player streak trends.
 2025-05-08 00:51:50,257 [DEBUG] [root.test_calculate_player_match_rolling_stats] Calculated player streak trends for player 1110203230
+2025-05-08 21:08:49,116 [INFO] [root.reset_all_tables] Resetting all tables
+2025-05-08 21:08:49,121 [INFO] [root.drop_all_tables] Dropped table: matches
+2025-05-08 21:09:38,269 [INFO] [root.reset_all_tables] Resetting all tables
+2025-05-08 21:09:38,274 [INFO] [root.drop_all_tables] Dropped table: player_trends
+2025-05-08 21:09:38,274 [INFO] [root.drop_all_tables] Dropped table: matches
+2025-05-08 21:09:38,279 [INFO] [root.drop_all_tables] Dropped table: player_rolling_stats
+2025-05-08 21:09:38,282 [INFO] [root.drop_all_tables] Dropped table: player_hero_trends
+2025-05-08 21:09:38,286 [INFO] [root.drop_all_tables] Dropped table: player_matches
+2025-05-08 21:09:38,291 [INFO] [root.drop_all_tables] Dropped table: hero_trends
+2025-05-08 21:09:38,304 [INFO] [root.drop_all_tables] All tables dropped: {'player_trends', 'matches', 'player_rolling_stats', 'player_hero_trends', 'player_matches', 'hero_trends'}
+2025-05-08 21:09:38,304 [INFO] [root.create_all_tables] Creating all tables
+2025-05-08 21:09:38,319 [INFO] [root.create_all_tables] Resulting tables: {'player_trends', 'player_rolling_stats', 'player_hero_trends', 'hero_trends', 'player_matches', 'matches'}
+2025-05-08 21:09:38,319 [INFO] [root.create_all_tables] All tables created: {'player_trends', 'matches', 'player_hero_trends', 'player_matches', 'hero_trends'}
+2025-05-08 21:09:57,275 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Fetching data
+2025-05-08 21:09:57,280 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-08 21:09:58,127 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/matches/metadata?include_player_info=true&min_unix_timestamp=1746666597&max_unix_timestamp=1746752997&min_average_badge=100&limit=5000 HTTP/1.1" 200 None
+2025-05-08 21:09:58,231 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-08 21:09:58,704 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/matches/metadata?include_player_info=true&min_unix_timestamp=1746580198&max_unix_timestamp=1746666598&min_average_badge=100&limit=5000 HTTP/1.1" 200 None
+2025-05-08 21:09:58,804 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-08 21:09:59,501 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/matches/metadata?include_player_info=true&min_unix_timestamp=1746493798&max_unix_timestamp=1746580198&min_average_badge=100&limit=5000 HTTP/1.1" 200 None
+2025-05-08 21:09:59,583 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-08 21:10:00,094 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/matches/metadata?include_player_info=true&min_unix_timestamp=1746407399&max_unix_timestamp=1746493799&min_average_badge=100&limit=5000 HTTP/1.1" 200 None
+2025-05-08 21:10:00,119 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-08 21:10:00,871 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/matches/metadata?include_player_info=true&min_unix_timestamp=1746321000&max_unix_timestamp=1746407400&min_average_badge=100&limit=5000 HTTP/1.1" 200 None
+2025-05-08 21:10:00,884 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Data fetched
+2025-05-08 21:10:00,884 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Normalizing data
+2025-05-08 21:10:00,884 [INFO] [root.normalize_bulk_matches] Normalizing bulk match data
+2025-05-08 21:10:00,884 [INFO] [root.normalize_bulk_matches] Processing day #0 with 220 matches
+2025-05-08 21:10:00,886 [INFO] [root.normalize_bulk_matches] Processing day #1 with 166 matches
+2025-05-08 21:10:00,887 [INFO] [root.normalize_bulk_matches] Processing day #2 with 193 matches
+2025-05-08 21:10:00,887 [INFO] [root.normalize_bulk_matches] Processing day #3 with 190 matches
+2025-05-08 21:10:00,888 [INFO] [root.normalize_bulk_matches] Processing day #4 with 180 matches
+2025-05-08 21:10:00,905 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Data normalized
+2025-05-08 21:10:00,905 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Loading data into database
+2025-05-08 21:10:00,905 [INFO] [root.save_bulk_matches_to_db] connected to database: c:/Code/Local Code/deadlock_match_prediction/data/deadlock.db
+2025-05-08 21:10:00,965 [INFO] [root.save_bulk_matches_to_db] Bulk load complete.
+2025-05-08 21:10:00,965 [INFO] [root.run_etl_bulk_matches] *INFO* ETL: Data loaded into database
+2025-05-08 21:16:53,976 [INFO] [root.run_etl_hero_trends] starting run_etl_hero_trends ETL without critical errors.
+2025-05-08 21:16:53,976 [INFO] [root.run_etl_hero_trends] *INFO* ETL: Fetching hero trends for 7 days
+2025-05-08 21:16:53,976 [INFO] [root.fetch_hero_trends] 
+
+Getting hero_data from full url: https://api.deadlock-api.com/v1/analytics/hero-stats?7&100
+
+
+2025-05-08 21:16:53,979 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-08 21:16:54,362 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/analytics/hero-stats?7&100 HTTP/1.1" 200 None
+2025-05-08 21:16:54,362 [INFO] [root.fetch_hero_trends] hero data found!
+2025-05-08 21:16:54,363 [INFO] [root.build_hero_trends] Transforming hero trends data
+2025-05-08 21:16:54,363 [INFO] [root.build_hero_trends] Setting trend window: start=1747358214, end=1746753414, window_days=7
+2025-05-08 21:16:54,369 [INFO] [root.save_hero_trends_to_db] Extra columns in hero_trends, extras: {'matches', 'total_deaths', 'total_shots_missed', 'total_kills', 'total_boss_damage', 'total_neutral_damage', 'wins', 'players', 'total_assists', 'total_shots_hit', 'losses', 'total_net_worth', 'total_creep_damage', 'total_max_health', 'total_denies', 'total_player_damage_taken', 'total_last_hits', 'total_player_damage'}
+2025-05-08 21:16:54,369 [INFO] [root.save_hero_trends_to_db] connected to database: c:/Code/Local Code/deadlock_match_prediction/data/deadlock.db
+2025-05-08 21:16:54,376 [INFO] [root.save_hero_trends_to_db] Bulk load complete. rows inserted: 26-0
+2025-05-08 21:16:54,376 [INFO] [root.run_etl_hero_trends] *INFO* ETL: Fetching hero trends for 30 days
+2025-05-08 21:16:54,378 [INFO] [root.fetch_hero_trends] 
+
+Getting hero_data from full url: https://api.deadlock-api.com/v1/analytics/hero-stats?30&100
+
+
+2025-05-08 21:16:54,378 [DEBUG] [urllib3.connectionpool._new_conn] Starting new HTTPS connection (1): api.deadlock-api.com:443
+2025-05-08 21:16:54,558 [DEBUG] [urllib3.connectionpool._make_request] https://api.deadlock-api.com:443 "GET /v1/analytics/hero-stats?30&100 HTTP/1.1" 200 None
+2025-05-08 21:16:54,558 [INFO] [root.fetch_hero_trends] hero data found!
+2025-05-08 21:16:54,559 [INFO] [root.build_hero_trends] Transforming hero trends data
+2025-05-08 21:16:54,559 [INFO] [root.build_hero_trends] Setting trend window: start=1749345414, end=1746753414, window_days=30
+2025-05-08 21:16:54,561 [INFO] [root.save_hero_trends_to_db] Extra columns in hero_trends, extras: {'matches', 'total_deaths', 'total_shots_missed', 'total_kills', 'total_boss_damage', 'total_neutral_damage', 'wins', 'players', 'total_assists', 'total_shots_hit', 'losses', 'total_net_worth', 'total_creep_damage', 'total_max_health', 'total_denies', 'total_player_damage_taken', 'total_last_hits', 'total_player_damage'}
+2025-05-08 21:16:54,561 [INFO] [root.save_hero_trends_to_db] connected to database: c:/Code/Local Code/deadlock_match_prediction/data/deadlock.db
+2025-05-08 21:16:54,568 [INFO] [root.save_hero_trends_to_db] Bulk load complete. rows inserted: 52-26
+2025-05-08 21:16:54,568 [INFO] [root.run_etl_hero_trends] completed 7d and 30d hero trends ETL without critical errors.

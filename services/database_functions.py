@@ -11,7 +11,8 @@ def drop_all_tables(con):
         "player_matches",
         "player_trends",
         "player_hero_trends",
-        "hero_trends"
+        "hero_trends",
+        "player_rolling_stats"
         }
     for table in tables_to_drop:
         con.execute(f"DROP TABLE IF EXISTS {table}")
