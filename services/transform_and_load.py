@@ -423,7 +423,7 @@ def process_player_hero_stats(player_stats, hero_trends) -> pd.DataFrame:
     
     #calculate player_hero trends
     try:
-        player_stats['p_v_h_kd_pct'] = player_stats['p_avg_kd'] - hero_trends['average_kd']  
+        player_stats['p_v_h_kd_pct'] = ((player_stats['p_avg_kd'] - hero_trends['average_kd'])*100).round(2)  
     except Exception as e:
         logging.error(f"Error calculating player_hero trends for {player_stats['account_id']}: {e}")
     logging.debug(f"IN MERGE, Player stats columns: {player_stats.columns}")
