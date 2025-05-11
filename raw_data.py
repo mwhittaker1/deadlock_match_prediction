@@ -1,0 +1,54 @@
+import duckdb
+
+
+def main(db, table_name):
+    for x in range(25, 36):
+        filename = f"data/raw_data/match_player_{x}.parquet"
+        print(f"Loading {filename} into DuckDB")
+
+        try:
+            exclude_prefixes = ("book_", "stats.", "death_", "items.")
+            # Get column names directly from file
+            all_cols = db.execute(f"SELECT * FROM '{filename}' LIMIT 1").fetchdf().columns
+            filtered_cols = [col for col in all_cols if not col.startswith(exclude_prefixes)]
+            col_list = ", ".join([f'"{col}"' for col in filtered_cols])
+
+            if x == 25:
+                db.execute(f"CREATE TABLE IF NOT EXISTS {table_name} AS SELECT {col_list} FROM '{filename}'")
+            else:
+                db.execute(f"INSERT INTO {table_name} SELECT {col_list} FROM '{filename}'")
+        except Exception as e:
+            print(f"❌ Failed loading {filename}: {e}")
+
+def test():
+    # Test the connection
+    df = con.execute("""SELECT * FROM 'C:/Users/MWOfficeDesktop/Desktop/deadlock_downloads/match_player_25.parquet' LIMIT 5""").fetchdf()
+    cols_to_exclude = [col for col in df.columns if col.startswith("book_") or col.startswith("stats.") or col.startswith("death_") or col.startswith("items.")]
+    df = df.drop(columns=cols_to_exclude)
+    con.execute(f"CREATE TABLE IF NOT EXISTS match_player_raw AS SELECT * FROM {df} limit 10")
+
+
+def test1():
+    df = con.execute("""SELECT * FROM 'C:/Users/MWOfficeDesktop/Desktop/deadlock_downloads/match_player_25.parquet' LIMIT 5""").fetchdf()
+    cols_to_exclude = [col for col in df.columns if col.startswith("book_") or col.startswith("stats.") or col.startswith("death_") or col.startswith("items.")]
+    df = df.drop(columns=cols_to_exclude)
+    print(df.columns)
+
+def test_insert_raw_data():
+    table_name = "staging_cleaned"
+    db = duckdb.connect("match_player_raw.duckdb")
+    db.execute(f"DROP TABLE IF EXISTS {table_name}")
+
+    df = db.execute("""SELECT * FROM 'data/raw_data/match_player_25.parquet' LIMIT 5""").fetchdf()
+    cols_to_exclude = [col for col in df.columns if col.startswith("book_") or col.startswith("stats.") or col.startswith("death_") or col.startswith("items.")]
+    df = df.drop(columns=cols_to_exclude)
+
+    db.register("filtered_df", df)
+    db.execute(f"""
+        CREATE TABLE {table_name} AS SELECT * FROM filtered_df
+    """)
+
+if __name__ == "__main__":
+    table_name = "staging_cleaned"
+    db = duckdb.connect("match_player_raw.duckdb")
+    main(db, table_name)

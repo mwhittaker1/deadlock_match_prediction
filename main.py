@@ -13,9 +13,9 @@ logging.basicConfig(
 )
 
 def main():
-    dbf.reset_all_tables(con=db.con)
-    o.run_etl_bulk_matches(max_days_fetch=5)
-    o.run_etl_hero_trends()
+    #dbf.reset_all_tables(con=db.con)
+    #o.run_etl_bulk_matches(max_days_fetch=30)
+    #o.run_etl_hero_trends()
     o.run_etl_player_hero_match_trends()
     pass
 if __name__ == "__main__":

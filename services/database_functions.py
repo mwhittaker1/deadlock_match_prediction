@@ -37,6 +37,7 @@ def create_all_tables(con):
     
     logging.info(f"All tables created: {expected_tables}")
 
+# pull matches to use for predictions or for training model
 def create_matches_table(con):
     con.execute("""
     CREATE TABLE matches (
@@ -50,6 +51,8 @@ def create_matches_table(con):
     )
     """)
 
+# normalized matches for player_match in matches 
+# distinct account_id = players to pull match history and trends fo
 def create_player_matches_table(con):
     con.execute("""
     CREATE TABLE player_matches (
@@ -66,6 +69,8 @@ def create_player_matches_table(con):
     )
     """)
 
+# for distinct account_id in player_matches, trends for each player
+# trends are for each player for each match in matches.
 def create_player_trends_table(con):
     con.execute("""
     CREATE TABLE player_trends (
@@ -97,6 +102,8 @@ def create_player_trends_table(con):
     )
     """)
 
+# for each player, creates player_hero specific trends.
+# currently not in use.
 def create_player_hero_trends(con):
     con.execute("""
     CREATE TABLE player_hero_trends (
@@ -121,6 +128,8 @@ def create_player_hero_trends(con):
     )
     """)
 
+# for match in player_matches, calculate each matches prior win/loss % for 2-5 matches.
+# match 1 = win, match 2 = loss, match 3 == match 4: win_pct_3 = 0.67
 def create_player_rolling_stats(con):
     con.execute("""
     CREATE TABLE player_rolling_stats (
@@ -139,6 +148,7 @@ def create_player_rolling_stats(con):
     )         
     """)
 
+# hero trends are all inclusive (100 min badge) to match against player stats
 def create_hero_trends_table(con):  
     con.execute("""
     CREATE TABLE hero_trends (
@@ -168,7 +178,6 @@ def pull_trend_players_from_db(con):
     query = """
     SELECT DISTINCT account_id
     FROM player_matches
-    LIMIT 250
     """
     
     players = con.execute(query).fetchdf()
