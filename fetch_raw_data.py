@@ -2,7 +2,7 @@ import duckdb
 
 
 def main(db, table_name):
-    for x in range(25, 36):
+    for x in range(15, 24):
         filename = f"data/raw_data/match_player_{x}.parquet"
         print(f"Loading {filename} into DuckDB")
 
@@ -51,4 +51,5 @@ def test_insert_raw_data():
 if __name__ == "__main__":
     table_name = "staging_cleaned"
     db = duckdb.connect("match_player_raw.duckdb")
+    db.execute(f"DROP TABLE IF EXISTS {table_name}")
     main(db, table_name)
