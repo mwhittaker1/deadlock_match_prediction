@@ -1,5 +1,9 @@
 todos.
 
-refactor players_to_trend_from_db function.
+Need to download more parquet files
 
-create function to pull raw_match_data to calculate player trends.
+purge staging_cleaned, add new, filter out to match distinct account_id from primary db matches (13,000 matches)
+
+format and push to filtered_player_matches in raw_match_data.duckdb
+
+refactor players_to_trend_from_db function.

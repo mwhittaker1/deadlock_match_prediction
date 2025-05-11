@@ -8,3 +8,4 @@ legacy/
 *.parquet
 /test_data/
 *.duckdb
+*.wal
