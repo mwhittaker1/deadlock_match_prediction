@@ -4,6 +4,7 @@ import os
 from services import database_functions as dbf
 from services import function_tools as u
 import logging
+import duckdb
 
 log_file = os.getenv("LOGGING_LOC")  
 logging.basicConfig(
@@ -14,10 +15,11 @@ logging.basicConfig(
 
 def main():
     #dbf.reset_all_tables(con=db.con)
-
-    o.run_etl_bulk_matches(max_days_fetch=60)
+    #dbf.create_player_matches_history(db.con)
+    #o.run_etl_bulk_matches(max_days_fetch=60)
     #o.run_etl_hero_trends()
     #o.run_etl_player_hero_match_trends()
     pass
+
 if __name__ == "__main__":
     main()

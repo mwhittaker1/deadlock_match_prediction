@@ -75,8 +75,8 @@ def download_large_file(url, filename, chunk_size=1024*1024, max_retries=10):
 
 def main():
     base_url = "https://s3-cache.deadlock-api.com/db-snapshot/public/match_metadata"
-    start_file = 24
-    end_file = 25
+    start_file = 0
+    end_file = 35
     
     # Create downloads directory on Desktop
     download_dir = os.path.join(os.path.expanduser("~"), "Desktop", "deadlock_downloads")
@@ -88,11 +88,11 @@ def main():
     failed_downloads = []
     
     for x in range(start_file, end_file):
-        url = f"{base_url}/match_player_{x}.parquet"
-        filename = os.path.join(download_dir, f"match_player_{x}.parquet")
+        url = f"{base_url}/match_info_{x}.parquet"
+        filename = os.path.join(download_dir, f"match_info_{x}.parquet")
         
         print(f"\n{'='*50}")
-        print(f"Downloading match_player_{x}.parquet")
+        print(f"Downloading match_info_{x}.parquet")
         print(f"{'='*50}")
         
         success = download_large_file(url, filename)
@@ -107,10 +107,10 @@ def main():
         print(f"{'='*50}")
         
         for x in failed_downloads[:]:  # Copy the list to modify during iteration
-            url = f"{base_url}/match_player_{x}.parquet"
-            filename = os.path.join(download_dir, f"match_player_{x}.parquet")
+            url = f"{base_url}/match_info_{x}.parquet"
+            filename = os.path.join(download_dir, f"match_info_{x}.parquet")
             
-            print(f"\nRetrying match_player_{x}.parquet")
+            print(f"\nRetrying match_info_{x}.parquet")
             success = download_large_file(url, filename, max_retries=10)  # More retries for failed files
             
             if success:
@@ -124,7 +124,7 @@ def main():
     
     if failed_downloads:
         print(f"Failed to download: {len(failed_downloads)} files")
-        print(f"Failed files: {[f'match_player_{x}.parquet' for x in failed_downloads]}")
+        print(f"Failed files: {[f'match_info_{x}.parquet' for x in failed_downloads]}")
     else:
         print("All files downloaded successfully!")
 

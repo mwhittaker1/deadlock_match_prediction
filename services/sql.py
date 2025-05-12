@@ -41,13 +41,17 @@ def run_checks(con):
 
 
     """            **        Counts     **          """
-
-
     d_match_count = con.execute("""
         SELECT COUNT(distinct match_id)
         FROM matches
     """).fetchone()[0]
-    print(f"match_count: {d_match_count}\n")
+    print(f"distinct match_count in matches: {d_match_count}\n")
+
+    d_match_player_matches = con.execute("""
+        SELECT COUNT(DISTINCT match_id)
+        FROM player_matches
+    """).fetchone()[0]
+    print(f"distinct_match_count in player_matches (should match in matches): {d_match_player_matches}\n")
 
     match_count = con.execute("""
         SELECT COUNT(match_id)

@@ -1,9 +1,22 @@
 todos.
 
-Need to download more parquet files
+The Matches. 13,000
 
-purge staging_cleaned, add new, filter out to match distinct account_id from primary db matches (13,000 matches)
+12 players for each match in matches, player_matches, 1 row per player
+For each distinct player in player_matches, create player trends and stats -> match_histories.
 
-format and push to filtered_player_matches in raw_match_data.duckdb
+player_match_history:#### Work In Progress! ###
+raw_player_match_data and raw_match_info data were downloaded, cleaned, and inserted into the raw_data db.
+
+Next step 5/12 5pm:
+For each distinct account_id in match_players
+get match_info_history and filtered_player_matches where match_id == match_id and,
+add to player_matches_history
+
+Ensure rolling stats are being caluclated.
+
+Create logic for 'recency' in a way that allows bulk matches to be trained on.
+
+Train model
 
 refactor players_to_trend_from_db function.

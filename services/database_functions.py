@@ -1,8 +1,6 @@
 import duckdb
 import pandas as pd
 import logging
-from data import db
-from services import function_tools as u
 
 def drop_all_tables(con):
     
@@ -12,6 +10,7 @@ def drop_all_tables(con):
     con.execute(f"DROP TABLE IF EXISTS player_matches;")
     con.execute(f"DROP TABLE IF EXISTS matches;")
     con.execute(f"DROP TABLE IF EXISTS hero_trends;")
+    con.execute(f"DROP TABLE IF EXISTS player_matches_history;")
 
 def create_all_tables(con):
     logging.info("Creating all tables")
@@ -30,6 +29,7 @@ def create_all_tables(con):
     create_player_hero_trends(con)
     create_hero_trends_table(con)
     create_player_rolling_stats(con)
+    create_player_matches_history(con)
     
     result = set(t[0] for t in con.execute("SHOW TABLES;").fetchall())
     logging.info(f"Resulting tables: {result}")
@@ -65,9 +65,30 @@ def create_player_matches_table(con):
     assists INTEGER,
     denies INTEGER,
     net_worth BIGINT,
+    won INTEGER,
     PRIMARY KEY (account_id, match_id)
     )
     """)
+
+# player history for each distinct account_id in player_matches
+# used for trends, rolling stats, and match recency information
+def create_player_matches_history(con):
+    con.execute("""
+    CREATE TABLE player_matches_history (
+    account_id BIGINT,
+    match_id BIGINT,
+    hero_id INTEGER,
+    team VARCHAR,
+    kills INTEGER,
+    deaths INTEGER,
+    assists INTEGER,
+    denies INTEGER,
+    net_worth BIGINT,
+    won INTEGER,
+    PRIMARY KEY (account_id, match_id)
+    )
+    """)
+
 
 # for distinct account_id in player_matches, trends for each player
 # trends are for each player for each match in matches.
@@ -214,8 +235,9 @@ def pull_hero_trends_from_db(con,trend_window_days,trend_start_date=None,):
 
 if __name__ == "__main__":
     #reset_all_tables(db.con)
-    con = db.con
-    con.execute(create_player_rolling_stats(con))
+    con = duckdb.connect(r"C:\Code\Local Code\deadlock_match_prediction\\data\deadlock.db")
+    #con.execute(create_player_rolling_stats(con))
+    con.execute(create_player_matches_history(con))
     #con.execute("ALTER TABLE player_trends drop COLUMN p_h_pick_per;")
     #con.execute("ALTER TABLE player_matches ADD COLUMN average_kd FLOAT;")
 
