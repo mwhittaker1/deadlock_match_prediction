@@ -75,8 +75,8 @@ def download_large_file(url, filename, chunk_size=1024*1024, max_retries=10):
 
 def main():
     base_url = "https://s3-cache.deadlock-api.com/db-snapshot/public/match_metadata"
-    start_file = 13
-    end_file = 24
+    start_file = 24
+    end_file = 25
     
     # Create downloads directory on Desktop
     download_dir = os.path.join(os.path.expanduser("~"), "Desktop", "deadlock_downloads")

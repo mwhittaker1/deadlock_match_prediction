@@ -2,7 +2,9 @@ import duckdb
 
 
 def main(db, table_name):
-    for x in range(15, 24):
+    i=1
+    for x in range(1, 25):
+        
         filename = f"data/raw_data/match_player_{x}.parquet"
         print(f"Loading {filename} into DuckDB")
 
@@ -13,23 +15,23 @@ def main(db, table_name):
             filtered_cols = [col for col in all_cols if not col.startswith(exclude_prefixes)]
             col_list = ", ".join([f'"{col}"' for col in filtered_cols])
 
-            if x == 25:
+            if i == 1:
                 db.execute(f"CREATE TABLE IF NOT EXISTS {table_name} AS SELECT {col_list} FROM '{filename}'")
+                i+=1
             else:
                 db.execute(f"INSERT INTO {table_name} SELECT {col_list} FROM '{filename}'")
         except Exception as e:
             print(f"❌ Failed loading {filename}: {e}")
 
-def test():
+def test(con,tbl_name):
     # Test the connection
-    df = con.execute("""SELECT * FROM 'C:/Users/MWOfficeDesktop/Desktop/deadlock_downloads/match_player_25.parquet' LIMIT 5""").fetchdf()
-    cols_to_exclude = [col for col in df.columns if col.startswith("book_") or col.startswith("stats.") or col.startswith("death_") or col.startswith("items.")]
-    df = df.drop(columns=cols_to_exclude)
-    con.execute(f"CREATE TABLE IF NOT EXISTS match_player_raw AS SELECT * FROM {df} limit 10")
+    row_c = con.execute("""SELECT count(*) FROM 'data/raw_data/match_player_25.parquet'""").fetchone()[0]
+    print(row_c)
+
 
 
 def test1():
-    df = con.execute("""SELECT * FROM 'C:/Users/MWOfficeDesktop/Desktop/deadlock_downloads/match_player_25.parquet' LIMIT 5""").fetchdf()
+    df = con.execute("""SELECT * FROM 'data/raw_data/match_player_25.parquet' LIMIT 5""").fetchdf()
     cols_to_exclude = [col for col in df.columns if col.startswith("book_") or col.startswith("stats.") or col.startswith("death_") or col.startswith("items.")]
     df = df.drop(columns=cols_to_exclude)
     print(df.columns)
@@ -51,5 +53,5 @@ def test_insert_raw_data():
 if __name__ == "__main__":
     table_name = "staging_cleaned"
     db = duckdb.connect("match_player_raw.duckdb")
-    db.execute(f"DROP TABLE IF EXISTS {table_name}")
+    #db.execute(f"DROP TABLE IF EXISTS {table_name}")
     main(db, table_name)
