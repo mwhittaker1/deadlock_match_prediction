@@ -44,7 +44,7 @@ def test(con,tbl_name):
 
 
 
-def test1():
+def test1(con):
     df = con.execute("""SELECT * FROM 'data/raw_data/match_player_25.parquet' LIMIT 5""").fetchdf()
     cols_to_exclude = [col for col in df.columns if col.startswith("book_") or col.startswith("stats.") or col.startswith("death_") or col.startswith("items.")]
     df = df.drop(columns=cols_to_exclude)

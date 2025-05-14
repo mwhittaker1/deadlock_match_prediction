@@ -352,7 +352,7 @@ def test_calculate_batch_player_streak_trends(list_dfs_player_history)->list:
         player_history = test_calculate_won_column(player_history)
         #from player_history 
         # create p_win_pct_x columns
-        player_stats = test_calculate_player_streak_trends(player_history)
+        #player_stats = test_calculate_player_streak_trends(player_history)
 
         logging.debug(f"Calculated player count streaks for: {player_history['account_id'].iloc[0]}")
         #from player_history 
