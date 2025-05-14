@@ -7,3 +7,5 @@ non_normal_total_matches*
 legacy/
 *.parquet
 /test_data/
+*.duckdb
+*.wal
