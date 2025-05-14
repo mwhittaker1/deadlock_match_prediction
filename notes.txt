@@ -20,3 +20,11 @@ Create logic for 'recency' in a way that allows bulk matches to be trained on.
 Train model
 
 refactor players_to_trend_from_db function.
+
+
+RAW_DATA DB Structure
+matches_for_training = Duplicate of deadlock.db matches
+staging_cleaned = filtered set of columns from match_players raw data
+filtered_player_matches = staging_cleaned filtered by distinct account_id from matches_for_training
+match_info_history = raw match_info bulk data
+high_quality_matches = filtered match_info for matches with skill level greater than badge # 75
