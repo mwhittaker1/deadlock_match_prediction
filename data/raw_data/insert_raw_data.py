@@ -4,7 +4,7 @@ import duckdb
 def fetch_insert_match_players(db, table_name):
     """ reads match_player data from parquet files and inserts into DuckDB"""
     i=1
-    for x in range(0, 34):
+    for x in range(1, 35):
         
         filename = f"data/raw_data/match_player_{x}.parquet"
         print(f"Loading {filename} into DuckDB")
@@ -25,17 +25,7 @@ def fetch_insert_match_players(db, table_name):
             print(f"❌ Failed loading {filename}: {e}")
 
 def fetch_insert_match_info(db, table_name):
-    """Formats raw match_info to be combined with raw_match_players
-    Combined data will live in deadlock.db.player_matches_history table
-    """
-    db.execute(f"""
-        CREATE OR REPLACE TABLE high_quality_matches AS
-        SELECT match_id, start_time, game_mode, match_mode
-        FROM '{table_name}'
-        WHERE (average_badge_team0 + average_badge_team1) / 2 > 75
-    """)
-    result = db.execute("Select count(*) from high_quality_matches").fetchone()[0]
-    print(f"High quality matches count: {result}")
+    pass
 
 def test(con,tbl_name):
     # Test the connection
@@ -43,9 +33,9 @@ def test(con,tbl_name):
     print(row_c)
 
 
-
 def test1(con):
     df = con.execute("""SELECT * FROM 'data/raw_data/match_player_25.parquet' LIMIT 5""").fetchdf()
+    print(df.columns)
     cols_to_exclude = [col for col in df.columns if col.startswith("book_") or col.startswith("stats.") or col.startswith("death_") or col.startswith("items.")]
     df = df.drop(columns=cols_to_exclude)
     print(df.columns)
@@ -65,7 +55,9 @@ def test_insert_raw_data():
     """)
 
 if __name__ == "__main__":
-    table_name = "match_info_history"
-    db = duckdb.connect("match_player_raw.duckdb")
-    #db.execute(f"DROP TABLE IF EXISTS {table_name}")
-    fetch_insert_match_info(db, table_name)
+    #table_name = "match_info_history"
+    table_name = "staging_cleaned"
+    db = duckdb.connect("c:/Code/Local Code/deadlock_match_prediction/match_player_raw.duckdb")    #db.execute(f"DROP TABLE IF EXISTS {table_name}")
+    #db.execute("DROP TABLE staging_cleaned")
+    fetch_insert_match_players(db,table_name)
+    #fetch_insert_match_info(db, table_name)

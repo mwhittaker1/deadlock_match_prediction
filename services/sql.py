@@ -39,8 +39,13 @@ def run_checks(con):
         """).fetchall()
     print(f"player_trends_table_columns: {player_trends_table_columns}\n")
 
-
+    player_matches_history_columns = con.execute("""
+        PRAGMA table_info('player_matches_history');
+        """).fetchall()
+    print(f"player_matches_history_columns: {player_matches_history_columns}\n")
     """            **        Counts     **          """
+
+
     d_match_count = con.execute("""
         SELECT COUNT(distinct match_id)
         FROM matches
@@ -151,7 +156,7 @@ def test1():
 
 if __name__ == "__main__":
     con = duckdb.connect(r"C:\Code\Local Code\deadlock_match_prediction\\data\deadlock.db")
-    #compare_raw_to_current()
-    run_checks(con)
+    compare_raw_to_current()
+    #run_checks(con)
     #compare_raw_to_current()
     #logging.info("\n\nData integrity checks completed")
