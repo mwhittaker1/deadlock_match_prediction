@@ -5,14 +5,10 @@ The Matches. 13,000
 12 players for each match in matches, player_matches, 1 row per player
 For each distinct player in player_matches, create player trends and stats -> match_histories.
 
-player_match_history:#### Work In Progress! ###
-raw_player_match_data and raw_match_info data were downloaded, cleaned, and inserted into the raw_data db.
 
-Next step 5/12 5pm:
-For each distinct account_id in match_players
-get match_info_history and filtered_player_matches where match_id == match_id and,
-add to player_matches_history
 
+
+### not started ###
 Ensure rolling stats are being caluclated.
 
 Create logic for 'recency' in a way that allows bulk matches to be trained on.
@@ -24,7 +20,9 @@ refactor players_to_trend_from_db function.
 
 RAW_DATA DB Structure
 matches_for_training = Duplicate of deadlock.db matches
-staging_cleaned = filtered set of columns from match_players raw data
-filtered_player_matches = staging_cleaned filtered by distinct account_id from matches_for_training
+dup_player_matches = duplicate of deadlock.db player_matches
+staging_cleaned = formatted raw_player_match_data 
+filtered_player_matches = match history for each distinct player in matches_for_training
+
 match_info_history = raw match_info bulk data
 high_quality_matches = filtered match_info for matches with skill level greater than badge # 75

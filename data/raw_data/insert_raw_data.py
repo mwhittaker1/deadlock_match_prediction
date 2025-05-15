@@ -57,7 +57,7 @@ def test_insert_raw_data():
 if __name__ == "__main__":
     #table_name = "match_info_history"
     table_name = "staging_cleaned"
-    db = duckdb.connect("c:/Code/Local Code/deadlock_match_prediction/match_player_raw.duckdb")    #db.execute(f"DROP TABLE IF EXISTS {table_name}")
+    db = duckdb.connect("c:/Code/Local Code/deadlock_match_prediction/data/match_player_raw.duckdb")    #db.execute(f"DROP TABLE IF EXISTS {table_name}")
     #db.execute("DROP TABLE staging_cleaned")
     fetch_insert_match_players(db,table_name)
     #fetch_insert_match_info(db, table_name)

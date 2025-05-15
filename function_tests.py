@@ -415,10 +415,15 @@ def etl_player_player_match_trends():
     return
 
 def test():
+    import duckdb
+    con = duckdb.connect("c:/Code/Local Code/deadlock_match_prediction/data/deadlock.db")
+
+    test_df = dbf.pull_player_match_history_from_db(con,1699896029)
+    print(f"Test completed, fetched player match history columns:\n {test_df.columns}\nlength expected 117:\n {len(test_df)}")
     pass
 
 if __name__ == "__main__":
-    etl_player_player_match_trends()
+    test()
 
 #outdated
 def v1_calculate_player_trends():

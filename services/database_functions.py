@@ -233,6 +233,26 @@ def pull_hero_trends_from_db(con,trend_window_days,trend_start_date=None,):
     
     return heroes
 
+def pull_player_match_history_from_db(con, account_id):
+    """pulls player match history from player_matches_history table"""
+    try:
+        query = f"""
+        SELECT *
+        FROM player_matches_history
+        WHERE account_id = {account_id}
+        """
+        
+        player_match_history = con.execute(query).fetchdf()
+        if player_match_history.empty:
+            logging.warning(f"No match history found for player {account_id}")
+            return None
+        
+    except Exception as e:
+        logging.error(f"Error pulling player match history from DB: {e}")
+        return None
+    
+    return player_match_history
+
 if __name__ == "__main__":
     #reset_all_tables(db.con)
     con = duckdb.connect(r"C:\Code\Local Code\deadlock_match_prediction\\data\deadlock.db")
