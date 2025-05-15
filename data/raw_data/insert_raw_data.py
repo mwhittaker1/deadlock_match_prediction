@@ -4,7 +4,7 @@ import duckdb
 def fetch_insert_match_players(db, table_name):
     """ reads match_player data from parquet files and inserts into DuckDB"""
     i=1
-    for x in range(1, 35):
+    for x in range(34, 35):
         
         filename = f"data/raw_data/match_player_{x}.parquet"
         print(f"Loading {filename} into DuckDB")
@@ -25,7 +25,18 @@ def fetch_insert_match_players(db, table_name):
             print(f"❌ Failed loading {filename}: {e}")
 
 def fetch_insert_match_info(db, table_name):
-    pass
+    for x in range(35, 36):
+        
+        filename = f"data/raw_data/match_info_{x}.parquet"
+        print(f"Loading {filename} into DuckDB")
+
+        try:
+            if x == 1:
+                db.execute(f"CREATE TABLE IF NOT EXISTS {table_name} AS SELECT * FROM '{filename}'")
+            else:
+                db.execute(f"INSERT INTO {table_name} SELECT * FROM '{filename}'")
+        except Exception as e:
+            print(f"❌ Failed loading {filename}: {e}")
 
 def test(con,tbl_name):
     # Test the connection
@@ -55,9 +66,9 @@ def test_insert_raw_data():
     """)
 
 if __name__ == "__main__":
-    #table_name = "match_info_history"
-    table_name = "staging_cleaned"
+    table_name = "match_info_history"
+    #table_name = "staging_cleaned"
     db = duckdb.connect("c:/Code/Local Code/deadlock_match_prediction/data/match_player_raw.duckdb")    #db.execute(f"DROP TABLE IF EXISTS {table_name}")
-    #db.execute("DROP TABLE staging_cleaned")
-    fetch_insert_match_players(db,table_name)
+    #db.execute("DROP TABLE match_info_history")
+    fetch_insert_match_info(db,table_name)
     #fetch_insert_match_info(db, table_name)

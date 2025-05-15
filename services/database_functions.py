@@ -237,9 +237,11 @@ def pull_player_match_history_from_db(con, account_id):
     """pulls player match history from player_matches_history table"""
     try:
         query = f"""
-        SELECT *
+        SELECT *, matches.start_time
         FROM player_matches_history
-        WHERE account_id = {account_id}
+        JOIN matches
+        ON player_matches_history.match_id = matches.match_id
+        WHERE player_matches_history.account_id = '{account_id}'
         """
         
         player_match_history = con.execute(query).fetchdf()
