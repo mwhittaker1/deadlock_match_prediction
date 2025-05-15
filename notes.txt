@@ -5,7 +5,9 @@ The Matches. 13,000
 12 players for each match in matches, player_matches, 1 row per player
 For each distinct player in player_matches, create player trends and stats -> match_histories.
 
-
+5/14/25
+player_match_history is loaded with large dataset. Currently missing "start_time" needed for calculations.
+Working through test_run_tl_player_hero_match_trends_from_db - failure on compute_player_stats
 
 
 ### not started ###

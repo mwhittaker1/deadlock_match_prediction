@@ -85,10 +85,10 @@ def create_player_matches_history(con):
     denies INTEGER,
     net_worth BIGINT,
     won INTEGER,
+    prior_win_loss_streak VARCHAR,
     PRIMARY KEY (account_id, match_id)
     )
     """)
-
 
 # for distinct account_id in player_matches, trends for each player
 # trends are for each player for each match in matches.
@@ -257,8 +257,8 @@ if __name__ == "__main__":
     #reset_all_tables(db.con)
     con = duckdb.connect(r"C:\Code\Local Code\deadlock_match_prediction\\data\deadlock.db")
     #con.execute(create_player_rolling_stats(con))
-    con.execute(create_player_matches_history(con))
-    #con.execute("ALTER TABLE player_trends drop COLUMN p_h_pick_per;")
+    #con.execute(create_player_matches_history(con))
+    con.execute("ALTER TABLE player_matches_history ADD COLUMN prior_win_loss_streak VARCHAR;")
     #con.execute("ALTER TABLE player_matches ADD COLUMN average_kd FLOAT;")
 
     #create_test_subset(con)

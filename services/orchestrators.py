@@ -151,7 +151,7 @@ def run_etl_player_hero_match_trends_from_db():
             logging.error(f"Error processing player {account_id}: {e}")
 
        # caclulcate player won stat and add as new column
-        player_match_history = tal.calculate_won_column(player_match_history)
+        #player_match_history = tal.calculate_won_column(player_match_history)
 
         #calculate player trends and streaks
         player_stats = tal.compute_player_stats(player_match_history)
