@@ -1,30 +1,620 @@
-2025-05-15 22:52:29,094 [INFO] [root.run_etl_player_hero_match_trends_from_db] Starting function tests
-2025-05-15 22:52:29,099 [INFO] [root.test_pull_trend_players_from_db] Pulled 25 players to trend
-2025-05-15 22:52:29,099 [INFO] [root.run_etl_player_hero_match_trends_from_db] Time passed = 0.00seconds. Processed Pandas(Index=0, account_id=1465196567) of 25 players
-2025-05-15 22:52:29,099 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=0, account_id=1465196567) of 25
-2025-05-15 22:52:29,131 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=1, account_id=136024220) of 25
-2025-05-15 22:52:29,143 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=2, account_id=1716124084) of 25
-2025-05-15 22:52:29,149 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=3, account_id=429795010) of 25
-2025-05-15 22:52:29,158 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=4, account_id=24826186) of 25
-2025-05-15 22:52:29,165 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=5, account_id=1150831835) of 25
-2025-05-15 22:52:29,174 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=6, account_id=364698744) of 25
-2025-05-15 22:52:29,179 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=7, account_id=233893017) of 25
-2025-05-15 22:52:29,186 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=8, account_id=1173747068) of 25
-2025-05-15 22:52:29,194 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=9, account_id=197865966) of 25
-2025-05-15 22:52:29,203 [INFO] [root.run_etl_player_hero_match_trends_from_db] Time passed = 0.11seconds. Processed Pandas(Index=10, account_id=79450906) of 25 players
-2025-05-15 22:52:29,203 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=10, account_id=79450906) of 25
-2025-05-15 22:52:29,210 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=11, account_id=392086095) of 25
-2025-05-15 22:52:29,219 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=12, account_id=1477660209) of 25
-2025-05-15 22:52:29,228 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=13, account_id=103772579) of 25
-2025-05-15 22:52:29,235 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=14, account_id=294780673) of 25
-2025-05-15 22:52:29,241 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=15, account_id=1062898121) of 25
-2025-05-15 22:52:29,252 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=16, account_id=1599940693) of 25
-2025-05-15 22:52:29,258 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=17, account_id=130174860) of 25
-2025-05-15 22:52:29,268 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=18, account_id=272697072) of 25
-2025-05-15 22:52:29,276 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=19, account_id=59536063) of 25
-2025-05-15 22:52:29,283 [INFO] [root.run_etl_player_hero_match_trends_from_db] Time passed = 0.19seconds. Processed Pandas(Index=20, account_id=1269968966) of 25 players
-2025-05-15 22:52:29,283 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=20, account_id=1269968966) of 25
-2025-05-15 22:52:29,292 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=21, account_id=1303034426) of 25
-2025-05-15 22:52:29,298 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=22, account_id=858544160) of 25
-2025-05-15 22:52:29,308 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=23, account_id=115965224) of 25
-2025-05-15 22:52:29,315 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=24, account_id=106189806) of 25
+2025-05-16 12:59:04,977 [INFO] [root.run_etl_player_hero_match_trends_from_db] Starting run_etl_player_hero_match_trends_from_db tests
+2025-05-16 12:59:04,977 [INFO] [root.test_pull_trend_players_from_db] Pulling players from player_matches table to trend
+2025-05-16 12:59:04,982 [INFO] [root.test_pull_trend_players_from_db] Pulled 5 players to trend
+2025-05-16 12:59:04,982 [INFO] [root.run_etl_player_hero_match_trends_from_db] Time passed = 0.01seconds. Processed Pandas(Index=0, account_id=386039958) of 5 players
+2025-05-16 12:59:04,982 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=0, account_id=386039958) of 5
+2025-05-16 12:59:04,982 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 386039958
+2025-05-16 12:59:05,016 [DEBUG] [root.compute_player_stats] Calculating player stats for player 386039958
+2025-05-16 12:59:05,016 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 386039958
+2025-05-16 12:59:05,019 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          3.860400e+08
+p_win_rate          6.096000e+01
+p_average_kills     1.095000e+01
+p_average_deaths    6.510000e+00
+p_avg_kd            1.680000e+00
+p_total_matches     5.840000e+02
+dtype: float64
+2025-05-16 12:59:05,019 [DEBUG] [root.count_player_streaks] Counting player streaks for: 386039958
+2025-05-16 12:59:05,023 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 75.0
+2025-05-16 12:59:05,024 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 12:59:05,024 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 12:59:05,026 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    386039958.0
+Name: account_id, dtype: float64
+2025-05-16 12:59:05,034 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 12:59:05,036 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 386039958
+2025-05-16 12:59:05,107 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=1, account_id=201721264) of 5
+2025-05-16 12:59:05,107 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 201721264
+2025-05-16 12:59:05,115 [DEBUG] [root.compute_player_stats] Calculating player stats for player 201721264
+2025-05-16 12:59:05,115 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 201721264
+2025-05-16 12:59:05,117 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          2.017213e+08
+p_win_rate          5.175000e+01
+p_average_kills     7.310000e+00
+p_average_deaths    6.050000e+00
+p_avg_kd            1.210000e+00
+p_total_matches     2.280000e+02
+dtype: float64
+2025-05-16 12:59:05,117 [DEBUG] [root.count_player_streaks] Counting player streaks for: 201721264
+2025-05-16 12:59:05,120 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 27.0
+2025-05-16 12:59:05,120 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 12:59:05,121 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 12:59:05,122 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    201721264.0
+Name: account_id, dtype: float64
+2025-05-16 12:59:05,128 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 12:59:05,131 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 201721264
+2025-05-16 12:59:05,171 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=2, account_id=360699786) of 5
+2025-05-16 12:59:05,171 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 360699786
+2025-05-16 12:59:05,198 [DEBUG] [root.compute_player_stats] Calculating player stats for player 360699786
+2025-05-16 12:59:05,198 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 360699786
+2025-05-16 12:59:05,201 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          3.606998e+08
+p_win_rate          5.476000e+01
+p_average_kills     6.730000e+00
+p_average_deaths    6.610000e+00
+p_avg_kd            1.020000e+00
+p_total_matches     8.820000e+02
+dtype: float64
+2025-05-16 12:59:05,201 [DEBUG] [root.count_player_streaks] Counting player streaks for: 360699786
+2025-05-16 12:59:05,204 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 136.0
+2025-05-16 12:59:05,205 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 12:59:05,205 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 12:59:05,207 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    360699786.0
+Name: account_id, dtype: float64
+2025-05-16 12:59:05,218 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 12:59:05,221 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 360699786
+2025-05-16 12:59:05,322 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=3, account_id=332303831) of 5
+2025-05-16 12:59:05,322 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 332303831
+2025-05-16 12:59:05,345 [DEBUG] [root.compute_player_stats] Calculating player stats for player 332303831
+2025-05-16 12:59:05,345 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 332303831
+2025-05-16 12:59:05,347 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          3.323038e+08
+p_win_rate          5.012000e+01
+p_average_kills     8.020000e+00
+p_average_deaths    7.880000e+00
+p_avg_kd            1.020000e+00
+p_total_matches     1.261000e+03
+dtype: float64
+2025-05-16 12:59:05,347 [DEBUG] [root.count_player_streaks] Counting player streaks for: 332303831
+2025-05-16 12:59:05,351 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 156.0
+2025-05-16 12:59:05,351 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 12:59:05,352 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 12:59:05,353 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    332303831.0
+Name: account_id, dtype: float64
+2025-05-16 12:59:05,360 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 12:59:05,363 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 332303831
+2025-05-16 12:59:05,491 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=4, account_id=6851431) of 5
+2025-05-16 12:59:05,491 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 6851431
+2025-05-16 12:59:05,505 [DEBUG] [root.compute_player_stats] Calculating player stats for player 6851431
+2025-05-16 12:59:05,505 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 6851431
+2025-05-16 12:59:05,507 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          6851431.00
+p_win_rate               53.00
+p_average_kills           5.80
+p_average_deaths          5.33
+p_avg_kd                  1.09
+p_total_matches         968.00
+dtype: float64
+2025-05-16 12:59:05,507 [DEBUG] [root.count_player_streaks] Counting player streaks for: 6851431
+2025-05-16 12:59:05,511 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 130.0
+2025-05-16 12:59:05,511 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 12:59:05,512 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 12:59:05,513 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    6851431.0
+Name: account_id, dtype: float64
+2025-05-16 12:59:05,520 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 12:59:05,522 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 6851431
+2025-05-16 13:05:49,612 [INFO] [root.run_etl_player_hero_match_trends_from_db] Starting run_etl_player_hero_match_trends_from_db tests
+2025-05-16 13:05:49,612 [INFO] [root.test_pull_trend_players_from_db] Pulling players from player_matches table to trend
+2025-05-16 13:05:49,617 [INFO] [root.test_pull_trend_players_from_db] Pulled 5 players to trend
+2025-05-16 13:05:49,617 [INFO] [root.run_etl_player_hero_match_trends_from_db] Time passed = 0.00seconds. Processed Pandas(Index=0, account_id=109261166) of 5 players
+2025-05-16 13:05:49,617 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=0, account_id=109261166) of 5
+2025-05-16 13:05:49,617 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 109261166
+2025-05-16 13:05:49,666 [DEBUG] [root.compute_player_stats] Calculating player stats for player 109261166
+2025-05-16 13:05:49,666 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 109261166
+2025-05-16 13:05:49,669 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          1.092612e+08
+p_win_rate          5.134000e+01
+p_average_kills     6.870000e+00
+p_average_deaths    8.590000e+00
+p_avg_kd            8.000000e-01
+p_total_matches     1.194000e+03
+dtype: float64
+2025-05-16 13:05:49,669 [DEBUG] [root.count_player_streaks] Counting player streaks for: 109261166
+2025-05-16 13:05:49,674 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 150.0
+2025-05-16 13:05:49,674 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:05:49,675 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:05:49,676 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    109261166.0
+Name: account_id, dtype: float64
+2025-05-16 13:05:49,684 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:05:49,687 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 109261166
+2025-05-16 13:05:49,809 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=1, account_id=393467885) of 5
+2025-05-16 13:05:49,809 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 393467885
+2025-05-16 13:05:49,821 [DEBUG] [root.compute_player_stats] Calculating player stats for player 393467885
+2025-05-16 13:05:49,822 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 393467885
+2025-05-16 13:05:49,824 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          3.934679e+08
+p_win_rate          5.170000e+01
+p_average_kills     7.380000e+00
+p_average_deaths    8.560000e+00
+p_avg_kd            8.600000e-01
+p_total_matches     7.040000e+02
+dtype: float64
+2025-05-16 13:05:49,824 [DEBUG] [root.count_player_streaks] Counting player streaks for: 393467885
+2025-05-16 13:05:49,827 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 85.0
+2025-05-16 13:05:49,827 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:05:49,828 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:05:49,829 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    393467885.0
+Name: account_id, dtype: float64
+2025-05-16 13:05:49,836 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:05:49,838 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 393467885
+2025-05-16 13:05:49,917 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=2, account_id=46179133) of 5
+2025-05-16 13:05:49,917 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 46179133
+2025-05-16 13:05:49,928 [DEBUG] [root.compute_player_stats] Calculating player stats for player 46179133
+2025-05-16 13:05:49,928 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 46179133
+2025-05-16 13:05:49,930 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          46179133.00
+p_win_rate                53.53
+p_average_kills            8.22
+p_average_deaths           5.12
+p_avg_kd                   1.61
+p_total_matches          751.00
+dtype: float64
+2025-05-16 13:05:49,930 [DEBUG] [root.count_player_streaks] Counting player streaks for: 46179133
+2025-05-16 13:05:49,934 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 99.0
+2025-05-16 13:05:49,935 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:05:49,935 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:05:49,936 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    46179133.0
+Name: account_id, dtype: float64
+2025-05-16 13:05:49,942 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:05:49,945 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 46179133
+2025-05-16 13:05:50,028 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=3, account_id=1177550028) of 5
+2025-05-16 13:05:50,028 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 1177550028
+2025-05-16 13:05:50,064 [DEBUG] [root.compute_player_stats] Calculating player stats for player 1177550028
+2025-05-16 13:05:50,064 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 1177550028
+2025-05-16 13:05:50,066 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          1.177550e+09
+p_win_rate          6.109000e+01
+p_average_kills     6.740000e+00
+p_average_deaths    4.960000e+00
+p_avg_kd            1.360000e+00
+p_total_matches     2.138000e+03
+dtype: float64
+2025-05-16 13:05:50,067 [DEBUG] [root.count_player_streaks] Counting player streaks for: 1177550028
+2025-05-16 13:05:50,070 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 270.0
+2025-05-16 13:05:50,070 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:05:50,071 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:05:50,072 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    1.177550e+09
+Name: account_id, dtype: float64
+2025-05-16 13:05:50,078 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:05:50,081 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 1177550028
+2025-05-16 13:05:50,282 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=4, account_id=486858272) of 5
+2025-05-16 13:05:50,283 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 486858272
+2025-05-16 13:05:50,292 [DEBUG] [root.compute_player_stats] Calculating player stats for player 486858272
+2025-05-16 13:05:50,292 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 486858272
+2025-05-16 13:05:50,294 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          4.868583e+08
+p_win_rate          4.991000e+01
+p_average_kills     8.010000e+00
+p_average_deaths    7.190000e+00
+p_avg_kd            1.110000e+00
+p_total_matches     5.290000e+02
+dtype: float64
+2025-05-16 13:05:50,295 [DEBUG] [root.count_player_streaks] Counting player streaks for: 486858272
+2025-05-16 13:05:50,297 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 66.0
+2025-05-16 13:05:50,297 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:05:50,298 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:05:50,299 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    486858272.0
+Name: account_id, dtype: float64
+2025-05-16 13:05:50,306 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:05:50,308 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 486858272
+2025-05-16 13:07:35,677 [INFO] [root.run_etl_player_hero_match_trends_from_db] Starting run_etl_player_hero_match_trends_from_db tests
+2025-05-16 13:07:35,677 [INFO] [root.test_pull_trend_players_from_db] Pulling players from player_matches table to trend
+2025-05-16 13:07:35,682 [INFO] [root.test_pull_trend_players_from_db] Pulled 5 players to trend
+2025-05-16 13:07:35,682 [INFO] [root.run_etl_player_hero_match_trends_from_db] Time passed = 0.00seconds. Processed Pandas(Index=0, account_id=105267228) of 5 players
+2025-05-16 13:07:35,683 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=0, account_id=105267228) of 5
+2025-05-16 13:07:35,683 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 105267228
+2025-05-16 13:07:35,723 [DEBUG] [root.compute_player_stats] Calculating player stats for player 105267228
+2025-05-16 13:07:35,724 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 105267228
+2025-05-16 13:07:35,727 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          1.052672e+08
+p_win_rate          4.931000e+01
+p_average_kills     7.440000e+00
+p_average_deaths    4.680000e+00
+p_avg_kd            1.590000e+00
+p_total_matches     6.510000e+02
+dtype: float64
+2025-05-16 13:07:35,727 [DEBUG] [root.count_player_streaks] Counting player streaks for: 105267228
+2025-05-16 13:07:35,731 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 71.0
+2025-05-16 13:07:35,732 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:07:35,733 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:07:35,734 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    105267228.0
+Name: account_id, dtype: float64
+2025-05-16 13:07:35,743 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:07:35,746 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 105267228
+2025-05-16 13:07:35,820 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=1, account_id=151934376) of 5
+2025-05-16 13:07:35,820 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 151934376
+2025-05-16 13:07:35,832 [DEBUG] [root.compute_player_stats] Calculating player stats for player 151934376
+2025-05-16 13:07:35,832 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 151934376
+2025-05-16 13:07:35,834 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          1.519344e+08
+p_win_rate          5.420000e+01
+p_average_kills     5.370000e+00
+p_average_deaths    5.420000e+00
+p_avg_kd            9.900000e-01
+p_total_matches     6.900000e+02
+dtype: float64
+2025-05-16 13:07:35,834 [DEBUG] [root.count_player_streaks] Counting player streaks for: 151934376
+2025-05-16 13:07:35,838 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 93.0
+2025-05-16 13:07:35,838 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:07:35,839 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:07:35,840 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    151934376.0
+Name: account_id, dtype: float64
+2025-05-16 13:07:35,848 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:07:35,851 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 151934376
+2025-05-16 13:07:35,932 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=2, account_id=1851360525) of 5
+2025-05-16 13:07:35,932 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 1851360525
+2025-05-16 13:07:35,938 [DEBUG] [root.compute_player_stats] Calculating player stats for player 1851360525
+2025-05-16 13:07:35,938 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 1851360525
+2025-05-16 13:07:35,941 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          1.851361e+09
+p_win_rate          6.582000e+01
+p_average_kills     1.146000e+01
+p_average_deaths    4.250000e+00
+p_avg_kd            2.700000e+00
+p_total_matches     2.750000e+02
+dtype: float64
+2025-05-16 13:07:35,941 [DEBUG] [root.count_player_streaks] Counting player streaks for: 1851360525
+2025-05-16 13:07:35,944 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 42.0
+2025-05-16 13:07:35,945 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:07:35,945 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:07:35,946 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    1.851361e+09
+Name: account_id, dtype: float64
+2025-05-16 13:07:35,953 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:07:35,955 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 1851360525
+2025-05-16 13:07:35,994 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=3, account_id=972385555) of 5
+2025-05-16 13:07:35,995 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 972385555
+2025-05-16 13:07:35,999 [DEBUG] [root.compute_player_stats] Calculating player stats for player 972385555
+2025-05-16 13:07:35,999 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 972385555
+2025-05-16 13:07:36,002 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          9.723856e+08
+p_win_rate          5.673000e+01
+p_average_kills     9.540000e+00
+p_average_deaths    5.710000e+00
+p_avg_kd            1.670000e+00
+p_total_matches     2.080000e+02
+dtype: float64
+2025-05-16 13:07:36,002 [DEBUG] [root.count_player_streaks] Counting player streaks for: 972385555
+2025-05-16 13:07:36,005 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 28.0
+2025-05-16 13:07:36,005 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:07:36,006 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:07:36,007 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    972385555.0
+Name: account_id, dtype: float64
+2025-05-16 13:07:36,014 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:07:36,016 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 972385555
+2025-05-16 13:07:36,049 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=4, account_id=1229366592) of 5
+2025-05-16 13:07:36,049 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 1229366592
+2025-05-16 13:07:36,062 [DEBUG] [root.compute_player_stats] Calculating player stats for player 1229366592
+2025-05-16 13:07:36,062 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 1229366592
+2025-05-16 13:07:36,064 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          1.229367e+09
+p_win_rate          5.115000e+01
+p_average_kills     7.070000e+00
+p_average_deaths    5.460000e+00
+p_avg_kd            1.290000e+00
+p_total_matches     7.860000e+02
+dtype: float64
+2025-05-16 13:07:36,065 [DEBUG] [root.count_player_streaks] Counting player streaks for: 1229366592
+2025-05-16 13:07:36,067 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 102.0
+2025-05-16 13:07:36,067 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:07:36,068 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:07:36,069 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    1.229367e+09
+Name: account_id, dtype: float64
+2025-05-16 13:07:36,076 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:07:36,078 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 1229366592
+2025-05-16 13:10:31,497 [INFO] [root.run_etl_player_hero_match_trends_from_db] Starting run_etl_player_hero_match_trends_from_db tests
+2025-05-16 13:10:31,497 [INFO] [root.test_pull_trend_players_from_db] Pulling players from player_matches table to trend
+2025-05-16 13:10:31,503 [INFO] [root.test_pull_trend_players_from_db] Pulled 5 players to trend
+2025-05-16 13:10:31,504 [INFO] [root.run_etl_player_hero_match_trends_from_db] Time passed = 0.01seconds. Processed Pandas(Index=0, account_id=163455333) of 5 players
+2025-05-16 13:10:31,504 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=0, account_id=163455333) of 5
+2025-05-16 13:10:31,504 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 163455333
+2025-05-16 13:10:31,548 [DEBUG] [root.compute_player_stats] Calculating player stats for player 163455333
+2025-05-16 13:10:31,548 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 163455333
+2025-05-16 13:10:31,551 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          1.634553e+08
+p_win_rate          5.331000e+01
+p_average_kills     7.190000e+00
+p_average_deaths    6.020000e+00
+p_avg_kd            1.190000e+00
+p_total_matches     6.790000e+02
+dtype: float64
+2025-05-16 13:10:31,551 [DEBUG] [root.count_player_streaks] Counting player streaks for: 163455333
+2025-05-16 13:10:31,555 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 85.0
+2025-05-16 13:10:31,556 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:10:31,556 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:10:31,557 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    163455333.0
+Name: account_id, dtype: float64
+2025-05-16 13:10:31,566 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:10:31,567 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 163455333
+2025-05-16 13:10:31,645 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=1, account_id=1030495599) of 5
+2025-05-16 13:10:31,645 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 1030495599
+2025-05-16 13:10:31,667 [DEBUG] [root.compute_player_stats] Calculating player stats for player 1030495599
+2025-05-16 13:10:31,667 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 1030495599
+2025-05-16 13:10:31,670 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          1.030496e+09
+p_win_rate          5.358000e+01
+p_average_kills     6.700000e+00
+p_average_deaths    6.470000e+00
+p_avg_kd            1.040000e+00
+p_total_matches     1.215000e+03
+dtype: float64
+2025-05-16 13:10:31,670 [DEBUG] [root.count_player_streaks] Counting player streaks for: 1030495599
+2025-05-16 13:10:31,673 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 156.0
+2025-05-16 13:10:31,674 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:10:31,674 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:10:31,675 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    1.030496e+09
+Name: account_id, dtype: float64
+2025-05-16 13:10:31,683 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:10:31,685 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 1030495599
+2025-05-16 13:10:31,807 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=2, account_id=34919615) of 5
+2025-05-16 13:10:31,807 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 34919615
+2025-05-16 13:10:31,816 [DEBUG] [root.compute_player_stats] Calculating player stats for player 34919615
+2025-05-16 13:10:31,816 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 34919615
+2025-05-16 13:10:31,817 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          34919615.00
+p_win_rate                51.44
+p_average_kills            6.28
+p_average_deaths           5.78
+p_avg_kd                   1.09
+p_total_matches          418.00
+dtype: float64
+2025-05-16 13:10:31,817 [DEBUG] [root.count_player_streaks] Counting player streaks for: 34919615
+2025-05-16 13:10:31,821 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 51.0
+2025-05-16 13:10:31,821 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:10:31,822 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:10:31,823 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    34919615.0
+Name: account_id, dtype: float64
+2025-05-16 13:10:31,830 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:10:31,833 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 34919615
+2025-05-16 13:10:31,886 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=3, account_id=1153351822) of 5
+2025-05-16 13:10:31,886 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 1153351822
+2025-05-16 13:10:31,898 [DEBUG] [root.compute_player_stats] Calculating player stats for player 1153351822
+2025-05-16 13:10:31,898 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 1153351822
+2025-05-16 13:10:31,901 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          1.153352e+09
+p_win_rate          5.305000e+01
+p_average_kills     8.490000e+00
+p_average_deaths    7.120000e+00
+p_avg_kd            1.190000e+00
+p_total_matches     7.880000e+02
+dtype: float64
+2025-05-16 13:10:31,901 [DEBUG] [root.count_player_streaks] Counting player streaks for: 1153351822
+2025-05-16 13:10:31,904 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 105.0
+2025-05-16 13:10:31,905 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:10:31,905 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:10:31,906 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    1.153352e+09
+Name: account_id, dtype: float64
+2025-05-16 13:10:31,913 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:10:31,916 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 1153351822
+2025-05-16 13:10:31,999 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=4, account_id=1847425790) of 5
+2025-05-16 13:10:31,999 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 1847425790
+2025-05-16 13:10:32,006 [DEBUG] [root.compute_player_stats] Calculating player stats for player 1847425790
+2025-05-16 13:10:32,006 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 1847425790
+2025-05-16 13:10:32,008 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          1.847426e+09
+p_win_rate          6.336000e+01
+p_average_kills     8.660000e+00
+p_average_deaths    7.010000e+00
+p_avg_kd            1.240000e+00
+p_total_matches     2.320000e+02
+dtype: float64
+2025-05-16 13:10:32,008 [DEBUG] [root.count_player_streaks] Counting player streaks for: 1847425790
+2025-05-16 13:10:32,012 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 33.0
+2025-05-16 13:10:32,012 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:10:32,013 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:10:32,014 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    1.847426e+09
+Name: account_id, dtype: float64
+2025-05-16 13:10:32,020 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:10:32,023 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 1847425790
+2025-05-16 13:12:00,474 [INFO] [root.run_etl_player_hero_match_trends_from_db] Starting run_etl_player_hero_match_trends_from_db tests
+2025-05-16 13:12:00,474 [INFO] [root.test_pull_trend_players_from_db] Pulling players from player_matches table to trend
+2025-05-16 13:12:00,479 [INFO] [root.test_pull_trend_players_from_db] Pulled 5 players to trend
+2025-05-16 13:12:00,479 [INFO] [root.run_etl_player_hero_match_trends_from_db] Time passed = 0.01seconds. Processed Pandas(Index=0, account_id=196305819) of 5 players
+2025-05-16 13:12:00,479 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=0, account_id=196305819) of 5
+2025-05-16 13:12:00,479 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 196305819
+2025-05-16 13:12:00,526 [DEBUG] [root.compute_player_stats] Calculating player stats for player 196305819
+2025-05-16 13:12:00,526 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 196305819
+2025-05-16 13:12:00,529 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          1.963058e+08
+p_win_rate          5.749000e+01
+p_average_kills     9.900000e+00
+p_average_deaths    6.040000e+00
+p_avg_kd            1.640000e+00
+p_total_matches     1.209000e+03
+dtype: float64
+2025-05-16 13:12:00,529 [DEBUG] [root.count_player_streaks] Counting player streaks for: 196305819
+2025-05-16 13:12:00,533 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 160.0
+2025-05-16 13:12:00,533 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:12:00,534 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:12:00,535 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    196305819.0
+Name: account_id, dtype: float64
+2025-05-16 13:12:00,543 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:12:00,546 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 196305819
+2025-05-16 13:12:00,668 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=1, account_id=345987571) of 5
+2025-05-16 13:12:00,668 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 345987571
+2025-05-16 13:12:00,682 [DEBUG] [root.compute_player_stats] Calculating player stats for player 345987571
+2025-05-16 13:12:00,682 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 345987571
+2025-05-16 13:12:00,684 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          3.459876e+08
+p_win_rate          5.522000e+01
+p_average_kills     7.610000e+00
+p_average_deaths    5.810000e+00
+p_avg_kd            1.310000e+00
+p_total_matches     9.000000e+02
+dtype: float64
+2025-05-16 13:12:00,684 [DEBUG] [root.count_player_streaks] Counting player streaks for: 345987571
+2025-05-16 13:12:00,688 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 119.0
+2025-05-16 13:12:00,688 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:12:00,689 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:12:00,689 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    345987571.0
+Name: account_id, dtype: float64
+2025-05-16 13:12:00,697 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:12:00,700 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 345987571
+2025-05-16 13:12:00,792 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=2, account_id=104030097) of 5
+2025-05-16 13:12:00,792 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 104030097
+2025-05-16 13:12:00,799 [DEBUG] [root.compute_player_stats] Calculating player stats for player 104030097
+2025-05-16 13:12:00,799 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 104030097
+2025-05-16 13:12:00,801 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          1.040301e+08
+p_win_rate          5.119000e+01
+p_average_kills     7.360000e+00
+p_average_deaths    6.420000e+00
+p_avg_kd            1.150000e+00
+p_total_matches     2.950000e+02
+dtype: float64
+2025-05-16 13:12:00,801 [DEBUG] [root.count_player_streaks] Counting player streaks for: 104030097
+2025-05-16 13:12:00,805 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 35.0
+2025-05-16 13:12:00,805 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:12:00,805 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:12:00,806 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    104030097.0
+Name: account_id, dtype: float64
+2025-05-16 13:12:00,813 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:12:00,815 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 104030097
+2025-05-16 13:12:00,856 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=3, account_id=84379844) of 5
+2025-05-16 13:12:00,856 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 84379844
+2025-05-16 13:12:00,867 [DEBUG] [root.compute_player_stats] Calculating player stats for player 84379844
+2025-05-16 13:12:00,867 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 84379844
+2025-05-16 13:12:00,869 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          84379844.00
+p_win_rate                53.63
+p_average_kills            8.16
+p_average_deaths           7.16
+p_avg_kd                   1.14
+p_total_matches          744.00
+dtype: float64
+2025-05-16 13:12:00,869 [DEBUG] [root.count_player_streaks] Counting player streaks for: 84379844
+2025-05-16 13:12:00,872 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 98.0
+2025-05-16 13:12:00,872 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:12:00,873 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:12:00,874 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    84379844.0
+Name: account_id, dtype: float64
+2025-05-16 13:12:00,881 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:12:00,884 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 84379844
+2025-05-16 13:12:00,963 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=4, account_id=172857725) of 5
+2025-05-16 13:12:00,963 [DEBUG] [root.pull_player_match_history_from_db] Pulling match history for player from db for: 172857725
+2025-05-16 13:12:00,974 [DEBUG] [root.compute_player_stats] Calculating player stats for player 172857725
+2025-05-16 13:12:00,974 [DEBUG] [root.generate_player_performance_metrics] Calculating player performance metrics for 172857725
+2025-05-16 13:12:00,976 [DEBUG] [root.generate_player_performance_metrics] all perfomance metrics calculated, returning single row of p_stats= account_id          1.728577e+08
+p_win_rate          5.588000e+01
+p_average_kills     8.680000e+00
+p_average_deaths    7.820000e+00
+p_avg_kd            1.110000e+00
+p_total_matches     6.120000e+02
+dtype: float64
+2025-05-16 13:12:00,976 [DEBUG] [root.count_player_streaks] Counting player streaks for: 172857725
+2025-05-16 13:12:00,980 [DEBUG] [root.count_player_streaks] all streaks calculated, returning single row of player_streak_trends= 87.0
+2025-05-16 13:12:00,980 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-16 13:12:00,981 [INFO] [root.pull_hero_trends_from_db] Pulling hero trends from db for 30 days
+2025-05-16 13:12:00,981 [DEBUG] [root.process_player_hero_stats] Processing player_hero stats for 0    172857725.0
+Name: account_id, dtype: float64
+2025-05-16 13:12:00,989 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-16 13:12:00,991 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 172857725

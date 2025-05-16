@@ -208,11 +208,11 @@ def pull_trend_players_from_db(con):
 
 def test_pull_trend_players_from_db(con):
     """pulls players from player_matches table to trend"""
-
+    logging.info(f"Pulling players from player_matches table to trend")
     query = """
     SELECT DISTINCT account_id
     FROM player_matches
-    LIMIT 25
+    LIMIT 5
     """
     
     players = con.execute(query).fetchdf()
@@ -221,6 +221,7 @@ def test_pull_trend_players_from_db(con):
 
 def pull_hero_trends_from_db(con,trend_window_days,trend_start_date=None,):
     """pulls hero trends from hero_trends table to trend"""
+    logging.info(f"Pulling hero trends from db for {trend_window_days} days")
     try: 
         if trend_start_date is None:
             query = f"""
@@ -247,15 +248,14 @@ def pull_hero_trends_from_db(con,trend_window_days,trend_start_date=None,):
     
     return heroes
 
-def pull_player_match_history_from_db(con, account_id):
+def pull_player_match_history_from_db(account_id, con):
     """pulls player match history from player_matches_history table"""
+    logging.debug(f"Pulling match history for player from db for: {account_id}")
     try:
         query = f"""
-        SELECT *, matches.start_time
+        SELECT *
         FROM player_matches_history
-        JOIN matches
-        ON player_matches_history.match_id = matches.match_id
-        WHERE player_matches_history.account_id = '{account_id}'
+        WHERE account_id = '{account_id}'
         """
         
         player_match_history = con.execute(query).fetchdf()

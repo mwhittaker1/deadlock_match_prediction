@@ -9,7 +9,7 @@ import duckdb
 log_file = os.getenv("LOGGING_LOC")  
 logging.basicConfig(
     filename=log_file,
-    level=logging.DEBUG,
+    level=logging.INFO,
     format="%(asctime)s [%(levelname)s] [%(name)s.%(funcName)s] %(message)s"
 )
 

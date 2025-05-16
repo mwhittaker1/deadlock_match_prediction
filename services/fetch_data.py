@@ -14,6 +14,7 @@ def fetch_match_data(
     limit: int = 1000
     ) -> json:
 
+    logging.debug(f"Fetching match data..")
     base = "https://api.deadlock-api.com/v1/matches"
     # if a specific match ID is given, check player_data and just hit that endpoint
 
