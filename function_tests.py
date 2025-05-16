@@ -424,11 +424,11 @@ def test_pull_player_match_history_from_db():
 
 def test_run_tl_player_hero_match_trends_from_db():
     logging.debug("Starting function tests")
-    account_id = 1136450470
+    account_id = 1036606523
     player_match_history = dbf.pull_player_match_history_from_db(db.con,account_id)
     u.any_to_csv(player_match_history, "data/test_data/player_match_history_from_db")
     #calculate player trends and streaks
-    player_stats = tal.compute_player_stats(player_match_history)
+    player_stats = tal.compute_player_stats(player_match_history) #player_match_histry = df, #player_stats pd.Series
     logging.debug(f"Player stats columns: {player_stats.columns}")
 
     # combine player_stats and player_hero trends, then insert into db
@@ -446,7 +446,7 @@ def test_run_tl_player_hero_match_trends_from_db():
     u.any_to_csv(player_rolling_stats, "data/test_data/player_rolling_stats_from_db")
     
     # calculate palyer_history_streak and insert into db
-    player_match_history_streaks = tal.get_player_win_loss_streaks(db.con,player_match_history)
+    player_match_history_streaks = tal.get_player_win_loss_streak(db.con,player_match_history,streak_length=6)
     #tal.save_player_history_streaks_to_db(player_match_history)
     print(f"testing player_match_history. \n {player_match_history_streaks.columns} \n {player_match_history_streaks.head()}")
     u.any_to_csv(player_match_history_streaks, "data/test_data/player_match_history_from_db")

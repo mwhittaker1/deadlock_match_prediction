@@ -1,174 +1,367 @@
-2025-05-14 23:36:13,878 [ERROR] [root.compute_player_stats] Error calculating player stats for 0      1699896029
-1      1699896029
-2      1699896029
-3      1699896029
-4      1699896029
-          ...    
-112    1699896029
-113    1699896029
-114    1699896029
-115    1699896029
-116    1699896029
-Name: account_id, Length: 117, dtype: int64: 'player_kills'
-2025-05-14 23:36:13,878 [INFO] [root.count_player_streaks] Counting player streaks
-2025-05-14 23:36:13,878 [ERROR] [root.compute_player_stats] Error calculating player streaks for 0      1699896029
-1      1699896029
-2      1699896029
-3      1699896029
-4      1699896029
-          ...    
-112    1699896029
-113    1699896029
-114    1699896029
-115    1699896029
-116    1699896029
-Name: account_id, Length: 117, dtype: int64: 'start_time'
-2025-05-14 23:41:28,362 [ERROR] [root.compute_player_stats] Error calculating player stats for 0      1699896029
-1      1699896029
-2      1699896029
-3      1699896029
-4      1699896029
-          ...    
-112    1699896029
-113    1699896029
-114    1699896029
-115    1699896029
-116    1699896029
-Name: account_id, Length: 117, dtype: int64: 'player_kills'
-2025-05-14 23:41:28,362 [INFO] [root.count_player_streaks] Counting player streaks
-2025-05-14 23:41:28,362 [ERROR] [root.compute_player_stats] Error calculating player streaks for 0      1699896029
-1      1699896029
-2      1699896029
-3      1699896029
-4      1699896029
-          ...    
-112    1699896029
-113    1699896029
-114    1699896029
-115    1699896029
-116    1699896029
-Name: account_id, Length: 117, dtype: int64: 'start_time'
-2025-05-14 23:42:36,512 [DEBUG] [root.generate_player_performance_metrics] stats for player 0      1699896029
-1      1699896029
-2      1699896029
-3      1699896029
-4      1699896029
-          ...    
-112    1699896029
-113    1699896029
-114    1699896029
-115    1699896029
-116    1699896029
-Name: account_id, Length: 117, dtype: int64
-2025-05-14 23:42:36,987 [DEBUG] [root.generate_player_performance_metrics] total_kills: 1590
-2025-05-14 23:42:37,407 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 791
-2025-05-14 23:42:37,829 [DEBUG] [root.generate_player_performance_metrics] match_total: 117
-2025-05-14 23:43:25,369 [DEBUG] [root.generate_player_performance_metrics] stats for player 0      1699896029
-1      1699896029
-2      1699896029
-3      1699896029
-4      1699896029
-          ...    
-112    1699896029
-113    1699896029
-114    1699896029
-115    1699896029
-116    1699896029
-Name: account_id, Length: 117, dtype: int64
-2025-05-14 23:43:25,369 [DEBUG] [root.generate_player_performance_metrics] total_kills: 1590
-2025-05-14 23:43:25,369 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 791
-2025-05-14 23:43:25,369 [DEBUG] [root.generate_player_performance_metrics] match_total: 117
-2025-05-14 23:43:25,370 [ERROR] [root.compute_player_stats] Error calculating player stats for 0      1699896029
-1      1699896029
-2      1699896029
-3      1699896029
-4      1699896029
-          ...    
-112    1699896029
-113    1699896029
-114    1699896029
-115    1699896029
-116    1699896029
-Name: account_id, Length: 117, dtype: int64: 'player_team'
-2025-05-14 23:43:25,370 [INFO] [root.count_player_streaks] Counting player streaks
-2025-05-14 23:43:25,370 [ERROR] [root.compute_player_stats] Error calculating player streaks for 0      1699896029
-1      1699896029
-2      1699896029
-3      1699896029
-4      1699896029
-          ...    
-112    1699896029
-113    1699896029
-114    1699896029
-115    1699896029
-116    1699896029
-Name: account_id, Length: 117, dtype: int64: 'start_time'
-2025-05-14 23:45:03,437 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
-2025-05-14 23:45:08,546 [DEBUG] [root.generate_player_performance_metrics] stats for player 0      1699896029
-1      1699896029
-2      1699896029
-3      1699896029
-4      1699896029
-          ...    
-112    1699896029
-113    1699896029
-114    1699896029
-115    1699896029
-116    1699896029
-Name: account_id, Length: 117, dtype: int64
-2025-05-14 23:45:08,549 [DEBUG] [root.generate_player_performance_metrics] total_kills: 1590
-2025-05-14 23:45:08,549 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 791
-2025-05-14 23:45:08,549 [DEBUG] [root.generate_player_performance_metrics] match_total: 117
-2025-05-14 23:45:33,179 [ERROR] [root.compute_player_stats] Error calculating player stats for 0      1699896029
-1      1699896029
-2      1699896029
-3      1699896029
-4      1699896029
-          ...    
-112    1699896029
-113    1699896029
-114    1699896029
-115    1699896029
-116    1699896029
-Name: account_id, Length: 117, dtype: int64: 'player_team'
-2025-05-14 23:45:57,706 [INFO] [root.count_player_streaks] Counting player streaks
-2025-05-14 23:47:39,506 [ERROR] [root.compute_player_stats] Error calculating player streaks for 0      1699896029
-1      1699896029
-2      1699896029
-3      1699896029
-4      1699896029
-          ...    
-112    1699896029
-113    1699896029
-114    1699896029
-115    1699896029
-116    1699896029
-Name: account_id, Length: 117, dtype: int64: 'start_time'
-2025-05-15 01:28:22,228 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
-2025-05-15 01:28:22,280 [WARNING] [root.pull_player_match_history_from_db] No match history found for player 1699896029
-2025-05-15 01:34:34,272 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
-2025-05-15 01:35:40,393 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
-2025-05-15 01:35:40,411 [WARNING] [root.pull_player_match_history_from_db] No match history found for player 1699896029
-2025-05-15 01:36:11,384 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
-2025-05-15 01:36:51,146 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
-2025-05-15 03:07:09,792 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
-2025-05-15 03:07:09,863 [WARNING] [root.pull_player_match_history_from_db] No match history found for player 1699896029
-2025-05-15 19:31:42,426 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
-2025-05-15 21:14:21,357 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
-2025-05-15 21:14:21,395 [DEBUG] [root.generate_player_performance_metrics] stats for player 0    1136450470
+2025-05-15 21:54:01,613 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 21:54:19,978 [DEBUG] [root.generate_player_performance_metrics] stats for player 0    1136450470
 Name: account_id, dtype: uint32
-2025-05-15 21:14:21,396 [DEBUG] [root.generate_player_performance_metrics] total_kills: 3
-2025-05-15 21:14:21,396 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 5
-2025-05-15 21:14:21,396 [DEBUG] [root.generate_player_performance_metrics] match_total: 1
-2025-05-15 21:14:21,397 [ERROR] [root.compute_player_stats] Error calculating player stats for 0    1136450470
-Name: account_id, dtype: uint32: 'player_team'
-2025-05-15 21:14:21,397 [INFO] [root.count_player_streaks] Counting player streaks
-2025-05-15 21:18:53,362 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
-2025-05-15 21:19:50,678 [DEBUG] [root.generate_player_performance_metrics] stats for player 0    1136450470
-Name: account_id, dtype: uint32
-2025-05-15 21:19:51,044 [DEBUG] [root.generate_player_performance_metrics] total_kills: 3
-2025-05-15 21:19:51,232 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 5
-2025-05-15 21:19:51,420 [DEBUG] [root.generate_player_performance_metrics] match_total: 1
-2025-05-15 21:19:51,749 [ERROR] [root.compute_player_stats] Error calculating player stats for 0    1136450470
-Name: account_id, dtype: uint32: 'player_team'
-2025-05-15 21:19:51,918 [INFO] [root.count_player_streaks] Counting player streaks
+2025-05-15 21:54:20,999 [DEBUG] [root.generate_player_performance_metrics] total_kills: 3
+2025-05-15 21:54:21,504 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 5
+2025-05-15 21:54:21,836 [DEBUG] [root.generate_player_performance_metrics] match_total: 1
+2025-05-15 21:56:42,442 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 21:56:42,486 [DEBUG] [root.generate_player_performance_metrics] stats for player 0      1036606523
+1      1036606523
+2      1036606523
+3      1036606523
+4      1036606523
+          ...    
+170    1036606523
+171    1036606523
+172    1036606523
+173    1036606523
+174    1036606523
+Name: account_id, Length: 175, dtype: uint32
+2025-05-15 21:56:42,491 [DEBUG] [root.generate_player_performance_metrics] total_kills: 1479
+2025-05-15 21:56:42,491 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 888
+2025-05-15 21:56:42,491 [DEBUG] [root.generate_player_performance_metrics] match_total: 175
+2025-05-15 21:56:42,494 [ERROR] [root.compute_player_stats] Error calculating player stats for 0      1036606523
+1      1036606523
+2      1036606523
+3      1036606523
+4      1036606523
+          ...    
+170    1036606523
+171    1036606523
+172    1036606523
+173    1036606523
+174    1036606523
+Name: account_id, Length: 175, dtype: uint32: 'player_team'
+2025-05-15 21:56:42,494 [INFO] [root.count_player_streaks] Counting player streaks
+2025-05-15 21:57:35,262 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 21:57:55,899 [DEBUG] [root.generate_player_performance_metrics] stats for player 0      1036606523
+1      1036606523
+2      1036606523
+3      1036606523
+4      1036606523
+          ...    
+170    1036606523
+171    1036606523
+172    1036606523
+173    1036606523
+174    1036606523
+Name: account_id, Length: 175, dtype: uint32
+2025-05-15 21:57:56,056 [DEBUG] [root.generate_player_performance_metrics] total_kills: 1479
+2025-05-15 21:57:56,231 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 888
+2025-05-15 21:57:56,398 [DEBUG] [root.generate_player_performance_metrics] match_total: 175
+2025-05-15 21:58:27,197 [ERROR] [root.compute_player_stats] Error calculating player stats for 0      1036606523
+1      1036606523
+2      1036606523
+3      1036606523
+4      1036606523
+          ...    
+170    1036606523
+171    1036606523
+172    1036606523
+173    1036606523
+174    1036606523
+Name: account_id, Length: 175, dtype: uint32: 'player_team'
+2025-05-15 21:58:39,551 [INFO] [root.count_player_streaks] Counting player streaks
+2025-05-15 22:03:14,789 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 22:03:23,973 [DEBUG] [root.generate_player_performance_metrics] stats for player 0      1036606523
+1      1036606523
+2      1036606523
+3      1036606523
+4      1036606523
+          ...    
+170    1036606523
+171    1036606523
+172    1036606523
+173    1036606523
+174    1036606523
+Name: account_id, Length: 175, dtype: uint32
+2025-05-15 22:03:25,114 [DEBUG] [root.generate_player_performance_metrics] total_kills: 1479
+2025-05-15 22:03:25,907 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 888
+2025-05-15 22:03:33,782 [DEBUG] [root.generate_player_performance_metrics] match_total: 175
+2025-05-15 22:04:15,868 [ERROR] [root.compute_player_stats] Error calculating player stats for 0      1036606523
+1      1036606523
+2      1036606523
+3      1036606523
+4      1036606523
+          ...    
+170    1036606523
+171    1036606523
+172    1036606523
+173    1036606523
+174    1036606523
+Name: account_id, Length: 175, dtype: uint32: 'player_team'
+2025-05-15 22:05:18,446 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 22:05:22,305 [DEBUG] [root.generate_player_performance_metrics] stats for player 0      1036606523
+1      1036606523
+2      1036606523
+3      1036606523
+4      1036606523
+          ...    
+170    1036606523
+171    1036606523
+172    1036606523
+173    1036606523
+174    1036606523
+Name: account_id, Length: 175, dtype: uint32
+2025-05-15 22:05:22,478 [DEBUG] [root.generate_player_performance_metrics] total_kills: 1479
+2025-05-15 22:05:22,748 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 888
+2025-05-15 22:05:22,961 [DEBUG] [root.generate_player_performance_metrics] match_total: 175
+2025-05-15 22:07:06,770 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 22:07:11,340 [DEBUG] [root.generate_player_performance_metrics] stats for player 0      1036606523
+1      1036606523
+2      1036606523
+3      1036606523
+4      1036606523
+          ...    
+170    1036606523
+171    1036606523
+172    1036606523
+173    1036606523
+174    1036606523
+Name: account_id, Length: 175, dtype: uint32
+2025-05-15 22:07:11,741 [DEBUG] [root.generate_player_performance_metrics] total_kills: 1479
+2025-05-15 22:07:12,055 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 888
+2025-05-15 22:07:13,198 [DEBUG] [root.generate_player_performance_metrics] match_total: 175
+2025-05-15 22:07:39,081 [INFO] [root.count_player_streaks] Counting player streaks
+2025-05-15 22:09:47,206 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-15 22:10:10,419 [DEBUG] [root.process_player_hero_stats] IN MERGE, Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches', 'p_v_h_kd_pct'],
+      dtype='object')
+2025-05-15 22:10:13,816 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] POST MERGE, Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches', 'p_v_h_kd_pct'],
+      dtype='object')
+2025-05-15 22:10:27,366 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-15 22:10:54,840 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 1036606523
+2025-05-15 22:14:33,430 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 22:14:33,475 [DEBUG] [root.generate_player_performance_metrics] stats for player 0      1036606523
+1      1036606523
+2      1036606523
+3      1036606523
+4      1036606523
+          ...    
+170    1036606523
+171    1036606523
+172    1036606523
+173    1036606523
+174    1036606523
+Name: account_id, Length: 175, dtype: uint32
+2025-05-15 22:14:33,477 [DEBUG] [root.generate_player_performance_metrics] total_kills: 1479
+2025-05-15 22:14:33,477 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 888
+2025-05-15 22:14:33,477 [DEBUG] [root.generate_player_performance_metrics] match_total: 175
+2025-05-15 22:14:33,481 [INFO] [root.count_player_streaks] Counting player streaks
+2025-05-15 22:14:33,496 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-15 22:14:33,499 [DEBUG] [root.process_player_hero_stats] IN MERGE, Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches', 'p_v_h_kd_pct'],
+      dtype='object')
+2025-05-15 22:14:33,499 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] POST MERGE, Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches', 'p_v_h_kd_pct'],
+      dtype='object')
+2025-05-15 22:14:33,513 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-15 22:14:33,517 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 1036606523
+2025-05-15 22:15:35,862 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 22:15:35,907 [DEBUG] [root.generate_player_performance_metrics] stats for player 0      1036606523
+1      1036606523
+2      1036606523
+3      1036606523
+4      1036606523
+          ...    
+170    1036606523
+171    1036606523
+172    1036606523
+173    1036606523
+174    1036606523
+Name: account_id, Length: 175, dtype: uint32
+2025-05-15 22:15:35,909 [DEBUG] [root.generate_player_performance_metrics] total_kills: 1479
+2025-05-15 22:15:35,909 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 888
+2025-05-15 22:15:35,909 [DEBUG] [root.generate_player_performance_metrics] match_total: 175
+2025-05-15 22:15:35,914 [INFO] [root.count_player_streaks] Counting player streaks
+2025-05-15 22:15:35,927 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-15 22:15:35,930 [DEBUG] [root.process_player_hero_stats] IN MERGE, Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches', 'p_v_h_kd_pct'],
+      dtype='object')
+2025-05-15 22:15:35,930 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] POST MERGE, Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches', 'p_v_h_kd_pct'],
+      dtype='object')
+2025-05-15 22:15:35,945 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-15 22:15:35,949 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 1036606523
+2025-05-15 22:22:31,534 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 22:22:31,582 [DEBUG] [root.generate_player_performance_metrics] stats for player 0      1036606523
+1      1036606523
+2      1036606523
+3      1036606523
+4      1036606523
+          ...    
+170    1036606523
+171    1036606523
+172    1036606523
+173    1036606523
+174    1036606523
+Name: account_id, Length: 175, dtype: uint32
+2025-05-15 22:22:31,585 [DEBUG] [root.generate_player_performance_metrics] total_kills: 1479
+2025-05-15 22:22:31,585 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 888
+2025-05-15 22:22:31,585 [DEBUG] [root.generate_player_performance_metrics] match_total: 175
+2025-05-15 22:22:31,590 [INFO] [root.count_player_streaks] Counting player streaks
+2025-05-15 22:22:31,605 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-15 22:22:31,607 [DEBUG] [root.process_player_hero_stats] IN MERGE, Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches', 'p_v_h_kd_pct'],
+      dtype='object')
+2025-05-15 22:22:31,608 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] POST MERGE, Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches', 'p_v_h_kd_pct'],
+      dtype='object')
+2025-05-15 22:22:31,622 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-15 22:22:31,628 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 1036606523
+2025-05-15 22:25:15,144 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 22:25:15,192 [DEBUG] [root.generate_player_performance_metrics] stats for player 0      1036606523
+1      1036606523
+2      1036606523
+3      1036606523
+4      1036606523
+          ...    
+170    1036606523
+171    1036606523
+172    1036606523
+173    1036606523
+174    1036606523
+Name: account_id, Length: 175, dtype: uint32
+2025-05-15 22:25:15,195 [DEBUG] [root.generate_player_performance_metrics] total_kills: 1479
+2025-05-15 22:25:15,195 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 888
+2025-05-15 22:25:15,195 [DEBUG] [root.generate_player_performance_metrics] match_total: 175
+2025-05-15 22:25:15,199 [INFO] [root.count_player_streaks] Counting player streaks
+2025-05-15 22:25:15,213 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-15 22:25:15,216 [DEBUG] [root.process_player_hero_stats] IN MERGE, Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches', 'p_v_h_kd_pct'],
+      dtype='object')
+2025-05-15 22:25:15,216 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] POST MERGE, Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches', 'p_v_h_kd_pct'],
+      dtype='object')
+2025-05-15 22:25:15,230 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-15 22:25:15,234 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 1036606523
+2025-05-15 22:27:22,000 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 22:27:22,047 [DEBUG] [root.generate_player_performance_metrics] stats for player 0      1036606523
+1      1036606523
+2      1036606523
+3      1036606523
+4      1036606523
+          ...    
+170    1036606523
+171    1036606523
+172    1036606523
+173    1036606523
+174    1036606523
+Name: account_id, Length: 175, dtype: uint32
+2025-05-15 22:27:22,050 [DEBUG] [root.generate_player_performance_metrics] total_kills: 1479
+2025-05-15 22:27:22,050 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 888
+2025-05-15 22:27:22,050 [DEBUG] [root.generate_player_performance_metrics] match_total: 175
+2025-05-15 22:27:22,054 [INFO] [root.count_player_streaks] Counting player streaks
+2025-05-15 22:27:22,068 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-15 22:27:22,071 [DEBUG] [root.process_player_hero_stats] IN MERGE, Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches', 'p_v_h_kd_pct'],
+      dtype='object')
+2025-05-15 22:27:22,071 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] POST MERGE, Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches', 'p_v_h_kd_pct'],
+      dtype='object')
+2025-05-15 22:27:22,086 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-15 22:27:22,091 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 1036606523
+2025-05-15 22:29:28,879 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 22:29:28,926 [DEBUG] [root.generate_player_performance_metrics] stats for player 0      1036606523
+1      1036606523
+2      1036606523
+3      1036606523
+4      1036606523
+          ...    
+170    1036606523
+171    1036606523
+172    1036606523
+173    1036606523
+174    1036606523
+Name: account_id, Length: 175, dtype: uint32
+2025-05-15 22:29:28,928 [DEBUG] [root.generate_player_performance_metrics] total_kills: 1479
+2025-05-15 22:29:28,928 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 888
+2025-05-15 22:29:28,928 [DEBUG] [root.generate_player_performance_metrics] match_total: 175
+2025-05-15 22:29:28,932 [INFO] [root.count_player_streaks] Counting player streaks
+2025-05-15 22:29:28,946 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches'],
+      dtype='object')
+2025-05-15 22:29:28,948 [DEBUG] [root.process_player_hero_stats] IN MERGE, Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches', 'p_v_h_kd_pct'],
+      dtype='object')
+2025-05-15 22:29:28,948 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] POST MERGE, Player stats columns: Index(['win_streaks_2plus', 'win_streaks_3plus', 'win_streaks_4plus',
+       'win_streaks_5plus', 'loss_streaks_2plus', 'loss_streaks_3plus',
+       'loss_streaks_4plus', 'loss_streaks_5plus', 'p_win_streak_avg',
+       'p_loss_streak_avg', 'account_id', 'p_win_rate', 'p_average_kills',
+       'p_average_deaths', 'p_avg_kd', 'p_total_matches', 'p_v_h_kd_pct'],
+      dtype='object')
+2025-05-15 22:29:28,964 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
+2025-05-15 22:29:28,968 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 1036606523
