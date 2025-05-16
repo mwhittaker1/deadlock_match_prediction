@@ -395,10 +395,12 @@ def count_player_streaks(player_history: pd.DataFrame)->pd.DataFrame:
         "p_win_streak_avg": win_avg,
         "p_loss_streak_avg": loss_avg
         })
-    logging.debug(f"all streaks calculated, returning single row of player_streak_trends= {player_streak_trends[0]}")
+    logging.debug(f"all streaks calculated, returning single row of player_streak_trends= {player_streak_trends}")
     return player_streak_trends
 
-def compute_player_rolling_stats(player_history: pd.DataFrame)->pd.DataFrame:
+def compute_player_match_history(
+        player_history: pd.DataFrame,
+        streak_length=6)->pd.DataFrame:
     """Calculates player streak trends from player match history"""
     logging.info("Calculating player streak trends.")
     # Check if the player history is empty
@@ -406,47 +408,42 @@ def compute_player_rolling_stats(player_history: pd.DataFrame)->pd.DataFrame:
         logging.warning("Player history is empty")
         return None
 
-    player_history = player_history.sort_values(by='start_time', ascending=True)
-    player_history['won_int'] = player_history['won'].astype(int) 
+    result_df = player_history.copy()
+    result_df = result_df.sort_values(by='start_time', ascending=True)
+    result_df['prior_win_loss_streak'] = None
+    result_df['won_int'] = result_df['won'].astype(int) 
+
+        # For each match, calculate the streak from the previous matches
+    for i in range(streak_length, len(result_df)):
+        # Get the previous streak_length matches
+        prev_matches = result_df.iloc[i-streak_length:i]
+        
+        # Create the streak string (newest to oldest)
+        streak = ''.join(['W' if won else 'L' for won in prev_matches['won'].values[::-1]])
+        
+        # Assign to current match
+        result_df.loc[result_df.index[i], 'prior_win_loss_streak'] = streak
 
     # calculates rolling player win percentage
     for w in range(2, 7):
-        player_history[f'p_win_pct_{w}'] = (player_history['won_int'].rolling(window=w).mean()*100).round(2)
-        player_history[f'p_loss_pct_{w}'] = (100 - player_history[f'p_win_pct_{w}']).round(2)
-    logging.debug(f"Calculated player streak trends for player {player_history['account_id'].iloc[0]}")
-    player_history = player_history.drop(columns=['won_int'])
+        result_df[f'p_win_pct_{w}'] = (result_df['won_int'].rolling(window=w).mean()*100).round(2)
+        result_df[f'p_loss_pct_{w}'] = (100 - result_df[f'p_win_pct_{w}']).round(2)
     
-    return player_history
+        #calc percentages for each match
+        for i in range(w, len(result_df)):
+            # Get the previous streak_length matches
+            prev_matches = result_df.iloc[i-w:i]
+            
+            # calc win and loss %
+            win_pct = (prev_matches['won'].astype(int).mean()*100).round(2)
+            loss_pct = (100 - win_pct).round(2)
 
-def get_player_win_loss_streak(con, match_history_df, streak_length=6):
-    """
-    Calculates win/loss streak from a DataFrame containing match history.
-    match_history_df (DataFrame): DataFrame with columns 'team', 'winning_team', 'start_time'
-    
-    Returns:
-    DataFrame: Original DataFrame with added 'prior_win_loss_streak' column
-    """
-    # sort by start_time
-    match_history_df = match_history_df.sort_values('start_time', ascending=True)
-    
-    # New column for streak
-    match_history_df['prior_win_loss_streak'] = None
-    
-    #creates columns for W and L, to be combined later
-    match_history_df['result_str'] = match_history_df['won'].apply(lambda x: 'W' if x else 'L')
-    # Generate streak string
-    for i in range(streak_length, len(match_history_df)):
-        # Get the previous 'streak_length' matches
-        prev_matches = match_history_df.iloc[i-streak_length:i]
-        
-        # Create streak string
-        streak = ''.join(prev_matches['result_str'].values[::-1])
-        
-        # Assign to current match
-        match_history_df.loc[match_history_df.index[i], 'prior_win_loss_streak'] = streak
-    match_history_df = match_history_df.drop(columns=['result_str'])
+            result_df.loc[result_df.index[i], f'p_win_pct_{w}'] = win_pct
+            result_df.loc[result_df.index[i], f'p_loss_pct_{w}'] = loss_pct
 
-    return match_history_df
+    logging.debug(f"Calculated player streak trends for player {result_df['account_id'].iloc[0]}")
+    
+    return result_df
 
 def process_player_hero_stats(player_stats, hero_trends) -> pd.DataFrame:
     """Calculates player_hero trends and inserts to player_hero_trends table."""
@@ -464,7 +461,7 @@ def process_player_hero_stats(player_stats, hero_trends) -> pd.DataFrame:
 
 def save_player_trends_to_db(
         player_trends: pd.DataFrame) -> None:
-    """Loads hero trends data into the database."""
+    """Loads player trends data into the database."""
     logging.debug(f"Saving player trends to database: {player_trends}")
     # expected schema
     PLAYER_TRENDS_COLUMNS = {
@@ -527,17 +524,31 @@ def save_player_trends_to_db(
             FROM df_player_trends
             """)
             after = con.execute("SELECT COUNT(*) FROM player_trends").fetchone()[0]
-            logging.info(f"Bulk load complete. rows inserted: {after}-{before}")
+            logging.info(f"player_trends load complete. rows inserted: {after}-{before}")
             
     except Exception:
         logging.exception("Failed to load bulk match data")
         raise
     
-def save_player_rolling_stats_to_db(
+def save_computed_player_match_data_to_db(
         roll_stats: pd.DataFrame) -> None:
     """Loads player rolling stats data into the database."""
-    logging.debug(f"Saving player rolling stats to database: {roll_stats}")
+    logging.debug(f"Saving player rolling stats to database: {roll_stats.head()}")
 
+    # fill any nan columns with 0
+    for col in roll_stats:
+        roll_stats[col] = roll_stats[col].fillna(0) 
+
+    #check for prior_win_loss_streak
+    print("DEBUG: All DataFrame columns:")
+    for col in roll_stats.columns:
+        print(f"  '{col}' - Type: {type(col)}")
+    
+    print("\nDEBUG: Looking for 'prior_win_loss_streak'")
+    print(f"  Direct check: {'prior_win_loss_streak' in roll_stats.columns}")
+    print(f"  Case-insensitive check: {'prior_win_loss_streak'.lower() in [c.lower() for c in roll_stats.columns]}")
+    print(f"  Sample data: {roll_stats.iloc[0].to_dict() if not roll_stats.empty else 'Empty DataFrame'}")
+    
     roll_stats['start_time'] = pd.to_datetime(
         roll_stats['start_time'], unit='s', utc=True)
     # expected schema
@@ -546,7 +557,8 @@ def save_player_rolling_stats_to_db(
         "p_win_pct_2", "p_win_pct_3",
         "p_win_pct_4", "p_win_pct_5",
         "p_loss_pct_2", "p_loss_pct_3",
-        "p_loss_pct_4", "p_loss_pct_5"
+        "p_loss_pct_4", "p_loss_pct_5",
+        "prior_win_loss_streak"
     }
     missing = ROLL_STATS_COLUMNS - set(roll_stats.columns)
     extra   = set(roll_stats.columns) - ROLL_STATS_COLUMNS
@@ -571,33 +583,20 @@ def save_player_rolling_stats_to_db(
             INSERT OR IGNORE INTO player_rolling_stats (
                 account_id, match_id, start_time,
                 p_win_pct_2, p_win_pct_3, p_win_pct_4, p_win_pct_5,
-                p_loss_pct_2, p_loss_pct_3, p_loss_pct_4, p_loss_pct_5
+                p_loss_pct_2, p_loss_pct_3, p_loss_pct_4, p_loss_pct_5,
+                prior_win_loss_streak
             )
             SELECT
                 account_id, match_id, start_time,
                 p_win_pct_2, p_win_pct_3, p_win_pct_4, p_win_pct_5,
-                p_loss_pct_2, p_loss_pct_3, p_loss_pct_4, p_loss_pct_5
+                p_loss_pct_2, p_loss_pct_3, p_loss_pct_4, p_loss_pct_5,
+                prior_win_loss_streak
             FROM df_roll_stats
             """)
             after = con.execute("SELECT COUNT(*) FROM player_rolling_stats").fetchone()[0]
             logging.info(f"Bulk load complete. rows inserted: {after}-{before}")
             
     except Exception:
-        logging.exception("Failed to load bulk match data")
+        logging.exception("Failed to insert computerd player match data to DB")
         raise
 
-def save_player_history_streaks(
-        con, player_history: pd.DataFrame) -> None:
-    """Loads player history streaks data into the database."""
-    logging.debug(f"Saving player history streaks to database: {player_history}")
-
-    con.register("player_history", player_history)
-    before = con.execute("SELECT COUNT(prior_win_loss_streak) FROM player_matches_history").fetchone()[0]
-    for _, row in player_history.iterrows():
-        con.execute("""
-        UPDATE player_matches_history
-        SET prior_win_loss_streak = ?
-        WHERE account_id = ? AND match_id = ?
-    """, (row['prior_win_loss_streak'], row['account_id'], row['match_id']))
-    after = con.execute("SELECT COUNT(prior_win_loss_streak) FROM player_matches_history").fetchone()[0]
-    logging.info(f"Player History updated. rows updated: {after}-{before}")

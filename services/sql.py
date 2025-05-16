@@ -39,6 +39,11 @@ def run_checks(con):
         """).fetchall()
     print(f"player_trends_table_columns: {player_trends_table_columns}\n")
 
+    player_rolling_stats_table_columns = con.execute("""
+        PRAGMA table_info('player_rolling_stats');
+        """).fetchall()
+    print(f"player_rolling_stats_table_columns: {player_rolling_stats_table_columns}\n")
+    
     player_matches_history_columns = con.execute("""
         PRAGMA table_info('player_matches_history');
         """).fetchall()

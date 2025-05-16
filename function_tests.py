@@ -440,7 +440,7 @@ def test_run_tl_player_hero_match_trends_from_db():
     u.any_to_csv(player_stats, "data/test_data/player_stats_from_db")
     
     # complete calculations for rolling stats and insert into db.
-    player_rolling_stats = tal.compute_player_rolling_stats(player_match_history)
+    player_rolling_stats = tal.compute_player_match_history(player_match_history)
     #tal.save_player_rolling_stats_to_db(player_rolling_stats)
     print(f"testing player_rolling_stats. \n {player_rolling_stats.columns} \n {player_rolling_stats.head()}")
     u.any_to_csv(player_rolling_stats, "data/test_data/player_rolling_stats_from_db")

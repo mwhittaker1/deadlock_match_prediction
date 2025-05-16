@@ -1,15 +1,6 @@
 todos.
 
-The Matches. 13,000
 
-12 players for each match in matches, player_matches, 1 row per player
-For each distinct player in player_matches, create player trends and stats -> match_histories.
-5/16/25
-player_match_history and player_rolling_stats are calculating in different match_start_time orders
-
-5/15/25
-run_tl_player_match_trends_from_db - current hardcode to single account_id. Need to figure out where that data should flow in from.
-Probably db.matches.
 
 Need to review and confirm save_to_db for player trends and streaks.
 
@@ -22,7 +13,7 @@ Train model
 
 
 MAIN DB STRUCTURE
-matchatches = Recent high level matches to be predicted.
+matches = Recent high level matches to be predicted.
 player_matches = all players in matches. These players need trends, streaks, and statistics.
 player_matches_history = for each player in player_matches, all historical matches those players played in.
 player_trends = for each player in player_matches, calculated statistics and streaks
@@ -36,3 +27,8 @@ filtered_player_matches = match history for each distinct player in matches_for_
 
 match_info_history = raw match_info bulk data
 high_quality_matches = filtered match_info for matches with skill level greater than badge # 75
+
+The Matches. 13,000
+
+12 players for each match in matches, player_matches, 1 row per player
+For each distinct player in player_matches, create player trends and stats -> match_histories.

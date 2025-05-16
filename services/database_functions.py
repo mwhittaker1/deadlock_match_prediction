@@ -166,6 +166,7 @@ def create_player_rolling_stats(con):
     p_loss_pct_3 FLOAT,
     p_loss_pct_4 FLOAT,
     p_loss_pct_5 FLOAT,
+    prior_win_loss_streak VARCHAR,      
     PRIMARY KEY (account_id, match_id),
     )         
     """)
