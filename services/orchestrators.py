@@ -94,7 +94,6 @@ def run_etl_player_hero_fetched_match_trends():
         player_stats = tal.compute_player_stats(player_match_history)
         logging.debug(f"Player stats columns: {player_stats.columns}")
 
-
         # combine player_stats and player_hero trends, then insert into db
         hero_trends = dbf.pull_hero_trends_from_db(db.con,trend_window_days=30)
         player_stats = tal.process_player_hero_stats(player_stats,hero_trends)
@@ -154,25 +153,24 @@ def run_etl_player_hero_match_trends_from_db():
 
             # combine player_stats and player_hero trends, then insert into db
             hero_trends = dbf.pull_hero_trends_from_db(db.con,trend_window_days=30)
-            player_stats = tal.process_player_hero_stats(player_stats,hero_trends)
+            
             tal.save_player_trends_to_db(player_stats)
             print(f"testing player starts. \n {player_stats.columns} \n {player_stats.head()}")
             u.any_to_csv(player_stats, "data/test_data/player_stats_from_db")
             
             # complete calculations for rolling stats and insert into db.
             player_rolling_stats = tal.compute_player_match_history(player_match_history)
+            player_rolling_stats = tal.process_player_hero_stats(player_rolling_stats, hero_trends)
+            print(f"compute_player_match_history. \n {player_rolling_stats.columns} \n {player_rolling_stats.head()}")            
             tal.save_computed_player_match_data_to_db(player_rolling_stats)
-            print(f"compute_player_match_history. \n {player_rolling_stats.columns} \n {player_rolling_stats.head()}")
             u.any_to_csv(player_rolling_stats, "data/test_data/compute_player_match_history_from_db")
-            
-  
+             
         except Exception as e:
             logging.error(f"Error processing player {account_id}: {e}")
 
 if __name__ == "__main__":
     pass
     
-
 def old_run_etl_player_hero_match_trends_from_db():
     """ETL all players for a set of matches.
     

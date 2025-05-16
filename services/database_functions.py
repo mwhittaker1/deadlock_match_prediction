@@ -105,7 +105,8 @@ def create_player_trends_table(con):
                 
     -- Player hero trends 
     p_v_h_kd_pct FLOAT,
-
+    p_h_match_count BIGINT,
+                
     -- Win streaks
     win_streaks_2plus INTEGER,
     win_streaks_3plus INTEGER,
@@ -156,6 +157,7 @@ def create_player_rolling_stats(con):
     con.execute("""
     CREATE TABLE player_rolling_stats (
     account_id BIGINT,
+    hero_id INTEGER,
     match_id BIGINT,
     start_time TIMESTAMP,
     p_win_pct_2 FLOAT,
@@ -166,7 +168,11 @@ def create_player_rolling_stats(con):
     p_loss_pct_3 FLOAT,
     p_loss_pct_4 FLOAT,
     p_loss_pct_5 FLOAT,
-    prior_win_loss_streak VARCHAR,      
+    prior_win_loss_streak VARCHAR,
+    p_v_h_pick_rate FLOAT,
+    p_v_h_win_kd_pct FLOAT,
+    p_h_match_count INTEGER,
+    hero_pick_rate FLOAT,
     PRIMARY KEY (account_id, match_id),
     )         
     """)
