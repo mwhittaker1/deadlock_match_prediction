@@ -122,7 +122,7 @@ def run_etl_player_hero_match_trends_from_db():
     # pull distinct players from player_matches table
     start = time.time()
     try:
-        players_to_trend = dbf.pull_trend_players_from_db(con=db.con)
+        players_to_trend = dbf.test_pull_trend_players_from_db(con=db.con)
 
         if players_to_trend is None or players_to_trend.empty:
             raise ValueError("Players to trend is empty, expected a non-empty DataFrame")

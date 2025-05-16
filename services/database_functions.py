@@ -212,7 +212,7 @@ def test_pull_trend_players_from_db(con):
     query = """
     SELECT DISTINCT account_id
     FROM player_matches
-    LIMIT 5
+    LIMIT 25
     """
     
     players = con.execute(query).fetchdf()
