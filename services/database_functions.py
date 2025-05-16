@@ -103,10 +103,6 @@ def create_player_trends_table(con):
     p_total_matches BIGINT,
     p_win_rate FLOAT,
                 
-    -- Player hero trends 
-    p_v_h_kd_pct FLOAT,
-    p_h_match_count BIGINT,
-                
     -- Win streaks
     win_streaks_2plus INTEGER,
     win_streaks_3plus INTEGER,
@@ -170,7 +166,7 @@ def create_player_rolling_stats(con):
     p_loss_pct_5 FLOAT,
     prior_win_loss_streak VARCHAR,
     p_v_h_pick_rate FLOAT,
-    p_v_h_win_kd_pct FLOAT,
+    p_v_h_kd_pct FLOAT,
     p_h_match_count INTEGER,
     hero_pick_rate FLOAT,
     PRIMARY KEY (account_id, match_id),
@@ -219,7 +215,7 @@ def test_pull_trend_players_from_db(con):
     query = """
     SELECT DISTINCT account_id
     FROM player_matches
-    LIMIT 5
+    LIMIT 25
     """
     
     players = con.execute(query).fetchdf()

@@ -10,13 +10,6 @@ from services import database_functions as dbf
 from services import fetch_data as fd
 from services import transform_and_load as tal
 
-log_file ="data/logs.txt"
-logging.basicConfig(
-    filename=log_file,
-    level=logging.DEBUG,
-    format="%(asctime)s [%(levelname)s] [%(name)s.%(funcName)s] %(message)s"
-)
-
 def test_save_data(file,fname):
     tests_dir = Path(__file__).parent / "dl_match_prediction" / "tests"
     tests_dir.mkdir(parents=True, exist_ok=True)   # make sure it exists

@@ -9,7 +9,7 @@ import duckdb
 log_file = os.getenv("LOGGING_LOC")  
 logging.basicConfig(
     filename=log_file,
-    level=logging.INFO,
+    level=logging.ERROR,
     format="%(asctime)s [%(levelname)s] [%(name)s.%(funcName)s] %(message)s"
 )
 
@@ -21,6 +21,7 @@ def main():
     #o.run_etl_hero_trends()
 
     # ETL player hero trends for all players in player_matches table. db->db.player_hero_trends, db.player_roll_trends
+    o.setup_duckdb_indexes()
     o.run_etl_player_hero_match_trends_from_db()
 
     # Not used in training.ETL player hero trends for all players in player_matches table. API->db.player_hero_trends, db.player_roll_trends

@@ -45,69 +45,7 @@ def run_etl_hero_trends():
     tal.save_hero_trends_to_db(hero_trends_30d)
     logging.info("completed 7d and 30d hero trends ETL without critical errors.")
 
-def run_etl_player_hero_fetched_match_trends():
-    """ETL all players for a set of matches.
-    
-    Extracts distinct players from player matches table,
-    for each player (account_id) fetch their match history,
-    calculates player trends, calculate streaks and counts,
-    calculate player_hero trends, calcualte recent match history,
-    and insert into approriate tables.
-    """
-    logging.info("Starting run_etl_player_hero_fetched_match_trends")
-    # pull distinct players from player_matches table
-    start = time.time()
-    try:
-        players_to_trend = dbf.test_pull_trend_players_from_db(con=db.con)
 
-        if players_to_trend is None or players_to_trend.empty:
-            raise ValueError("Players to trend is empty, expected a non-empty DataFrame")
-        
-    except Exception as e:
-        logging.error(f"Error fetching players to trend: {e}")
-        return
-    
-    #fetch match history for each player
-    total_players_to_process = len(players_to_trend)
-    for player in players_to_trend.itertuples():
-        if player.Index % 10 == 0:
-            elapsed_time = time.time() - start
-            print(f"Time passed = {elapsed_time:.2f}seconds. Processed {player.Index} of {total_players_to_process} players")
-            logging.info(f"Time passed = {elapsed_time:.2f}seconds. Processed {player.Index} of {total_players_to_process} players")
-        logging.debug(f"Processing player {player} of {total_players_to_process}")
-        account_id = player.account_id
-
-        #fetch player match history from API endpoint
-        try:
-            player_match_history = dbf.pull_player_match_history_from_db(account_id,con=db.con)
-            if player_match_history.empty or player_match_history is None:
-                logging.warning(f"No match history found for player {account_id}")
-                continue
-
-        except Exception as e:
-            logging.error(f"Error processing player {account_id}: {e}")
-
-       # caclulcate player won stat and add as new column
-        player_match_history = tal.calculate_won_column(player_match_history)
-        u.any_to_csv(player_match_history, "data/test_data/won_column_player_match_history")
-        #calculate player trends and streaks
-        player_stats = tal.compute_player_stats(player_match_history)
-        logging.debug(f"Player stats columns: {player_stats.columns}")
-
-        # combine player_stats and player_hero trends, then insert into db
-        hero_trends = dbf.pull_hero_trends_from_db(db.con,trend_window_days=30)
-        player_stats = tal.process_player_hero_stats(player_stats,hero_trends)
-        logging.debug(f"POST MERGE, Player stats columns: {player_stats.columns}")
-        tal.save_player_trends_to_db(player_stats)
-        
-        # complete calculations for rolling stats and insert into db.
-        player_rolling_stats = tal.compute_player_match_history(player_match_history)
-        u.any_to_csv(player_rolling_stats, "data/test_data/computer_player_rolling_stats")
-        tal.save_computed_player_match_data_to_db(player_rolling_stats)
-
-    print("Completed test run")
-    logging.info(f"*TEST*completed player_trends")
-    return
 
 def run_etl_player_hero_match_trends_from_db():
     """ETL all players for a set of matches.
@@ -123,7 +61,7 @@ def run_etl_player_hero_match_trends_from_db():
     # pull distinct players from player_matches table
     start = time.time()
     try:
-        players_to_trend = dbf.test_pull_trend_players_from_db(con=db.con)
+        players_to_trend = dbf.pull_trend_players_from_db(con=db.con)
 
         if players_to_trend is None or players_to_trend.empty:
             raise ValueError("Players to trend is empty, expected a non-empty DataFrame")
@@ -132,41 +70,70 @@ def run_etl_player_hero_match_trends_from_db():
         logging.error(f"Error fetching players to trend: {e}")
         return
     
+    batch_size = 250
+    hero_trends = dbf.pull_hero_trends_from_db(db.con,trend_window_days=30)
+
     #fetch match history for each player
-    total_players_to_process = len(players_to_trend)
-    for player in players_to_trend.itertuples():
-        if player.Index % 10 == 0:
+    total_players = len(players_to_trend)
+    player_trends_batch= []
+    rolling_stats_batch = []
+
+    for i, player in enumerate(players_to_trend.itertuples()):
+        if i % 50 == 0:
             elapsed_time = time.time() - start
-            logging.info(f"Time passed = {elapsed_time:.2f}seconds. Processed {player} of {total_players_to_process} players")
-        logging.debug(f"Processing player {player} of {total_players_to_process}")
+            print(f"Time passed = {elapsed_time:.2f}seconds. Processed {player} of {total_players} players")
+            logging.info(f"Time passed = {elapsed_time:.2f}seconds. Processed {player} of {total_players} players")
+        logging.debug(f"Processing player {player} of {total_players}")
         account_id = player.account_id
 
             #fetch player match history from db
         try:
             player_match_history = dbf.pull_player_match_history_from_db(account_id,db.con)
-            u.any_to_csv(player_match_history, "data/test_data/raw_player_match_history_from_db")
-
+            #u.any_to_csv(player_match_history, "data/test_data/raw_player_match_history_from_db")
+            if player_match_history.empty or player_match_history is None:
+                logging.warning(f"No match history found for player {account_id}")
+                
+        except Exception as e:
+            logging.error(f"Error processing player {account_id}: {e}")
+            
+        try:    
             #calculate player trends and streaks
             player_stats = tal.compute_player_stats(player_match_history) #player_match_histry = df, #player_stats pd.Series
             logging.debug(f"Player stats columns: {player_stats.columns}")
-            u.any_to_csv(player_stats, "data/test_data/compute_player_stats")
-
-            # combine player_stats and player_hero trends, then insert into db
-            hero_trends = dbf.pull_hero_trends_from_db(db.con,trend_window_days=30)
-            
-            tal.save_player_trends_to_db(player_stats)
-            print(f"testing player starts. \n {player_stats.columns} \n {player_stats.head()}")
-            u.any_to_csv(player_stats, "data/test_data/player_stats_from_db")
-            
-            # complete calculations for rolling stats and insert into db.
-            player_rolling_stats = tal.compute_player_match_history(player_match_history)
-            player_rolling_stats = tal.process_player_hero_stats(player_rolling_stats, hero_trends)
-            print(f"compute_player_match_history. \n {player_rolling_stats.columns} \n {player_rolling_stats.head()}")            
-            tal.save_computed_player_match_data_to_db(player_rolling_stats)
-            u.any_to_csv(player_rolling_stats, "data/test_data/compute_player_match_history_from_db")
-             
+            player_trends_batch.append(player_stats)
         except Exception as e:
             logging.error(f"Error processing player {account_id}: {e}")
+        
+        try:   
+            # complete calculations for rolling stats  
+            player_rolling_stats = tal.compute_player_match_history(player_match_history) 
+            # compile player_hero trends    
+            player_rolling_stats = tal.process_player_hero_stats(player_rolling_stats, hero_trends)
+       
+            rolling_stats_batch.append(player_rolling_stats)
+        except Exception as e:
+            logging.error(f"Error processing player {account_id}: {e}")
+        
+        if len(player_trends_batch) >= batch_size or i == total_players - 1:
+            if player_trends_batch:
+                try:
+                    #concate player_stats in batch and insert
+                    player_trends_df = pd.concat(player_trends_batch, ignore_index=True)
+                    tal.save_player_trends_to_db(player_trends_df)
+                    player_trends_batch = []
+                except Exception as e:
+                    logging.error(f"Error saving player trends to DB: {e}")
+            if rolling_stats_batch:
+                try:
+                    #concate rolling_stats in batch and insert
+                    rolling_stats_df = pd.concat(rolling_stats_batch, ignore_index=True)
+                    tal.save_computed_player_match_data_to_db(rolling_stats_df)
+                    rolling_stats_batch = []
+                except Exception as e:
+                    logging.error(f"Error saving player rolling stats to DB: {e}")
+    total_time = time.time() - start                
+    logging.info(f"Total time taken for processing {total_players} players: {total_time:.2f} seconds")
+    return
 
 if __name__ == "__main__":
     pass
@@ -229,6 +196,141 @@ def old_run_etl_player_hero_match_trends_from_db():
         
         # complete calculations for rolling stats and insert into db.
         player_rolling_stats = tal.compute_player_match_history(player_match_history)
+        tal.save_computed_player_match_data_to_db(player_rolling_stats)
+
+    print("Completed test run")
+    logging.info(f"*TEST*completed player_trends")
+    return
+
+def setup_duckdb_indexes():
+    """
+    Set up indexes on player_matches_history table to improve query performance.
+    Focus on account_id as the primary lookup column.
+    """
+    try:
+        with duckdb.connect(database=db.DB_PATH) as con:
+            logging.info(f"Setting up indexes on player_matches_history in {db.DB_PATH}")
+            
+            # In DuckDB, we can use PRAGMA_INDEX_LIST directly as a table function
+            try:
+                # Try to check if indexes exist by querying the internal system tables
+                index_exists = con.execute("""
+                    SELECT count(*) 
+                    FROM information_schema.indexes 
+                    WHERE table_name = 'player_matches_history' 
+                    AND index_name = 'idx_player_matches_account_id'
+                """).fetchone()[0]
+                
+                # If we reach here, the query was successful
+                index_check_works = True
+            except:
+                # If the above fails, we'll just try to create the indexes and catch any errors
+                index_check_works = False
+                index_exists = 0
+            
+            if not index_check_works or index_exists == 0:
+                # Create indexes safely by using a try-except block for each
+                try:
+                    # Create index on account_id
+                    con.execute("""
+                        CREATE INDEX IF NOT EXISTS idx_player_matches_account_id 
+                        ON player_matches_history (account_id)
+                    """)
+                    logging.info("Created or confirmed index on player_matches_history(account_id)")
+                except Exception as e:
+                    logging.warning(f"Could not create account_id index: {str(e)}")
+                
+                try:
+                    # Create index on combo of account_id and match_id
+                    con.execute("""
+                        CREATE INDEX IF NOT EXISTS idx_player_matches_account_match 
+                        ON player_matches_history (account_id, match_id)
+                    """)
+                    logging.info("Created or confirmed index on player_matches_history(account_id, match_id)")
+                except Exception as e:
+                    logging.warning(f"Could not create account_id+match_id index: {str(e)}")
+                
+                try:
+                    # Optional: Add index on start_time for time-based queries
+                    con.execute("""
+                        CREATE INDEX IF NOT EXISTS idx_player_matches_start_time 
+                        ON player_matches_history (start_time)
+                    """)
+                    logging.info("Created or confirmed index on player_matches_history(start_time)")
+                except Exception as e:
+                    logging.warning(f"Could not create start_time index: {str(e)}")
+            else:
+                logging.info("Indexes already exist on player_matches_history")
+                
+            # Analyze table to update statistics
+            try:
+                con.execute("ANALYZE player_matches_history")
+                logging.info("Analyzed player_matches_history table to update statistics")
+            except Exception as e:
+                logging.warning(f"Could not analyze table: {str(e)}")
+            
+    except Exception as e:
+        logging.exception(f"Failed to set up indexes: {str(e)}")
+        raise
+
+def run_etl_player_hero_fetched_match_trends():
+    """ETL all players for a set of matches.
+    
+    Extracts distinct players from player matches table,
+    for each player (account_id) fetch their match history,
+    calculates player trends, calculate streaks and counts,
+    calculate player_hero trends, calcualte recent match history,
+    and insert into approriate tables.
+    """
+    logging.info("Starting run_etl_player_hero_fetched_match_trends")
+    # pull distinct players from player_matches table
+    start = time.time()
+    try:
+        players_to_trend = dbf.test_pull_trend_players_from_db(con=db.con)
+
+        if players_to_trend is None or players_to_trend.empty:
+            raise ValueError("Players to trend is empty, expected a non-empty DataFrame")
+        
+    except Exception as e:
+        logging.error(f"Error fetching players to trend: {e}")
+        return
+    
+    #fetch match history for each player
+    total_players_to_process = len(players_to_trend)
+    hero_trends = dbf.pull_hero_trends_from_db(db.con,trend_window_days=30)
+    for player in players_to_trend.itertuples():
+        if player.Index % 10 == 0:
+            elapsed_time = time.time() - start
+            print(f"Time passed = {elapsed_time:.2f}seconds. Processed {player.Index} of {total_players_to_process} players")
+            logging.info(f"Time passed = {elapsed_time:.2f}seconds. Processed {player.Index} of {total_players_to_process} players")
+        logging.debug(f"Processing player {player} of {total_players_to_process}")
+        account_id = player.account_id
+
+        #fetch player match history from API endpoint
+        try:
+            player_match_history = dbf.pull_player_match_history_from_db(account_id,con=db.con)
+            if player_match_history.empty or player_match_history is None:
+                logging.warning(f"No match history found for player {account_id}")
+                continue
+
+        except Exception as e:
+            logging.error(f"Error processing player {account_id}: {e}")
+
+       # caclulcate player won stat and add as new column
+        player_match_history = tal.calculate_won_column(player_match_history)
+        #u.any_to_csv(player_match_history, "data/test_data/won_column_player_match_history")
+        #calculate player trends and streaks
+        player_stats = tal.compute_player_stats(player_match_history)
+        logging.debug(f"Player stats columns: {player_stats.columns}")
+
+        # combine player_stats and player_hero trends, then insert into db
+        player_stats = tal.process_player_hero_stats(player_stats,hero_trends)
+        logging.debug(f"POST MERGE, Player stats columns: {player_stats.columns}")
+        tal.save_player_trends_to_db(player_stats)
+        
+        # complete calculations for rolling stats and insert into db.
+        player_rolling_stats = tal.compute_player_match_history(player_match_history)
+        #u.any_to_csv(player_rolling_stats, "data/test_data/computer_player_rolling_stats")
         tal.save_computed_player_match_data_to_db(player_rolling_stats)
 
     print("Completed test run")

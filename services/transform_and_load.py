@@ -567,16 +567,6 @@ def save_computed_player_match_data_to_db(
     # fill any nan columns with 0
     for col in roll_stats:
         roll_stats[col] = roll_stats[col].fillna(0) 
-
-    #check for prior_win_loss_streak
-    print("DEBUG: All DataFrame columns:")
-    for col in roll_stats.columns:
-        print(f"  '{col}' - Type: {type(col)}")
-    
-    print("\nDEBUG: Looking for 'prior_win_loss_streak'")
-    print(f"  Direct check: {'prior_win_loss_streak' in roll_stats.columns}")
-    print(f"  Case-insensitive check: {'prior_win_loss_streak'.lower() in [c.lower() for c in roll_stats.columns]}")
-    print(f"  Sample data: {roll_stats.iloc[0].to_dict() if not roll_stats.empty else 'Empty DataFrame'}")
     
     roll_stats['start_time'] = pd.to_datetime(
         roll_stats['start_time'], unit='s', utc=True)

@@ -1,9 +1,5 @@
 todos.
 
-working on p_v_h_pick_rate - confirm database locations to accept new variables, then update insertion methods.
-
-
-p_v_h_pick_rate, p_v_h_kd_pct, p_h_match_count
 
 Train model
 
@@ -29,13 +25,14 @@ The Matches. 13,000
 12 players for each match in matches, player_matches, 1 row per player
 For each distinct player in player_matches, create player trends and stats -> match_histories.
 
+ ['account_id', 'match_id', 'start_time', 'p_win_pct_2', 'p_win_pct_3', 
+ 'p_win_pct_4', 'p_win_pct_5', 'p_loss_pct_2', 'p_loss_pct_3', 
+ 'p_loss_pct_4', 'p_loss_pct_5', 'prior_win_loss_streak', 
+ 'p_v_h_pick_rate', 'p_h_match_count', 'p_v_h_kd_pct', 
+ 'hero_id', 'hero_pick_rate']
 
 
-                account_id, match_id, start_time, hero_id,
-                p_win_pct_2, p_win_pct_3, p_win_pct_4, p_win_pct_5,
-                p_loss_pct_2, p_loss_pct_3, p_loss_pct_4, p_loss_pct_5,
-                prior_win_loss_streak, p_v_h_pick_rate, p_v_h_kd_pct,
-                p_h_match_count, hero_pick_rate
-
-account_id  match_id  hero_id  team  kills  deaths  assists  ...  player_hero_avg_kd  average_kd  pick_rate p_h_match_count hero_pick_rate  p_v_h_kd_pct  p_v_h_pick_rate
-
+ ['account_id', 'match_id', 'start_time', 'p_win_pct_2', 
+ 'p_win_pct_3', 'p_win_pct_4', 'p_win_pct_5', 'p_loss_pct_2', 'p_loss_pct_3', 
+ 'p_loss_pct_4', 'p_loss_pct_5', 'prior_win_loss_streak', 
+ 'p_v_h_pick_rate', 'p_h_match_count', 'p_v_h_kd_pct', 'hero_id', 'hero_pick_rate']
