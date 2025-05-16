@@ -77,6 +77,7 @@ def create_player_matches_history(con):
     CREATE TABLE player_matches_history (
     account_id BIGINT,
     match_id BIGINT,
+    start_time TIMESTAMP,
     hero_id INTEGER,
     team VARCHAR,
     kills INTEGER,

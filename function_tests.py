@@ -424,7 +424,7 @@ def test_pull_player_match_history_from_db():
 
 def test_run_tl_player_hero_match_trends_from_db():
     logging.debug("Starting function tests")
-    account_id = 1699896029
+    account_id = 1136450470
     player_match_history = dbf.pull_player_match_history_from_db(db.con,account_id)
     u.any_to_csv(player_match_history, "data/test_data/player_match_history_from_db")
     #calculate player trends and streaks

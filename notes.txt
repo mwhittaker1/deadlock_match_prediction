@@ -6,7 +6,9 @@ The Matches. 13,000
 For each distinct player in player_matches, create player trends and stats -> match_histories.
 
 5/14/25
+
 #update- added join function inside pull_player_match_history_from_db, missing data in match_info for start_time.
+
 player_match_history is loaded with large dataset. Currently missing "start_time" needed for calculations.
 Working through test_run_tl_player_hero_match_trends_from_db - failure on compute_player_stats
 

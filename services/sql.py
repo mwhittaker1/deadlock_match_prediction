@@ -156,7 +156,7 @@ def test1():
 
 if __name__ == "__main__":
     con = duckdb.connect(r"C:\Code\Local Code\deadlock_match_prediction\\data\deadlock.db")
-    compare_raw_to_current()
-    #run_checks(con)
+    #compare_raw_to_current()
+    run_checks(con)
     #compare_raw_to_current()
     #logging.info("\n\nData integrity checks completed")

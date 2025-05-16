@@ -153,3 +153,4 @@ Name: account_id, Length: 117, dtype: int64: 'start_time'
 2025-05-15 01:36:51,146 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
 2025-05-15 03:07:09,792 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
 2025-05-15 03:07:09,863 [WARNING] [root.pull_player_match_history_from_db] No match history found for player 1699896029
+2025-05-15 19:31:42,426 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
