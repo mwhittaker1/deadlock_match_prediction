@@ -206,6 +206,19 @@ def pull_trend_players_from_db(con):
     logging.info(f"Pulled {len(players)} players to trend")
     return players
 
+def test_pull_trend_players_from_db(con):
+    """pulls players from player_matches table to trend"""
+
+    query = """
+    SELECT DISTINCT account_id
+    FROM player_matches
+    LIMIT 5
+    """
+    
+    players = con.execute(query).fetchdf()
+    logging.info(f"Pulled {len(players)} players to trend")
+    return players
+
 def pull_hero_trends_from_db(con,trend_window_days,trend_start_date=None,):
     """pulls hero trends from hero_trends table to trend"""
     try: 

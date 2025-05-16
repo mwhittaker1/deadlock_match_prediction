@@ -365,3 +365,21 @@ Name: account_id, Length: 175, dtype: uint32
       dtype='object')
 2025-05-15 22:29:28,964 [INFO] [root.compute_player_rolling_stats] Calculating player streak trends.
 2025-05-15 22:29:28,968 [DEBUG] [root.compute_player_rolling_stats] Calculated player streak trends for player 1036606523
+2025-05-15 22:45:04,669 [INFO] [root.run_etl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 22:45:04,669 [ERROR] [root.run_etl_player_hero_match_trends_from_db] Error fetching players to trend: module 'services.database_functions' has no attribute 'test_pull_trend_players_from_db'
+2025-05-15 22:45:56,716 [INFO] [root.run_etl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 22:46:06,171 [INFO] [root.test_pull_trend_players_from_db] Pulled 5 players to trend
+2025-05-15 22:46:14,251 [INFO] [root.run_etl_player_hero_match_trends_from_db] Time passed = 12.67seconds. Processed 0 of 5 players
+2025-05-15 22:46:14,936 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=0, account_id=196305819) of 5
+2025-05-15 22:46:17,368 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=1, account_id=345987571) of 5
+2025-05-15 22:46:18,520 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=2, account_id=104030097) of 5
+2025-05-15 22:46:19,291 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=3, account_id=84379844) of 5
+2025-05-15 22:46:25,574 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=4, account_id=172857725) of 5
+2025-05-15 22:47:56,882 [INFO] [root.run_etl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 22:47:58,528 [INFO] [root.test_pull_trend_players_from_db] Pulled 5 players to trend
+2025-05-15 22:48:03,999 [INFO] [root.run_etl_player_hero_match_trends_from_db] Time passed = 6.05seconds. Processed 0 of 5 players
+2025-05-15 22:48:04,474 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=0, account_id=109261166) of 5
+2025-05-15 22:48:16,043 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=1, account_id=393467885) of 5
+2025-05-15 22:48:19,145 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=2, account_id=46179133) of 5
+2025-05-15 22:48:20,498 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=3, account_id=1177550028) of 5
+2025-05-15 22:48:21,783 [DEBUG] [root.run_etl_player_hero_match_trends_from_db] Processing player Pandas(Index=4, account_id=486858272) of 5
