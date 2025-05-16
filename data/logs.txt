@@ -154,3 +154,21 @@ Name: account_id, Length: 117, dtype: int64: 'start_time'
 2025-05-15 03:07:09,792 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
 2025-05-15 03:07:09,863 [WARNING] [root.pull_player_match_history_from_db] No match history found for player 1699896029
 2025-05-15 19:31:42,426 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 21:14:21,357 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 21:14:21,395 [DEBUG] [root.generate_player_performance_metrics] stats for player 0    1136450470
+Name: account_id, dtype: uint32
+2025-05-15 21:14:21,396 [DEBUG] [root.generate_player_performance_metrics] total_kills: 3
+2025-05-15 21:14:21,396 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 5
+2025-05-15 21:14:21,396 [DEBUG] [root.generate_player_performance_metrics] match_total: 1
+2025-05-15 21:14:21,397 [ERROR] [root.compute_player_stats] Error calculating player stats for 0    1136450470
+Name: account_id, dtype: uint32: 'player_team'
+2025-05-15 21:14:21,397 [INFO] [root.count_player_streaks] Counting player streaks
+2025-05-15 21:18:53,362 [DEBUG] [root.test_run_tl_player_hero_match_trends_from_db] Starting function tests
+2025-05-15 21:19:50,678 [DEBUG] [root.generate_player_performance_metrics] stats for player 0    1136450470
+Name: account_id, dtype: uint32
+2025-05-15 21:19:51,044 [DEBUG] [root.generate_player_performance_metrics] total_kills: 3
+2025-05-15 21:19:51,232 [DEBUG] [root.generate_player_performance_metrics] total_deaths: 5
+2025-05-15 21:19:51,420 [DEBUG] [root.generate_player_performance_metrics] match_total: 1
+2025-05-15 21:19:51,749 [ERROR] [root.compute_player_stats] Error calculating player stats for 0    1136450470
+Name: account_id, dtype: uint32: 'player_team'
+2025-05-15 21:19:51,918 [INFO] [root.count_player_streaks] Counting player streaks
