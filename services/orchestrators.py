@@ -30,12 +30,13 @@ def run_etl_hero_trends():
     """ETL for 7-day and 30-day hero trends"""
     logging.info("starting run_etl_hero_trends ETL without critical errors.")
 
+    """
     #ETL 7 day hero trends
     trend_window = 7
     logging.info(f"*INFO* ETL: Fetching hero trends for {trend_window} days")
     raw_hero_trends_7d = fd.fetch_hero_trends(trend_window)
     hero_trends_7d = tal.build_hero_trends(trend_window,raw_hero_trends_7d)
-    tal.save_hero_trends_to_db(hero_trends_7d)
+    tal.save_hero_trends_to_db(hero_trends_7d)"""
 
     #ETL 30d hero trends
     trend_window = 30
@@ -45,7 +46,97 @@ def run_etl_hero_trends():
     tal.save_hero_trends_to_db(hero_trends_30d)
     logging.info("completed 7d and 30d hero trends ETL without critical errors.")
 
+def batched_etl_player_hero_match_trends_from_db():
+    logging.info("Starting run_etl_player_hero_match_trends_from_db tests")
+    # pull distinct players from player_matches table
+    start = time.time()
+    try:
+        players_to_trend = dbf.pull_trend_players_from_db(con=db.con)
 
+        if players_to_trend is None or players_to_trend.empty:
+            raise ValueError("Players to trend is empty, expected a non-empty DataFrame")
+        
+    except Exception as e:
+        logging.error(f"Error fetching players to trend: {e}")
+        return
+    
+    batch_size = 250
+    hero_trends = dbf.pull_hero_trends_from_db(db.con,trend_window_days=30)
+    total_players = len(players_to_trend)
+
+    for batch_start in range(0, total_players, batch_size):
+        batch_end = min(batch_start + batch_size, total_players)
+        current_batch = players_to_trend.iloc[batch_start:batch_end]
+
+        account_ids = current_batch['account_id'].tolist()
+        account_ids_str = ', '.join(map(str, account_ids))
+
+        logging.info(f"Processing batch {batch_start//batch_size + 1}/{(total_players+batch_size-1)//batch_size} "
+            f"({batch_start}-{batch_end-1} of {total_players} players)")
+
+        try:
+            with duckdb.connect(db.DB_PATH) as con:
+                con.execute(f"""
+                    CREATE TEMPORARY TABLE temp_player_match_history as
+                    SELECT * FROM player_matches_history
+                    WHERE account_id IN ({account_ids_str})
+                            """)
+
+                player_trend_batch = []
+                rolling_stats_batch = []
+
+                for account_id in account_ids:
+                    player_history_df = con.execute(f"""
+                        SELECT * FROM temp_player_match_history
+                        WHERE account_id = {account_id}
+                    """).fetchdf()
+
+                    if player_history_df.empty:
+                        logging.warning(f"No match history found for player {account_id}")
+                        continue
+                    try:
+                        player_stats = tal.compute_player_stats(player_history_df)
+                        player_trend_batch.append(player_stats)
+                    except Exception as e:
+                        logging.error(f"Error processing player {account_id}: {e}")
+                        continue
+                    try:
+                        rolling_stats = tal.compute_player_match_history(player_history_df)
+                        rolling_stats = tal.process_player_hero_stats(rolling_stats, hero_trends)
+                        rolling_stats_batch.append(rolling_stats)
+                    except Exception as e:
+                        logging.error(f"Error processing player {account_id}: {e}")
+                        continue
+
+                con.execute("DROP TABLE temp_player_match_history")
+                if player_trend_batch:
+                    player_trends_df = pd.concat(player_trend_batch, ignore_index=True)
+                    tal.save_player_trends_to_db(player_trends_df)
+                    con.register("batch_player_trends", player_trends_df)
+                    con.execute("""
+                        INSERT INTO player_hero_trends
+                        SELECT * FROM batch_player_trends
+                                """)
+                    logging.info(f"Inserted {len(player_trends_df)} rows into player_hero_trends")
+
+                if rolling_stats_batch:
+
+                    #concate rolling_stats in batch and insert
+                    rolling_stats_df = pd.concat(rolling_stats_batch, ignore_index=True)
+                    tal.save_computed_player_match_data_to_db(rolling_stats_df)
+                    rolling_stats_batch = []
+
+        except Exception as e:
+            logging.error(f"Error saving player rolling stats to DB: {e}")
+
+        batch_time = time.time() - start
+        remaining_batches = (total_players - batch_end) / batch_size
+        estimated_time_remaining = remaining_batches * (batch_time / ((batch_end - batch_start) / batch_size))
+        logging.info(f"Batch completed in {batch_time:.2f}s. Estimated time remaining: {estimated_time_remaining:.2f}s")
+        
+    total_time = time.time() - start                
+    logging.info(f"Total time taken for processing {total_players} players: {total_time:.2f} seconds")
+    return
 
 def run_etl_player_hero_match_trends_from_db():
     """ETL all players for a set of matches.

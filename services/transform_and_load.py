@@ -227,7 +227,7 @@ def save_hero_trends_to_db(
         hero_trends: pd.DataFrame) -> None:
     """Loads hero trends data into the database."""
     
-    logging.INFO("Saving hero trends to database")
+    logging.info("Saving hero trends to database")
 
     # expected schema
     HERO_TRENDS_COLUMNS = {
@@ -405,7 +405,7 @@ def compute_player_match_history(
         player_history: pd.DataFrame,
         streak_length=6)->pd.DataFrame:
     """Calculates player streak trends from player match history"""
-    logging.info("Calculating player streak trends.")
+    logging.debug("Calculating player streak trends.")
     # Check if the player history is empty
     if player_history.empty:
         logging.warning("Player history is empty")
