@@ -622,3 +622,78 @@ def save_computed_player_match_data_to_db(
         logging.exception("Failed to insert computerd player match data to DB")
         raise
 
+def save_hero_synergy_to_db(
+        hero_synergies: pd.DataFrame) -> None:
+    """save hero synergy trends to db"""
+    logging.debug(f"Saving hero synergy trends to database: {hero_synergies}")
+    # expected schema
+
+    HERO_SYNERGY_COLUMNS = {
+        "hero_id1",
+        "hero_id2",
+        "wins",
+        "matches_played",
+        "kills1",
+        "kills2",
+        "deaths1",
+        "deaths2",
+        "assists1",
+        "assists2",
+        "denies1",
+        "denies2",
+        "last_hits1",
+        "last_hits2",
+        "networth1",
+        "networth2",
+        "obj_damage1",
+        "obj_damage2",
+        "creeps1",
+        "creeps2",
+    }
+
+    missing = HERO_SYNERGY_COLUMNS - set(hero_synergies.columns)
+    extra   = set(hero_synergies.columns) - HERO_SYNERGY_COLUMNS
+
+    #check hero_synergies
+    if missing:
+        logging.error(
+            "Hero Synergy DataFrame schema mismatch: "
+            f" missing={missing or None}, extra={extra or None}"
+        )
+        raise ValueError("hero_synergies columns do not align with matches schema, missing",missing)
+    
+    if extra:
+        logging.info(f"Extra columns in hero_synergies, extras: {extra}")
+
+    try:
+        with duckdb.connect(database=db.DB_PATH) as con:
+            logging.info("connected to database: %s", db.DB_PATH)
+            con.register("df_hero_synergies", hero_synergies)
+            before = con.execute("SELECT COUNT(*) FROM hero_synergies").fetchone()[0]
+            con.execute("""
+            INSERT OR IGNORE INTO hero_synergy_trends (
+                hero_id1, hero_id2, wins, matches_played,
+                kills1, kills2, deaths1, deaths2,
+                assists1, assists2, denies1, denies2,
+                last_hits1, last_hits2,
+                networth1, networth2,
+                obj_damage1, obj_damage2,
+                creeps1, creeps2
+            )
+            SELECT
+                hero_id1, hero_id2, wins, matches_played,
+                kills1, kills2, deaths1, deaths2,
+                assists1, assists2, denies1, denies2,
+                last_hits1, last_hits2,
+                networth1, networth2,
+                obj_damage1, obj_damage2,
+                creeps1, creeps2
+            FROM df_hero_synergies
+            """)
+            after = con.execute("SELECT COUNT(*) FROM hero_synergy_trends").fetchone()[0]
+            logging.info(f"Bulk load complete. rows inserted: {after}-{before}")
+        
+    except Exception:
+        logging.exception("Failed to load hero synergy data")
+        raise
+

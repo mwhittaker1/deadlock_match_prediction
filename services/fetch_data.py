@@ -110,6 +110,28 @@ def fetch_player_match_history(p_id):
         logging.error(f"player_match_history is empty in fetch_player_match_history, p_id: {p_id}")
     return player_match_history
 
+def fetch_hero_synergy_trends(days=1, min_average_badge=100, min_matches=50):
+    """Fetches hero synergies for a given number of days and minimum average badge"""
+
+    min_unix_timestamp = str(u.get_unix_time(days))
+
+    site = "https://api.deadlock-api.com"
+    endpoint = f"/v1/analytics/hero-synergy-stats?min_unix_timestampe={min_unix_timestamp}&min_average_badge={min_average_badge}&min_matches={min_matches}"
+    url = site+endpoint
+    logging.debug(f"Getting hero synergies from full url: {url}")
+    
+    response = requests.get(url)
+    if response.status_code == 200:
+        hero_synergies = pd.DataFrame(response.json())
+    else:
+        logging.debug(f"Failed to retrieve data: {response.status_code}")
+    if hero_synergies is None:
+        logging.error(f"hero_synergies is None in fetch_hero_synergies")
+    if hero_synergies.empty:
+        logging.error(f"hero_synergies is empty in fetch_hero_synergies")
+    
+    return hero_synergies
+
 def fetch_player_hero_stats(p_id,h_id=None):
     """Fetches players hero-stats, then filters by h_id if provided"""
 

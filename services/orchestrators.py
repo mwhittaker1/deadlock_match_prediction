@@ -226,6 +226,23 @@ def run_etl_player_hero_match_trends_from_db():
     logging.info(f"Total time taken for processing {total_players} players: {total_time:.2f} seconds")
     return
 
+def run_etl_hero_synergy_trends_from_either(db=None):
+    """ETL for hero synergy, db->fetch from db"""
+    if db is not None:
+        #later logic here.
+        pass
+
+        
+    else:
+        #fetch hero synergy trends from API
+        hero_synergy_df = fd.fetch_hero_synergy_trends()
+        #u.any_to_csv(hero_synergy_df, "data/test_data/hero_synergy_trends")
+        # perform any necessary transformations
+        #tal.db_transform_hero_synergy_trends(hero_synergy_df)
+        # save to database
+        tal.save_hero_synergy_to_db(hero_synergy_df)
+        print(f"Completed hero_synergy EL, data example:\n{hero_synergy_df.head()}")
+
 if __name__ == "__main__":
     pass
     

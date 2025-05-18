@@ -18,11 +18,14 @@ def main():
     #o.run_etl_bulk_matches(max_days_fetch=60)
 
     # ETL hero trends for 7 and 30 days. API->db.hero_trends
-    o.run_etl_hero_trends()
+    #o.run_etl_hero_trends()
 
     # ETL player hero trends for all players in player_matches table. db->db.player_hero_trends, db.player_roll_trends
-    o.setup_duckdb_indexes()
-    o.run_etl_player_hero_match_trends_from_db()
+    #o.setup_duckdb_indexes()
+    #o.run_etl_player_hero_match_trends_from_db()
+
+    # etl hero synergy stats for {days} min_average_badge, {min_matches} min_matches
+    o.run_etl_hero_synergy_trends_from_either()
 
     # Not used in training.ETL player hero trends for all players in player_matches table. API->db.player_hero_trends, db.player_roll_trends
     #o.run_etl_player_hero_match_trends()

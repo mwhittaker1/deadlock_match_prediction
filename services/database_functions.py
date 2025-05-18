@@ -121,32 +121,6 @@ def create_player_trends_table(con):
     )
     """)
 
-# for each player, creates player_hero specific trends.
-# currently not in use.
-def create_player_hero_trends(con):
-    con.execute("""
-    CREATE TABLE player_hero_trends (
-    account_id BIGINT,
-    hero_id INTEGER,
-
-    p_h_total_matches BIGINT,
-    p_h_pick_pct FLOAT,
-    p_h_win_pct_3 FLOAT,
-    p_h_win_pct_5 FLOAT,
-    p_h_avg_kd FLOAT,
-    p_h_average_kills FLOAT,
-    p_h_average_deaths FLOAT,
-    p_h_average_assists FLOAT,
-
-    trend_start_date DATE,
-    trend_end_date DATE,
-    trend_window_days INTEGER,
-    last_updated TIMESTAMP,
-
-    PRIMARY KEY (account_id, hero_id, trend_start_date, trend_end_date, trend_window_days)
-    )
-    """)
-
 # for match in player_matches, calculate each matches prior win/loss % for 2-5 matches.
 # match 1 = win, match 2 = loss, match 3 == match 4: win_pct_3 = 0.67
 def create_player_rolling_stats(con):
@@ -173,6 +147,32 @@ def create_player_rolling_stats(con):
     )         
     """)
 
+# for each player, creates player_hero specific trends.
+# currently not in use.
+def create_player_hero_trends(con):
+    con.execute("""
+    CREATE TABLE player_hero_trends (
+    account_id BIGINT,
+    hero_id INTEGER,
+
+    p_h_total_matches BIGINT,
+    p_h_pick_pct FLOAT,
+    p_h_win_pct_3 FLOAT,
+    p_h_win_pct_5 FLOAT,
+    p_h_avg_kd FLOAT,
+    p_h_average_kills FLOAT,
+    p_h_average_deaths FLOAT,
+    p_h_average_assists FLOAT,
+
+    trend_start_date DATE,
+    trend_end_date DATE,
+    trend_window_days INTEGER,
+    last_updated TIMESTAMP,
+
+    PRIMARY KEY (account_id, hero_id, trend_start_date, trend_end_date, trend_window_days)
+    )
+    """)
+
 # hero trends are all inclusive (100 min badge) to match against player stats
 def create_hero_trends_table(con):  
     con.execute("""
@@ -189,6 +189,33 @@ def create_hero_trends_table(con):
     average_assists FLOAT,
     average_kd FLOAT,
     PRIMARY KEY (hero_id, trend_start_date, trend_end_date, trend_window_days)
+    )
+    """)
+
+def create_hero_synergy_trends(con):
+    con.execute("""
+    CREATE TABLE hero_synergy_trends (
+    hero_id1 INTEGER,
+    hero_id2 INTEGER,
+    wins INTEGER,
+    matches_played INTEGER,
+    kills1 INTEGER,
+    kills2 INTEGER,
+    deaths1 INTEGER,
+    deaths2 INTEGER,
+    assists1 INTEGER,
+    assists2 INTEGER,
+    denies1 INTEGER,
+    denies2 INTEGER,
+    last_hits1 INTEGER,
+    last_hits2 INTEGER,
+    networth1 INTEGER,
+    networth2 INTEGER,
+    obj_damage1 INTEGER,
+    obj_damage2 INTEGER,
+    creeps1 INTEGER,
+    creeps2 INTEGER,
+    PRIMARY KEY (hero_id1, hero_id2)
     )
     """)
 
