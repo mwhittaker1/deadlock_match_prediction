@@ -110,13 +110,13 @@ def fetch_player_match_history(p_id):
         logging.error(f"player_match_history is empty in fetch_player_match_history, p_id: {p_id}")
     return player_match_history
 
-def fetch_hero_synergy_trends(days=1, min_average_badge=100, min_matches=50):
+def fetch_hero_synergy_trends(days=60, min_average_badge=85, min_matches=50):
     """Fetches hero synergies for a given number of days and minimum average badge"""
 
     min_unix_timestamp = str(u.get_unix_time(days))
 
     site = "https://api.deadlock-api.com"
-    endpoint = f"/v1/analytics/hero-synergy-stats?min_unix_timestampe={min_unix_timestamp}&min_average_badge={min_average_badge}&min_matches={min_matches}"
+    endpoint = f"/v1/analytics/hero-synergy-stats?min_unix_timestamp={min_unix_timestamp}&min_average_badge={min_average_badge}&min_matches={min_matches}"
     url = site+endpoint
     logging.debug(f"Getting hero synergies from full url: {url}")
     
@@ -132,13 +132,13 @@ def fetch_hero_synergy_trends(days=1, min_average_badge=100, min_matches=50):
     
     return hero_synergies
 
-def fetch_hero_counter_trends(days=1, min_average_badge=100, min_matches=50):
+def fetch_hero_counter_trends(days=60, min_average_badge=85, min_matches=50):
     """Fetches hero counters for a given number of days and minimum average badge"""
 
     min_unix_timestamp = str(u.get_unix_time(days))
 
     site = "https://api.deadlock-api.com"
-    endpoint = f"/v1/analytics/hero-counter-stats?min_unix_timestampe={min_unix_timestamp}&min_average_badge={min_average_badge}&min_matches={min_matches}"
+    endpoint = f"/v1/analytics/hero-counter-stats?min_unix_timestamp={min_unix_timestamp}&min_average_badge={min_average_badge}&min_matches={min_matches}"
     url = site+endpoint
     logging.debug(f"Getting hero counters from full url: {url}")
     
