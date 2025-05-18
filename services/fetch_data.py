@@ -132,6 +132,28 @@ def fetch_hero_synergy_trends(days=1, min_average_badge=100, min_matches=50):
     
     return hero_synergies
 
+def fetch_hero_counter_trends(days=1, min_average_badge=100, min_matches=50):
+    """Fetches hero counters for a given number of days and minimum average badge"""
+
+    min_unix_timestamp = str(u.get_unix_time(days))
+
+    site = "https://api.deadlock-api.com"
+    endpoint = f"/v1/analytics/hero-counter-stats?min_unix_timestampe={min_unix_timestamp}&min_average_badge={min_average_badge}&min_matches={min_matches}"
+    url = site+endpoint
+    logging.debug(f"Getting hero counters from full url: {url}")
+    
+    response = requests.get(url)
+    if response.status_code == 200:
+        hero_counters = pd.DataFrame(response.json())
+    else:
+        logging.debug(f"Failed to retrieve data: {response.status_code}")
+    if hero_counters is None:
+        logging.error(f"hero_counters is None in fetch_hero_counters")
+    if hero_counters.empty:
+        logging.error(f"hero_counters is empty in fetch_hero_counters")
+    
+    return hero_counters
+
 def fetch_player_hero_stats(p_id,h_id=None):
     """Fetches players hero-stats, then filters by h_id if provided"""
 

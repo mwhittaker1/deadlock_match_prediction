@@ -213,9 +213,38 @@ def create_hero_synergy_trends(con):
     networth2 INTEGER,
     obj_damage1 INTEGER,
     obj_damage2 INTEGER,
-    creeps1 INTEGER,
-    creeps2 INTEGER,
-    PRIMARY KEY (hero_id1, hero_id2)
+    creeps1 BIGINT,
+    creeps2 BIGINT,
+    trend_start_date TIMESTAMP,
+    PRIMARY KEY (hero_id1, hero_id2, trend_start_date)
+    )
+    """)
+
+def create_hero_counter_trends(con):
+    con.execute("""
+    CREATE TABLE hero_counter_trends (
+        assists INTEGER, 
+        creeps INTEGER, 
+        deaths INTEGER,
+        denies INTEGER, 
+        enemy_assists INTEGER, 
+        enemy_creeps INTEGER,
+        enemy_deaths INTEGER, 
+        enemy_denies INTEGER,
+        enemy_hero_id INTEGER, 
+        enemy_kills INTEGER,
+        enemy_last_hits INTEGER, 
+        enemy_networth INTEGER,
+        enemy_obj_damage INTEGER, 
+        hero_id INTEGER,
+        kills INTEGER, 
+        last_hits INTEGER,
+        matches_played INTEGER, 
+        networth INTEGER,
+        obj_damage INTEGER, 
+        wins INTEGER,
+        trend_start_date TIMESTAMP,
+        PRIMARY KEY (HERO_ID, ENEMY_HERO_ID, TREND_START_DATE)
     )
     """)
 

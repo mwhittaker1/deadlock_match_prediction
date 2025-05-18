@@ -649,6 +649,7 @@ def save_hero_synergy_to_db(
         "obj_damage2",
         "creeps1",
         "creeps2",
+        "trend_start_date"
     }
 
     missing = HERO_SYNERGY_COLUMNS - set(hero_synergies.columns)
@@ -669,7 +670,7 @@ def save_hero_synergy_to_db(
         with duckdb.connect(database=db.DB_PATH) as con:
             logging.info("connected to database: %s", db.DB_PATH)
             con.register("df_hero_synergies", hero_synergies)
-            before = con.execute("SELECT COUNT(*) FROM hero_synergies").fetchone()[0]
+            before = con.execute("SELECT COUNT(*) FROM hero_synergy_trends").fetchone()[0]
             con.execute("""
             INSERT OR IGNORE INTO hero_synergy_trends (
                 hero_id1, hero_id2, wins, matches_played,
@@ -678,7 +679,7 @@ def save_hero_synergy_to_db(
                 last_hits1, last_hits2,
                 networth1, networth2,
                 obj_damage1, obj_damage2,
-                creeps1, creeps2
+                creeps1, creeps2, trend_start_date
             )
             SELECT
                 hero_id1, hero_id2, wins, matches_played,
@@ -687,13 +688,91 @@ def save_hero_synergy_to_db(
                 last_hits1, last_hits2,
                 networth1, networth2,
                 obj_damage1, obj_damage2,
-                creeps1, creeps2
+                creeps1, creeps2, trend_start_date
             FROM df_hero_synergies
             """)
             after = con.execute("SELECT COUNT(*) FROM hero_synergy_trends").fetchone()[0]
             logging.info(f"Bulk load complete. rows inserted: {after}-{before}")
         
-    except Exception:
-        logging.exception("Failed to load hero synergy data")
+    except Exception as e:
+        logging.exception(f"Failed to load hero synergy data {e}")
         raise
 
+def save_hero_counter_to_db(
+        hero_counters: pd.DataFrame) -> None:
+    """save hero counter trends to db"""
+    logging.debug(f"Saving hero counter trends to database: {hero_counters}")
+    # expected schema
+    HERO_COUNTER_COLUMNS = {
+    "assists",
+    "creeps",
+    "deaths",
+    "denies",
+    "enemy_assists",
+    "enemy_creeps",
+    "enemy_deaths",
+    "enemy_denies",
+    "enemy_hero_id",
+    "enemy_kills",
+    "enemy_last_hits",
+    "enemy_networth",
+    "enemy_obj_damage",
+    "hero_id",
+    "kills",
+    "last_hits",
+    "matches_played",
+    "networth",
+    "obj_damage",
+    "wins",
+    "trend_start_date"
+    }
+
+    missing = HERO_COUNTER_COLUMNS - set(hero_counters.columns)
+    extra   = set(hero_counters.columns) - HERO_COUNTER_COLUMNS
+
+    #check hero_counters
+    if missing:
+        logging.error(
+            "Hero Counter DataFrame schema mismatch: "
+            f" missing={missing or None}, extra={extra or None}"
+        )
+        raise ValueError("hero_counters columns do not align with matches schema, missing",missing)
+    
+    if extra:
+        logging.info(f"Extra columns in hero_counters, extras: {extra}")
+
+    try:
+        with duckdb.connect(database=db.DB_PATH) as con:
+            logging.info("connected to database: %s", db.DB_PATH)
+            con.register("df_hero_counters", hero_counters)
+            before = con.execute("SELECT COUNT(*) FROM hero_counter_trends").fetchone()[0]
+            con.execute("""
+            INSERT OR IGNORE INTO hero_counter_trends (
+                assists, creeps, deaths,
+                denies, enemy_assists, enemy_creeps,
+                enemy_deaths, enemy_denies,
+                enemy_hero_id, enemy_kills,
+                enemy_last_hits, enemy_networth,
+                enemy_obj_damage, hero_id,
+                kills, last_hits,
+                matches_played, networth,
+                obj_damage, wins, trend_start_date
+            )
+            SELECT
+                assists, creeps, deaths,
+                denies, enemy_assists, enemy_creeps,
+                enemy_deaths, enemy_denies,
+                enemy_hero_id, enemy_kills,
+                enemy_last_hits, enemy_networth,
+                enemy_obj_damage, hero_id,
+                kills, last_hits,
+                matches_played, networth,
+                obj_damage, wins, trend_start_date
+            FROM df_hero_counters
+            """)
+            after = con.execute("SELECT COUNT(*) FROM hero_counter_trends").fetchone()[0]
+            logging.info(f"Bulk load complete. rows inserted: {after}-{before}")
+        
+    except Exception as e:
+        logging.exception(f"Failed to load hero counter data {e}")
+        raise

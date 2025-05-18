@@ -2,6 +2,7 @@ import pandas as pd
 import logging
 import duckdb
 import time
+import datetime
 from services import database_functions as dbf
 from services import fetch_data as fd
 from services import transform_and_load as tal
@@ -226,21 +227,35 @@ def run_etl_player_hero_match_trends_from_db():
     logging.info(f"Total time taken for processing {total_players} players: {total_time:.2f} seconds")
     return
 
-def run_etl_hero_synergy_trends_from_either(db=None):
+def run_etl_hero_synergy_trends_from_either(db=None, synergy=False, counter=False):
     """ETL for hero synergy, db->fetch from db"""
     if db is not None:
         #later logic here.
         pass
-
-        
+    
     else:
+        trend_start_time = datetime.datetime.fromtimestamp(u.get_unix_time())
         #fetch hero synergy trends from API
-        hero_synergy_df = fd.fetch_hero_synergy_trends()
-        #u.any_to_csv(hero_synergy_df, "data/test_data/hero_synergy_trends")
+        if synergy is not None:
+            
+            hero_synergy_df = fd.fetch_hero_synergy_trends()
+            hero_synergy_df['trend_start_date'] = trend_start_time
+            u.any_to_csv(hero_synergy_df, "data/test_data/hero_synergy_trends")
+            tal.save_hero_synergy_to_db(hero_synergy_df)
+        if counter is not None:
+            hero_count_df = fd.fetch_hero_counter_trends()
+            hero_count_df['trend_start_date'] = trend_start_time
+            u.any_to_csv(hero_count_df, "data/test_data/hero_counter_trends")
+            tal.save_hero_counter_to_db(hero_count_df)
+        else:
+            raise ValueError("Either synergy or counter must be True")
+
         # perform any necessary transformations
         #tal.db_transform_hero_synergy_trends(hero_synergy_df)
+
         # save to database
         tal.save_hero_synergy_to_db(hero_synergy_df)
+
         print(f"Completed hero_synergy EL, data example:\n{hero_synergy_df.head()}")
 
 if __name__ == "__main__":
