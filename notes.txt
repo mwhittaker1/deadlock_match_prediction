@@ -41,62 +41,21 @@ The Matches. 13,000
 12 players for each match in matches, player_matches, 1 row per player
 For each distinct player in player_matches, create player trends and stats -> match_histories.
 
-1. Correlation Heatmap
+Random Forest:
+Team based:
+Team > 
+average kd
+highest, lowest, and average hero synergy/counter
+average win_pct
+average win streak
+average loss streak
+team current largets loss streak
+team current largest win streak
+team current streak value (+ for win streak, - for negative)
+player_hero weighted trends (average of players)
+weighted hero trend score (avg k/d, avg win rate)
+team total matches
+top heros weight (which team has the 3 higher rated heroes)
+team average, player average p_h_win_rate
 
-Visualize the correlation between all features
-Identify which features are highly correlated with the target variable (match outcome)
-Detect multicollinearity between features that might be redundant
 
-2. Win Rate Distribution Plots
-
-Compare distributions of p_win_rate for winning vs. losing teams
-Show density plots of team average win rates to see if they predict match outcomes
-Visualize the relationship between win rates and actual match results
-
-3. Streak Analysis
-
-Bar charts comparing win/loss streaks between winning and losing teams
-Box plots of p_win_streak_avg and p_loss_streak_avg grouped by match outcome
-Histograms showing how different streak lengths (2-5) correlate with match results
-
-4. Rolling Performance Visualization
-
-Line plots showing how p_win_pct_2-5 values correlate with match outcomes
-Scatter plots of team average rolling stats vs. win probability
-Visualize how the recency of performance affects prediction accuracy
-
-5. Player vs. Hero Performance
-
-Scatter plots of p_v_h_kd_pct against match outcomes
-Box plots comparing p_avg_kd relative to hero averages between winning/losing teams
-Histograms of p_v_h_pick_rate to identify comfort picks' impact on outcomes
-
-6. Feature Importance from Random Forest
-
-Bar chart of feature importance scores from a preliminary random forest model
-Show which features contribute most to prediction accuracy
-Compare importance across different model configurations
-
-7. Team Composition Analysis
-
-Stacked bar charts showing hero pick rates in winning vs. losing teams
-Visualize the relationship between team's collective hero expertise and outcomes
-Show how player high-pick-rate heroes have higher win trends
-
-8. Aggregated Team Metrics
-
-Scatter plots comparing team aggregates (avg KD ratio, avg win rate)
-Box plots showing the difference in team aggregates between winning and losing teams
-Visualize if imbalance in team metrics predicts outcome
-
-9. Experience vs. Performance
-
-Scatter plots of p_total_matches against win rate to see experience's impact
-Visualize if players with more experience but lower recent performance outperform the opposite
-Show how team experience distribution relates to match outcomes
-
-10. KD Ratio Impact
-
-Violin plots of p_avg_kd for winning vs. losing teams
-Compare the distribution of KD ratios across different hero types
-Visualize the relationship between KD ratio variance within a team and match outcomes

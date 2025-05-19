@@ -7,6 +7,7 @@ from services import database_functions as dbf
 from services import function_tools as u
 import logging
 import duckdb
+from ai_functions import model_queries as mt
 
 log_file = os.getenv("LOGGING_LOC")  
 logging.basicConfig(
@@ -33,6 +34,16 @@ def main():
     #o.run_etl_player_hero_match_trends()
 
     pass
+
+def train(test=True):
+    # train a random forest model using weighted team stats
+    if test:
+        # fetch 1000 matches of data
+        test_matches = mt.fetch_and_structure_data(db.con, n=1000)
+        # transofrom data
+
+        # run training
+        # run first prediction
 
 if __name__ == "__main__":
     main()
