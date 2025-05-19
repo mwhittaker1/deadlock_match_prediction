@@ -1,13 +1,30 @@
 import duckdb
 import pandas as pd
 import logging
+import function_tools as u
 
-def fetch_test_matches(con, n=1000):
+def sql_to_csv(con, sql:str, out_path:str):
+    """
+    Executes a SQL query and saves the result to a CSV file.
+    
+    Parameters:
+    con : The connection object to the DuckDB database.
+    sql : str, The SQL query to execute.
+    out_path : str, The path where the CSV file will be saved.
+    """
+    con.execute(f"""COPY (
+                {sql}
+                ) TO '{out_path}'
+                (HEADER, DELIMITER ',');
+                """)
+    print("Wrote CSV to", out_path)
+
+def fetch_training_data(con, path, n=1000):
     """Fetches and structures data for training a model."""
 
     #-- Select a sample of matches for training
     match_data_query ="""
-                WITH match_data AS (
+    WITH match_data AS (
         SELECT 
             m.match_id,
             m.start_time,
@@ -17,11 +34,14 @@ def fetch_test_matches(con, n=1000):
         ORDER BY 
             random()  -- Randomly select matches
         LIMIT 1000
-    ),"""
-
+    )
+    SELECT *
+    FROM match_data"""
+    sql_to_csv(con, match_data_query, path + "match_data.csv")
+    
     #- Separate players by team for each match
     teams_of_players = """
-    team_assignments AS (
+    WITH teams_of_players AS (
         SELECT
             pm.match_id,
             pm.account_id,
@@ -35,11 +55,13 @@ def fetch_test_matches(con, n=1000):
             player_matches pm
         JOIN 
             match_data md ON pm.match_id = md.match_id
-    ),"""
+    )
+    SELECT * from teams_of_players"""
+    sql_to_csv(con, teams_of_players, path + "teams_of_players.csv")
 
     #-- Calculate team-level statistics
     team_stats = """
-    team_stats AS (
+    WITH team_stats AS (
         SELECT
             match_id,
             team,
@@ -48,14 +70,17 @@ def fetch_test_matches(con, n=1000):
             MIN(kd_ratio) AS team_min_kd,
             COUNT(*) AS team_size
         FROM 
-            team_assignments
+            teams_of_players
         GROUP BY 
             match_id, team
-    ),"""
+    )
+    SELECT * FROM team_stats
+    """
+    sql_to_csv(con, team_stats, path + "team_stats.csv")
 
     #-- Get player trends and statistics
     player_performance = """
-    player_performance AS (
+    WITH player_performance AS (
         SELECT
             ta.match_id,
             ta.team,
@@ -96,16 +121,19 @@ def fetch_test_matches(con, n=1000):
             STDDEV(pt.p_win_rate) AS win_rate_consistency,
             STDDEV(pt.p_avg_kd) AS kd_consistency
         FROM 
-            team_assignments ta
+            teams_of_players ta
         JOIN 
             player_trends pt ON ta.account_id = pt.account_id
         GROUP BY 
             ta.match_id, ta.team
-    ),"""
+    )
+    SELECT * FROM player_performance
+    """
+    sql_to_csv(con, player_performance, path + "player_performance.csv")
 
     #-- Calculate hero trend statistics by team
     hero_trend_by_team = """
-        hero_trends_by_team AS (
+    WITH hero_trend_by_team AS (
         SELECT
             ta.match_id,
             ta.team,
@@ -120,18 +148,21 @@ def fetch_test_matches(con, n=1000):
             STDDEV(ht.win_rate) AS hero_win_rate_variety,
             STDDEV(ht.average_kd) AS hero_kd_variety
         FROM 
-            team_assignments ta
+            teams_of_players ta
         JOIN 
             hero_trends ht ON ta.hero_id = ht.hero_id
         WHERE 
             ht.trend_window_days = 30  -- Using 30-day trends
         GROUP BY 
             ta.match_id, ta.team
-    ),"""
+    )
+    SELECT * FROM hero_trend_by_team
+    """
+    sql_to_csv(con, hero_trend_by_team, path + "hero_trend_by_team.csv")
 
     #-- Get recent player performance (rolling stats)
     player_rolling_stats = """
-    recent_performance AS (
+    WITH recent_performance AS (
         SELECT
             ta.match_id,
             ta.team,
@@ -146,16 +177,19 @@ def fetch_test_matches(con, n=1000):
             MAX(prs.p_win_pct_5) AS max_recent_win_pct,
             MIN(prs.p_win_pct_5) AS min_recent_win_pct
         FROM 
-            team_assignments ta
+            teams_of_players ta
         JOIN 
             player_rolling_stats prs ON ta.account_id = prs.account_id AND ta.match_id = prs.match_id
         GROUP BY 
             ta.match_id, ta.team
-    ),"""
+    )
+    SELECT * FROM recent_performance
+    """
+    sql_to_csv(con, player_rolling_stats, path + "player_rolling_stats.csv")
 
     #-- create team features
     team_features = """
-    team_features AS (
+    WITH team_features AS (
         SELECT
             ts.match_id,
             ts.team,
@@ -223,13 +257,17 @@ def fetch_test_matches(con, n=1000):
         LEFT JOIN 
             player_performance pp ON ts.match_id = pp.match_id AND ts.team = pp.team
         LEFT JOIN 
-            hero_trends_by_team ht ON ts.match_id = ht.match_id AND ts.team = ht.team
+            hero_trend_by_team ht ON ts.match_id = ht.match_id AND ts.team = ht.team
         LEFT JOIN 
             recent_performance rp ON ts.match_id = rp.match_id AND ts.team = rp.team
-    )"""
+    )
+    SELECT * FROM team_features
+    """
+    sql_to_csv(con, team_features, path + "team_features.csv")
+
 
     training_data = """
-    -- Final dataset for model training
+     -- Final dataset for model training
     SELECT
         md.match_id,
         md.start_time,
@@ -250,29 +288,10 @@ def fetch_test_matches(con, n=1000):
         t0.avg_win_streak AS t0_win_streak,
         t0.avg_loss_streak AS t0_loss_streak,
         t0.team_win_streaks_2plus AS t0_win_streaks_2,
-        t0.team_win_streaks_3plus AS t0_win_streaks_3,
-        t0.team_win_streaks_4plus AS t0_win_streaks_4,
-        t0.team_win_streaks_5plus AS t0_win_streaks_5,
-        t0.team_loss_streaks_2plus AS t0_loss_streaks_2,
-        t0.team_loss_streaks_3plus AS t0_loss_streaks_3,
-        t0.team_loss_streaks_4plus AS t0_loss_streaks_4,
-        t0.team_loss_streaks_5plus AS t0_loss_streaks_5,
         t0.avg_player_matches AS t0_player_matches,
         t0.total_team_experience AS t0_total_experience,
-        t0.most_experienced_player AS t0_most_exp,
-        t0.least_experienced_player AS t0_least_exp,
-        t0.win_rate_consistency AS t0_win_consistency,
-        t0.kd_consistency AS t0_kd_consistency,
-        t0.avg_hero_kd_percentage AS t0_hero_kd_pct,
         t0.avg_hero_win_rate AS t0_hero_win_rate,
-        t0.avg_hero_kd AS t0_hero_kd,
-        t0.max_hero_win_rate AS t0_max_hero_win,
-        t0.min_hero_win_rate AS t0_min_hero_win,
-        t0.hero_win_rate_variety AS t0_hero_win_variety,
-        t0.avg_recent_win_pct_5 AS t0_recent_wins,
-        t0.avg_recent_loss_pct_5 AS t0_recent_losses,
-        t0.max_recent_win_pct AS t0_max_recent_win,
-        t0.min_recent_win_pct AS t0_min_recent_win,
+        t0.avg_recent_win_pct AS t0_recent_wins,
         
         -- Team 1 features
         t1.team_avg_kd AS t1_avg_kd,
@@ -289,41 +308,29 @@ def fetch_test_matches(con, n=1000):
         t1.avg_win_streak AS t1_win_streak,
         t1.avg_loss_streak AS t1_loss_streak,
         t1.team_win_streaks_2plus AS t1_win_streaks_2,
-        t1.team_win_streaks_3plus AS t1_win_streaks_3,
-        t1.team_win_streaks_4plus AS t1_win_streaks_4,
-        t1.team_win_streaks_5plus AS t1_win_streaks_5,
-        t1.team_loss_streaks_2plus AS t1_loss_streaks_2,
-        t1.team_loss_streaks_3plus AS t1_loss_streaks_3,
-        t1.team_loss_streaks_4plus AS t1_loss_streaks_4,
-        t1.team_loss_streaks_5plus AS t1_loss_streaks_5,
         t1.avg_player_matches AS t1_player_matches,
         t1.total_team_experience AS t1_total_experience,
-        t1.most_experienced_player AS t1_most_exp,
-        t1.least_experienced_player AS t1_least_exp,
-        t1.win_rate_consistency AS t1_win_consistency,
-        t1.kd_consistency AS t1_kd_consistency,
-        t1.avg_hero_kd_percentage AS t1_hero_kd_pct,
         t1.avg_hero_win_rate AS t1_hero_win_rate,
-        t1.avg_hero_kd AS t1_hero_kd,
-        t1.max_hero_win_rate AS t1_max_hero_win,
-        t1.min_hero_win_rate AS t1_min_hero_win,
-        t1.hero_win_rate_variety AS t1_hero_win_variety,
-        t1.avg_recent_win_pct_5 AS t1_recent_wins,
-        t1.avg_recent_loss_pct_5 AS t1_recent_losses,
-        t1.max_recent_win_pct AS t1_max_recent_win,
-        t1.min_recent_win_pct AS t1_min_recent_win,
+        t1.avg_recent_win_pct AS t1_recent_wins,
         
         -- Differential features (team 0 relative to team 1)
-        (t0.team_avg_kd - t1.team_avg_kd) AS match_kd_diff,
+        (t0.team_avg_kd - t1.team_avg_kd) AS kd_diff,
         (t0.avg_team_kd - t1.avg_team_kd) AS historical_kd_diff,
         (t0.avg_team_win_rate - t1.avg_team_win_rate) AS win_rate_diff,
         (t0.avg_win_streak - t1.avg_win_streak) AS win_streak_diff,
-        (t0.avg_recent_win_pct_5 - t1.avg_recent_win_pct_5) AS recent_win_diff,
+        (t0.avg_recent_win_pct - t1.avg_recent_win_pct) AS recent_win_diff,
         (t0.avg_hero_win_rate - t1.avg_hero_win_rate) AS hero_win_rate_diff,
-        (t0.avg_hero_kd_percentage - t1.avg_hero_kd_percentage) AS hero_kd_pct_diff,
-        (t0.total_team_experience - t1.total_team_experience) AS experience_diff,
+        
+        -- Target variable: 1 if team 0 won, 0 if team 1 won
+        CASE WHEN md.winning_team = '0' THEN 1 ELSE 0 END AS team0_won
+    FROM 
+        match_data md
+    JOIN 
+        team_features t0 ON md.match_id = t0.match_id AND t0.team = '0'
+    JOIN 
+        team_features t1 ON md.match_id = t1.match_id AND t1.team = '1'
     """
-
+    sql_to_csv(con, training_data, path + "training_data.csv")
     # Combine all query parts
     complete_query = (
         match_data_query +
@@ -335,6 +342,7 @@ def fetch_test_matches(con, n=1000):
         team_features +
         training_data
     )
+    sql_to_csv(con, complete_query, path + "complete_training_data.csv")
         # Execute the complete query
     try:
         result_df = pd.read_sql_query(complete_query, con)
@@ -345,3 +353,9 @@ def fetch_test_matches(con, n=1000):
         # You might want to print the complete query here for debugging
         print(complete_query)
         return None
+
+if __name__ == "__main__":
+    con = duckdb.connect("c:/Code/Local Code/deadlock_match_prediction/data/deadlock.db")
+    path = "C:/Code/Local Code/deadlock_match_prediction/data/test_data/"
+    df = fetch_training_data(con, path)
+    print(df.head())

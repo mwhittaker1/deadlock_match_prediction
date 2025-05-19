@@ -139,7 +139,7 @@ def batched_etl_player_hero_match_trends_from_db():
     logging.info(f"Total time taken for processing {total_players} players: {total_time:.2f} seconds")
     return
 
-def run_etl_player_hero_match_trends_from_db():
+def run_etl_player_hero_match_trends_from_db(account_ids=None):
     """ETL all players for a set of matches.
     
     Extracts distinct players from player matches table,
@@ -152,15 +152,19 @@ def run_etl_player_hero_match_trends_from_db():
     logging.info("Starting run_etl_player_hero_match_trends_from_db tests")
     # pull distinct players from player_matches table
     start = time.time()
-    try:
-        players_to_trend = dbf.pull_trend_players_from_db(con=db.con)
+    con = duckdb.connect("c:/Code/Local Code/deadlock_match_prediction/data/deadlock.db")
+    if account_ids is not None and len(account_ids):
+        players_to_trend = pd.DataFrame({'account_id': account_ids})
+    else:
+        try:
+            players_to_trend = dbf.pull_trend_players_from_db(con=db.con)
 
-        if players_to_trend is None or players_to_trend.empty:
-            raise ValueError("Players to trend is empty, expected a non-empty DataFrame")
-        
-    except Exception as e:
-        logging.error(f"Error fetching players to trend: {e}")
-        return
+            if players_to_trend is None or players_to_trend.empty:
+                raise ValueError("Players to trend is empty, expected a non-empty DataFrame")
+            
+        except Exception as e:
+            logging.error(f"Error fetching players to trend: {e}")
+            return
     
     batch_size = 250
     hero_trends = dbf.pull_hero_trends_from_db(db.con,trend_window_days=30)
@@ -170,13 +174,14 @@ def run_etl_player_hero_match_trends_from_db():
     player_trends_batch= []
     rolling_stats_batch = []
 
-    for i, player in enumerate(players_to_trend.itertuples()):
+    for i, player in enumerate(players_to_trend.itertuples(index=False), start=1):
+        account_id = player.account_id
         if i % 50 == 0:
             elapsed_time = time.time() - start
             print(f"Time passed = {elapsed_time:.2f}seconds. Processed {player} of {total_players} players")
             logging.info(f"Time passed = {elapsed_time:.2f}seconds. Processed {player} of {total_players} players")
         logging.debug(f"Processing player {player} of {total_players}")
-        account_id = player.account_id
+        
 
             #fetch player match history from db
         try:

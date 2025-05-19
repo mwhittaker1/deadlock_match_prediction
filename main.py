@@ -7,7 +7,7 @@ from services import database_functions as dbf
 from services import function_tools as u
 import logging
 import duckdb
-from ai_functions import model_queries as mt
+from services import model_queries as mt
 
 log_file = os.getenv("LOGGING_LOC")  
 logging.basicConfig(
