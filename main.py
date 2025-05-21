@@ -25,10 +25,10 @@ def main():
 
     # ETL player hero trends for all players in player_matches table. db->db.player_hero_trends, db.player_roll_trends
     #o.setup_duckdb_indexes()
-    #o.run_etl_player_hero_match_trends_from_db()
+    o.optimized_batched_missing_players_from_db()
 
     # etl hero synergy stats for {days} min_average_badge, {min_matches} min_matches
-    o.run_etl_hero_synergy_trends_from_either(counter=True, synergy=True)
+    #o.run_etl_hero_synergy_trends_from_either(counter=True, synergy=True)
 
     # Not used in training.ETL player hero trends for all players in player_matches table. API->db.player_hero_trends, db.player_roll_trends
     #o.run_etl_player_hero_match_trends()
@@ -39,7 +39,7 @@ def train(test=True):
     # train a random forest model using weighted team stats
     if test:
         # fetch 1000 matches of data
-        test_matches = mt.fetch_and_structure_data(db.con, n=1000)
+        #test_matches = mt.fetch_and_structure_data(db.con, n=1000)
         # transofrom data
 
         # run training

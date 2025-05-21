@@ -53,7 +53,6 @@ def batched_etl_player_hero_match_trends_from_db():
     start = time.time()
     try:
         players_to_trend = dbf.pull_trend_players_from_db(con=db.con)
-
         if players_to_trend is None or players_to_trend.empty:
             raise ValueError("Players to trend is empty, expected a non-empty DataFrame")
         
@@ -61,7 +60,7 @@ def batched_etl_player_hero_match_trends_from_db():
         logging.error(f"Error fetching players to trend: {e}")
         return
     
-    batch_size = 250
+    batch_size = 500
     hero_trends = dbf.pull_hero_trends_from_db(db.con,trend_window_days=30)
     total_players = len(players_to_trend)
 
