@@ -9,3 +9,9 @@ legacy/
 /test_data/
 *.duckdb
 *.wal
+logs.txt
+.vscode/
+.ipynb_checkpoints/
+test.py
+notes.txt
+one_off.ipynb
