@@ -1,6 +1,0 @@
-{
-    "explorer.exclude": {
-      "**/__pycache__": true,
-      "**/__init__.py": true
-    }
-  }
