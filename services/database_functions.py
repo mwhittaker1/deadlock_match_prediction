@@ -77,6 +77,7 @@ def create_player_matches_history(con):
     CREATE TABLE player_matches_history (
     account_id BIGINT,
     match_id BIGINT,
+    start_time TIMESTAMP,
     hero_id INTEGER,
     team VARCHAR,
     kills INTEGER,
@@ -85,10 +86,10 @@ def create_player_matches_history(con):
     denies INTEGER,
     net_worth BIGINT,
     won INTEGER,
+    prior_win_loss_streak VARCHAR,
     PRIMARY KEY (account_id, match_id)
     )
     """)
-
 
 # for distinct account_id in player_matches, trends for each player
 # trends are for each player for each match in matches.
@@ -102,9 +103,6 @@ def create_player_trends_table(con):
     p_total_matches BIGINT,
     p_win_rate FLOAT,
                 
-    -- Player hero trends 
-    p_v_h_kd_pct FLOAT,
-
     -- Win streaks
     win_streaks_2plus INTEGER,
     win_streaks_3plus INTEGER,
@@ -121,6 +119,32 @@ def create_player_trends_table(con):
     p_loss_streak_avg FLOAT,
     PRIMARY KEY (account_id)
     )
+    """)
+
+# for match in player_matches, calculate each matches prior win/loss % for 2-5 matches.
+# match 1 = win, match 2 = loss, match 3 == match 4: win_pct_3 = 0.67
+def create_player_rolling_stats(con):
+    con.execute("""
+    CREATE TABLE player_rolling_stats (
+    account_id BIGINT,
+    hero_id INTEGER,
+    match_id BIGINT,
+    start_time TIMESTAMP,
+    p_win_pct_2 FLOAT,
+    p_win_pct_3 FLOAT,
+    p_win_pct_4 FLOAT,
+    p_win_pct_5 FLOAT,
+    p_loss_pct_2 FLOAT,
+    p_loss_pct_3 FLOAT,
+    p_loss_pct_4 FLOAT,
+    p_loss_pct_5 FLOAT,
+    prior_win_loss_streak VARCHAR,
+    p_v_h_pick_rate FLOAT,
+    p_v_h_kd_pct FLOAT,
+    p_h_match_count INTEGER,
+    hero_pick_rate FLOAT,
+    PRIMARY KEY (account_id, match_id),
+    )         
     """)
 
 # for each player, creates player_hero specific trends.
@@ -149,26 +173,6 @@ def create_player_hero_trends(con):
     )
     """)
 
-# for match in player_matches, calculate each matches prior win/loss % for 2-5 matches.
-# match 1 = win, match 2 = loss, match 3 == match 4: win_pct_3 = 0.67
-def create_player_rolling_stats(con):
-    con.execute("""
-    CREATE TABLE player_rolling_stats (
-    account_id BIGINT,
-    match_id BIGINT,
-    start_time TIMESTAMP,
-    p_win_pct_2 FLOAT,
-    p_win_pct_3 FLOAT,
-    p_win_pct_4 FLOAT,
-    p_win_pct_5 FLOAT,
-    p_loss_pct_2 FLOAT,
-    p_loss_pct_3 FLOAT,
-    p_loss_pct_4 FLOAT,
-    p_loss_pct_5 FLOAT,
-    PRIMARY KEY (account_id, match_id),
-    )         
-    """)
-
 # hero trends are all inclusive (100 min badge) to match against player stats
 def create_hero_trends_table(con):  
     con.execute("""
@@ -185,6 +189,62 @@ def create_hero_trends_table(con):
     average_assists FLOAT,
     average_kd FLOAT,
     PRIMARY KEY (hero_id, trend_start_date, trend_end_date, trend_window_days)
+    )
+    """)
+
+def create_hero_synergy_trends(con):
+    con.execute("""
+    CREATE TABLE hero_synergy_trends (
+    hero_id1 INTEGER,
+    hero_id2 INTEGER,
+    wins INTEGER,
+    matches_played INTEGER,
+    kills1 INTEGER,
+    kills2 INTEGER,
+    deaths1 INTEGER,
+    deaths2 INTEGER,
+    assists1 INTEGER,
+    assists2 INTEGER,
+    denies1 INTEGER,
+    denies2 INTEGER,
+    last_hits1 INTEGER,
+    last_hits2 INTEGER,
+    networth1 INTEGER,
+    networth2 INTEGER,
+    obj_damage1 INTEGER,
+    obj_damage2 INTEGER,
+    creeps1 BIGINT,
+    creeps2 BIGINT,
+    trend_start_date TIMESTAMP,
+    PRIMARY KEY (hero_id1, hero_id2, trend_start_date)
+    )
+    """)
+
+def create_hero_counter_trends(con):
+    con.execute("""
+    CREATE TABLE hero_counter_trends (
+        assists INTEGER, 
+        creeps INTEGER, 
+        deaths INTEGER,
+        denies INTEGER, 
+        enemy_assists INTEGER, 
+        enemy_creeps INTEGER,
+        enemy_deaths INTEGER, 
+        enemy_denies INTEGER,
+        enemy_hero_id INTEGER, 
+        enemy_kills INTEGER,
+        enemy_last_hits INTEGER, 
+        enemy_networth INTEGER,
+        enemy_obj_damage INTEGER, 
+        hero_id INTEGER,
+        kills INTEGER, 
+        last_hits INTEGER,
+        matches_played INTEGER, 
+        networth INTEGER,
+        obj_damage INTEGER, 
+        wins INTEGER,
+        trend_start_date TIMESTAMP,
+        PRIMARY KEY (HERO_ID, ENEMY_HERO_ID, TREND_START_DATE)
     )
     """)
 
@@ -205,8 +265,22 @@ def pull_trend_players_from_db(con):
     logging.info(f"Pulled {len(players)} players to trend")
     return players
 
+def test_pull_trend_players_from_db(con):
+    """pulls players from player_matches table to trend"""
+    logging.info(f"Pulling players from player_matches table to trend")
+    query = """
+    SELECT DISTINCT account_id
+    FROM player_matches
+    LIMIT 25
+    """
+    
+    players = con.execute(query).fetchdf()
+    logging.info(f"Pulled {len(players)} players to trend")
+    return players
+
 def pull_hero_trends_from_db(con,trend_window_days,trend_start_date=None,):
     """pulls hero trends from hero_trends table to trend"""
+    logging.info(f"Pulling hero trends from db for {trend_window_days} days")
     try: 
         if trend_start_date is None:
             query = f"""
@@ -233,12 +307,33 @@ def pull_hero_trends_from_db(con,trend_window_days,trend_start_date=None,):
     
     return heroes
 
+def pull_player_match_history_from_db(account_id, con):
+    """pulls player match history from player_matches_history table"""
+    logging.debug(f"Pulling match history for player from db for: {account_id}")
+    try:
+        query = f"""
+        SELECT *
+        FROM player_matches_history
+        WHERE account_id = '{account_id}'
+        """
+        
+        player_match_history = con.execute(query).fetchdf()
+        if player_match_history.empty:
+            logging.warning(f"No match history found for player {account_id}")
+            return None
+        
+    except Exception as e:
+        logging.error(f"Error pulling player match history from DB: {e}")
+        return None
+    
+    return player_match_history
+
 if __name__ == "__main__":
     #reset_all_tables(db.con)
     con = duckdb.connect(r"C:\Code\Local Code\deadlock_match_prediction\\data\deadlock.db")
     #con.execute(create_player_rolling_stats(con))
-    con.execute(create_player_matches_history(con))
-    #con.execute("ALTER TABLE player_trends drop COLUMN p_h_pick_per;")
+    #con.execute(create_player_matches_history(con))
+    con.execute("ALTER TABLE player_matches_history ADD COLUMN prior_win_loss_streak VARCHAR;")
     #con.execute("ALTER TABLE player_matches ADD COLUMN average_kd FLOAT;")
 
     #create_test_subset(con)

@@ -7,8 +7,6 @@ import os
 from typing import Any, List, Dict, Union
 from datetime import timedelta, datetime
 
-import logging
-
 def any_to_csv(data: Any, file_name: str) -> str:
     """
     Converts various data formats to CSV and saves to a file.
@@ -118,12 +116,12 @@ def flatten_nested_list(nested_list: List) -> List[Dict]:
 def df_to_xlsx(file, fname):
     df = pd.DataFrame(file)
     df.to_excel(f'{fname}.xlsx', index=False)
-    print(f"{df} passed to .xlsx")
+
 
 def df_to_csv(file, fname):
     df = pd.DataFrame(file)
     df.to_csv(f'{fname}.csv', index=False)
-    print(f"{df} passed to .csv")
+
 
 def get_unix_time(days_ago=0):   
     c_unix_timestamp = int(time.time()) #current time

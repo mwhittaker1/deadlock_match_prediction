@@ -1,5 +1,6 @@
 import duckdb
 import pandas as pd
+import numpy as np
 import logging
 import services.function_tools as u
 import services.database_functions as dbf
@@ -153,6 +154,7 @@ def save_bulk_matches_to_db(
 def compute_hero_metrics(
         hero_trends: pd.DataFrame) -> pd.DataFrame:
     """Calculates additional hero_trend statistics."""
+    logging.info("Calculating hero trends")
     match_total = hero_trends['matches'].sum()
 
     hero_trends['pick_rate'] = (
@@ -225,6 +227,8 @@ def save_hero_trends_to_db(
         hero_trends: pd.DataFrame) -> None:
     """Loads hero trends data into the database."""
     
+    logging.info("Saving hero trends to database")
+
     # expected schema
     HERO_TRENDS_COLUMNS = {
         "hero_id",
@@ -283,26 +287,54 @@ def save_hero_trends_to_db(
 
 def calculate_won_column(df)->pd.DataFrame:
     """Calculates the 'won' column based on 'match_result' and 'player_team'."""
-    logging.info("Calculating 'won' column")
-    df['won'] = df['match_result'] == df['player_team']
+    logging.debug("Calculating 'won' column")
+    if not df['won']:
+        df['won'] = df['match_result'] == df['player_team']
     return df
+
+def compute_player_stats(player_match_history) -> pd.DataFrame:
+    """Calculates rolling win/loss % stats and inserts to player_rolling_stats table."""
+    logging.debug("Calculating player stats for player %s", player_match_history['account_id'][0])
+    if player_match_history.empty:
+        logging.warning("Player history DataFrame is empty.")
+        return pd.DataFrame()
+    player_stats = pd.Series()
+    player_trends = pd.Series()
+    # calculte player trend stats
+    try:
+        player_stats = generate_player_performance_metrics(player_match_history)
+        if player_stats is None:
+            logging.warning(f"No player stats calculated for player {player_match_history['account_id']}")
+
+    except Exception as e:
+        logging.error(f"Error calculating player stats for {player_match_history['account_id']}: {e}")       
+
+    #calculate player streak counts and averages
+    try:
+        player_trends = count_player_streaks(player_match_history) # player_trends is a DataSeries
+        if player_trends is None or player_trends is None:
+            logging.warning(f"No player streaks calculated for player {player_match_history['account_id']}")
+
+    except Exception as e:
+        logging.error(f"Error calculating player streaks for {player_match_history['account_id']}: {e}")
+
+    #combine player stats and trends
+    player_trends_and_streaks = pd.concat(
+        [player_trends, player_stats]).to_frame().T
+
+    return player_trends_and_streaks
 
 def generate_player_performance_metrics(
         player_history: pd.DataFrame) -> pd.DataFrame:
     """Calculates additional hero_trend statistics."""
-    
+    logging.debug(f"Calculating player performance metrics for {player_history['account_id'][0]}")
+    player_history = player_history.sort_values(by=['start_time'], ascending=True)
     p_stats = pd.Series()
     match_total = player_history['match_id'].nunique()
-    total_kills = player_history['player_kills'].sum()
-    total_deaths = player_history['player_deaths'].sum()
-    logging.debug("stats for player %s", player_history['account_id'])
-    logging.debug("total_kills: %s", total_kills)
-    logging.debug("total_deaths: %s", total_deaths)
-    logging.debug("match_total: %s", match_total)
+    total_kills = player_history['kills'].sum()
+    total_deaths = player_history['deaths'].sum()
+
     p_stats['account_id'] = player_history['account_id'].iloc[0]
-    player_history['won']= (
-        player_history['player_team'] == player_history['match_result']
-        )
     p_stats['p_win_rate'] = (
         player_history['won'].sum()
         /match_total*100).round(2)
@@ -313,19 +345,20 @@ def generate_player_performance_metrics(
     p_stats['p_avg_kd'] = (total_kills/total_deaths).round(2)
     p_stats['p_total_matches'] = match_total
 
-    return p_stats
+    logging.debug(f"all perfomance metrics calculated, returning single row of p_stats= {p_stats}")
+    return p_stats 
 
 def count_player_streaks(player_history: pd.DataFrame)->pd.DataFrame:
     """counts player streaks from match history"""
     
-    logging.info("Counting player streaks")
+    logging.debug(f"Counting player streaks for: {player_history['account_id'][0]}")
     # Check if the player history is empty
-    if player_history.empty:
+    if player_history is None:
         logging.warning("Player history is empty")
         return None
     
     #calculate win from match_result and player_team
-    player_history = player_history.sort_values(by=['start_time'])
+    player_history = player_history.sort_values(by='start_time', ascending=True)
     #creates unique identifier for each streak
     player_history['won_int'] = player_history['won'].astype(int)
     player_history['streak_change'] = (player_history['won'] != player_history['won']
@@ -365,74 +398,101 @@ def count_player_streaks(player_history: pd.DataFrame)->pd.DataFrame:
         "p_win_streak_avg": win_avg,
         "p_loss_streak_avg": loss_avg
         })
+    logging.debug(f"all streaks calculated, returning single row of player_streak_trends= {player_streak_trends}")
     return player_streak_trends
 
-def compute_player_rolling_stats(player_history: pd.DataFrame)->pd.DataFrame:
+def compute_player_match_history(
+        player_history: pd.DataFrame,
+        streak_length=6)->pd.DataFrame:
     """Calculates player streak trends from player match history"""
-    logging.info("Calculating player streak trends.")
+    logging.debug("Calculating player streak trends.")
     # Check if the player history is empty
     if player_history.empty:
         logging.warning("Player history is empty")
         return None
 
-    player_history = player_history.sort_values(by='start_time', ascending=False)
-    
+    result_df = player_history.copy()
+    result_df = result_df.sort_values(by='start_time', ascending=True)
+    result_df['prior_win_loss_streak'] = None
+    result_df['won_int'] = result_df['won'].astype(int) 
+
+        # For each match, calculate the streak from the previous matches
+    for i in range(streak_length, len(result_df)):
+        # Get the previous streak_length matches
+        prev_matches = result_df.iloc[i-streak_length:i]
+        
+        # Create the streak string (newest to oldest)
+        streak = ''.join(['W' if won else 'L' for won in prev_matches['won'].values[::-1]])
+        
+        # Assign to current match
+        result_df.loc[result_df.index[i], 'prior_win_loss_streak'] = streak
+
     # calculates rolling player win percentage
     for w in range(2, 7):
-        player_history[f'p_win_pct_{w}'] = player_history['won'].rolling(window=w).mean()*100
-        player_history[f'p_loss_pct_{w}'] = (1 - player_history['won'].rolling(window=w).mean())*100
-    logging.debug(f"Calculated player streak trends for player {player_history['account_id'].iloc[0]}")
+        result_df[f'p_win_pct_{w}'] = (result_df['won_int'].rolling(window=w).mean()*100).round(2)
+        result_df[f'p_loss_pct_{w}'] = (100 - result_df[f'p_win_pct_{w}']).round(2)
     
-    return player_history
+        #calc percentages for each match
+        for i in range(w, len(result_df)):
+            # Get the previous streak_length matches
+            prev_matches = result_df.iloc[i-w:i]
+            
+            # calc win and loss %
+            win_pct = (prev_matches['won'].astype(int).mean()*100).round(2)
+            loss_pct = (100 - win_pct).round(2)
 
-def compute_player_stats(player_match_history) -> pd.DataFrame:
-    """Calculates rolling win/loss % stats and inserts to player_rolling_stats table."""
-    if player_match_history.empty:
-        logging.warning("Player history DataFrame is empty.")
-        return pd.DataFrame()
+            result_df.loc[result_df.index[i], f'p_win_pct_{w}'] = win_pct
+            result_df.loc[result_df.index[i], f'p_loss_pct_{w}'] = loss_pct
+
+    logging.debug(f"Calculated player streak trends for player {result_df['account_id'].iloc[0]}")
     
-    # calculte player trend stats
-    try:
-        player_stats = generate_player_performance_metrics(player_match_history)
-        if player_stats is None or player_stats.empty:
-            logging.warning(f"No player stats calculated for player {player_match_history['account_id']}")
+    return result_df
 
-    except Exception as e:
-        logging.error(f"Error calculating player stats for {player_match_history['account_id']}: {e}")       
-
-    #calculate player streak counts and averages
-    try:
-        player_trends = count_player_streaks(player_match_history)
-        if player_trends is None or player_trends is None:
-            logging.warning(f"No player streaks calculated for player {player_match_history['account_id']}")
-
-    except Exception as e:
-        logging.error(f"Error calculating player streaks for {player_match_history['account_id']}: {e}")
-
-    #combine player stats and trends
-    player_trends_and_streaks = pd.concat(
-        [player_trends, player_stats]).to_frame().T
-
-    return player_trends_and_streaks
-
-def process_player_hero_stats(player_stats, hero_trends) -> pd.DataFrame:
-    """Calculates player_hero trends and inserts to player_hero_trends table."""
-    if player_stats.empty or hero_trends.empty:
+def process_player_hero_stats(match_history, hero_trends) -> pd.DataFrame:
+    """Calculates player_hero trends"""
+    logging.debug(f"Processing player_hero stats for {match_history['account_id']}")
+    
+    if match_history.empty or hero_trends.empty:
         logging.warning("Player history or hero trends DataFrame is empty.")
         return pd.DataFrame()
     
     #calculate player_hero trends
     try:
-        player_stats['p_v_h_kd_pct'] = ((player_stats['p_avg_kd'] - hero_trends['average_kd'])*100).round(2)
+        hero_counts = match_history['hero_id'].value_counts()
+        match_total = match_history['match_id'].nunique()
+        hero_pick_rates = (hero_counts / match_total * 100).round(2)
+
+        #calc avg_kd for each hero
+        hero_avg_kd = (
+            match_history.groupby('hero_id')
+            .apply(lambda df: df['kills'].sum() / df['deaths'].sum() if df['deaths'].sum() > 0 else 0)
+            .round(2)).to_dict()
+
+        # add per hero_kd to match_history
+        match_history['player_hero_avg_kd'] = match_history['hero_id'].map(hero_avg_kd)
+        
+        #combine player_hero trends with hero trends on hero_id
+        match_history = match_history.merge(
+            hero_trends[['hero_id', 'average_kd', 'pick_rate']],
+            on='hero_id', how='left'
+        )
+
+        match_history['p_h_match_count'] = match_history['hero_id'].map(hero_counts)
+        match_history['hero_pick_rate'] = match_history['hero_id'].map(hero_pick_rates)
+
+        match_history['p_v_h_kd_pct'] = (
+            (match_history['player_hero_avg_kd'] - match_history['average_kd'])*100).round(2)
+        match_history['p_v_h_pick_rate'] = (
+            (match_history['hero_pick_rate'] - match_history['pick_rate'])*100).round(2)
+
     except Exception as e:
-        logging.error(f"Error calculating player_hero trends for {player_stats['account_id']}: {e}")
-    logging.debug(f"IN MERGE, Player stats columns: {player_stats.columns}")
-    return player_stats
+        logging.error(f"Error calculating player_hero trends for {match_history['account_id']}: {e}")
+    return match_history
 
 def save_player_trends_to_db(
         player_trends: pd.DataFrame) -> None:
-    """Loads hero trends data into the database."""
-    
+    """Loads player trends data into the database."""
+    logging.debug(f"Saving player trends to database: {player_trends}")
     # expected schema
     PLAYER_TRENDS_COLUMNS = {
         "account_id",
@@ -441,7 +501,6 @@ def save_player_trends_to_db(
         "p_avg_kd",
         "p_total_matches",
         "p_win_rate",
-        "p_v_h_kd_pct",
         "win_streaks_2plus",
         "win_streaks_3plus",
         "win_streaks_4plus",
@@ -476,8 +535,8 @@ def save_player_trends_to_db(
             con.execute("""
             INSERT OR IGNORE INTO player_trends (
                 account_id, p_average_kills,p_average_deaths,
-                p_avg_kd, p_total_matches, p_win_rate,
-                p_v_h_kd_pct, win_streaks_2plus, win_streaks_3plus,
+                p_avg_kd, p_total_matches, p_win_rate, 
+                win_streaks_2plus, win_streaks_3plus,
                 win_streaks_4plus, win_streaks_5plus,
                 loss_streaks_2plus, loss_streaks_3plus,
                 loss_streaks_4plus, loss_streaks_5plus,
@@ -485,7 +544,7 @@ def save_player_trends_to_db(
             )              
             SELECT
                 account_id, p_average_kills,p_average_deaths,
-                p_avg_kd, p_total_matches, p_win_rate, p_v_h_kd_pct,
+                p_avg_kd, p_total_matches, p_win_rate, 
                 win_streaks_2plus, win_streaks_3plus,
                 win_streaks_4plus, win_streaks_5plus,
                 loss_streaks_2plus, loss_streaks_3plus,
@@ -494,24 +553,32 @@ def save_player_trends_to_db(
             FROM df_player_trends
             """)
             after = con.execute("SELECT COUNT(*) FROM player_trends").fetchone()[0]
-            logging.info(f"Bulk load complete. rows inserted: {after}-{before}")
+            logging.info(f"player_trends load complete. rows inserted: {after}-{before}")
             
     except Exception:
         logging.exception("Failed to load bulk match data")
         raise
     
-def save_player_rolling_stats_to_db(
+def save_computed_player_match_data_to_db(
         roll_stats: pd.DataFrame) -> None:
     """Loads player rolling stats data into the database."""
+    logging.debug(f"Saving player rolling stats to database: {roll_stats.head()}")
+
+    # fill any nan columns with 0
+    for col in roll_stats:
+        roll_stats[col] = roll_stats[col].fillna(0) 
+    
     roll_stats['start_time'] = pd.to_datetime(
         roll_stats['start_time'], unit='s', utc=True)
     # expected schema
     ROLL_STATS_COLUMNS = {
         "account_id", "match_id", "start_time",
-        "p_win_pct_2", "p_win_pct_3",
+        "p_win_pct_2", "p_win_pct_3", "hero_id",
         "p_win_pct_4", "p_win_pct_5",
         "p_loss_pct_2", "p_loss_pct_3",
-        "p_loss_pct_4", "p_loss_pct_5"
+        "p_loss_pct_4", "p_loss_pct_5",
+        "prior_win_loss_streak", "p_v_h_kd_pct",
+        "p_v_h_pick_rate", "p_h_match_count", "hero_pick_rate"
     }
     missing = ROLL_STATS_COLUMNS - set(roll_stats.columns)
     extra   = set(roll_stats.columns) - ROLL_STATS_COLUMNS
@@ -534,20 +601,178 @@ def save_player_rolling_stats_to_db(
             before = con.execute("SELECT COUNT(*) FROM player_rolling_stats").fetchone()[0]
             con.execute("""
             INSERT OR IGNORE INTO player_rolling_stats (
-                account_id, match_id, start_time,
+                account_id, match_id, start_time, hero_id,
                 p_win_pct_2, p_win_pct_3, p_win_pct_4, p_win_pct_5,
-                p_loss_pct_2, p_loss_pct_3, p_loss_pct_4, p_loss_pct_5
+                p_loss_pct_2, p_loss_pct_3, p_loss_pct_4, p_loss_pct_5,
+                prior_win_loss_streak, p_v_h_pick_rate, p_v_h_kd_pct,
+                p_h_match_count, hero_pick_rate
             )
             SELECT
-                account_id, match_id, start_time,
+                account_id, match_id, start_time, hero_id,
                 p_win_pct_2, p_win_pct_3, p_win_pct_4, p_win_pct_5,
-                p_loss_pct_2, p_loss_pct_3, p_loss_pct_4, p_loss_pct_5
+                p_loss_pct_2, p_loss_pct_3, p_loss_pct_4, p_loss_pct_5,
+                prior_win_loss_streak, p_v_h_pick_rate, p_v_h_kd_pct,
+                p_h_match_count, hero_pick_rate
             FROM df_roll_stats
             """)
             after = con.execute("SELECT COUNT(*) FROM player_rolling_stats").fetchone()[0]
             logging.info(f"Bulk load complete. rows inserted: {after}-{before}")
             
     except Exception:
-        logging.exception("Failed to load bulk match data")
+        logging.exception("Failed to insert computerd player match data to DB")
         raise
 
+def save_hero_synergy_to_db(
+        hero_synergies: pd.DataFrame) -> None:
+    """save hero synergy trends to db"""
+    logging.debug(f"Saving hero synergy trends to database: {hero_synergies}")
+    # expected schema
+
+    HERO_SYNERGY_COLUMNS = {
+        "hero_id1",
+        "hero_id2",
+        "wins",
+        "matches_played",
+        "kills1",
+        "kills2",
+        "deaths1",
+        "deaths2",
+        "assists1",
+        "assists2",
+        "denies1",
+        "denies2",
+        "last_hits1",
+        "last_hits2",
+        "networth1",
+        "networth2",
+        "obj_damage1",
+        "obj_damage2",
+        "creeps1",
+        "creeps2",
+        "trend_start_date"
+    }
+
+    missing = HERO_SYNERGY_COLUMNS - set(hero_synergies.columns)
+    extra   = set(hero_synergies.columns) - HERO_SYNERGY_COLUMNS
+
+    #check hero_synergies
+    if missing:
+        logging.error(
+            "Hero Synergy DataFrame schema mismatch: "
+            f" missing={missing or None}, extra={extra or None}"
+        )
+        raise ValueError("hero_synergies columns do not align with matches schema, missing",missing)
+    
+    if extra:
+        logging.info(f"Extra columns in hero_synergies, extras: {extra}")
+
+    try:
+        with duckdb.connect(database=db.DB_PATH) as con:
+            logging.info("connected to database: %s", db.DB_PATH)
+            con.register("df_hero_synergies", hero_synergies)
+            before = con.execute("SELECT COUNT(*) FROM hero_synergy_trends").fetchone()[0]
+            con.execute("""
+            INSERT OR IGNORE INTO hero_synergy_trends (
+                hero_id1, hero_id2, wins, matches_played,
+                kills1, kills2, deaths1, deaths2,
+                assists1, assists2, denies1, denies2,
+                last_hits1, last_hits2,
+                networth1, networth2,
+                obj_damage1, obj_damage2,
+                creeps1, creeps2, trend_start_date
+            )
+            SELECT
+                hero_id1, hero_id2, wins, matches_played,
+                kills1, kills2, deaths1, deaths2,
+                assists1, assists2, denies1, denies2,
+                last_hits1, last_hits2,
+                networth1, networth2,
+                obj_damage1, obj_damage2,
+                creeps1, creeps2, trend_start_date
+            FROM df_hero_synergies
+            """)
+            after = con.execute("SELECT COUNT(*) FROM hero_synergy_trends").fetchone()[0]
+            logging.info(f"Bulk load complete. rows inserted: {after}-{before}")
+        
+    except Exception as e:
+        logging.exception(f"Failed to load hero synergy data {e}")
+        raise
+
+def save_hero_counter_to_db(
+        hero_counters: pd.DataFrame) -> None:
+    """save hero counter trends to db"""
+    logging.debug(f"Saving hero counter trends to database: {hero_counters}")
+    # expected schema
+    HERO_COUNTER_COLUMNS = {
+    "assists",
+    "creeps",
+    "deaths",
+    "denies",
+    "enemy_assists",
+    "enemy_creeps",
+    "enemy_deaths",
+    "enemy_denies",
+    "enemy_hero_id",
+    "enemy_kills",
+    "enemy_last_hits",
+    "enemy_networth",
+    "enemy_obj_damage",
+    "hero_id",
+    "kills",
+    "last_hits",
+    "matches_played",
+    "networth",
+    "obj_damage",
+    "wins",
+    "trend_start_date"
+    }
+
+    missing = HERO_COUNTER_COLUMNS - set(hero_counters.columns)
+    extra   = set(hero_counters.columns) - HERO_COUNTER_COLUMNS
+
+    #check hero_counters
+    if missing:
+        logging.error(
+            "Hero Counter DataFrame schema mismatch: "
+            f" missing={missing or None}, extra={extra or None}"
+        )
+        raise ValueError("hero_counters columns do not align with matches schema, missing",missing)
+    
+    if extra:
+        logging.info(f"Extra columns in hero_counters, extras: {extra}")
+
+    try:
+        with duckdb.connect(database=db.DB_PATH) as con:
+            logging.info("connected to database: %s", db.DB_PATH)
+            con.register("df_hero_counters", hero_counters)
+            before = con.execute("SELECT COUNT(*) FROM hero_counter_trends").fetchone()[0]
+            con.execute("""
+            INSERT OR IGNORE INTO hero_counter_trends (
+                assists, creeps, deaths,
+                denies, enemy_assists, enemy_creeps,
+                enemy_deaths, enemy_denies,
+                enemy_hero_id, enemy_kills,
+                enemy_last_hits, enemy_networth,
+                enemy_obj_damage, hero_id,
+                kills, last_hits,
+                matches_played, networth,
+                obj_damage, wins, trend_start_date
+            )
+            SELECT
+                assists, creeps, deaths,
+                denies, enemy_assists, enemy_creeps,
+                enemy_deaths, enemy_denies,
+                enemy_hero_id, enemy_kills,
+                enemy_last_hits, enemy_networth,
+                enemy_obj_damage, hero_id,
+                kills, last_hits,
+                matches_played, networth,
+                obj_damage, wins, trend_start_date
+            FROM df_hero_counters
+            """)
+            after = con.execute("SELECT COUNT(*) FROM hero_counter_trends").fetchone()[0]
+            logging.info(f"Bulk load complete. rows inserted: {after}-{before}")
+        
+    except Exception as e:
+        logging.exception(f"Failed to load hero counter data {e}")
+        raise

@@ -39,8 +39,22 @@ def run_checks(con):
         """).fetchall()
     print(f"player_trends_table_columns: {player_trends_table_columns}\n")
 
+    player_rolling_stats_table_columns = con.execute("""
+        PRAGMA table_info('player_rolling_stats');
+        """).fetchall()
+    print(f"player_rolling_stats_table_columns: {player_rolling_stats_table_columns}\n")
+    column_names = [col[1] for col in player_rolling_stats_table_columns]
+    print(f"\nplayer_rolling_stats_table_columns:\n\n {column_names}\n")
+    column_names = [col[1] for col in player_trends_table_columns]
+    print(f"\nplayer_trends_table_columns:\n\n {column_names}\n")
 
+    player_matches_history_columns = con.execute("""
+        PRAGMA table_info('player_matches_history');
+        """).fetchall()
+    print(f"player_matches_history_columns: {player_matches_history_columns}\n")
     """            **        Counts     **          """
+
+
     d_match_count = con.execute("""
         SELECT COUNT(distinct match_id)
         FROM matches

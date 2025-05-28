@@ -23,7 +23,11 @@ def test():
 
 
 if __name__ == "__main__":
-    test()
-#print((db.execute(f"select * from {table_name} limit 10").fetchdf()).columns)
-#print(db.execute("SELECT COUNT(*)FROM (SELECT match_id, account_id FROM staging_cleaned GROUP BY match_id, account_id HAVING COUNT(*) > 1) AS duplicates;").fetchall())
-#df = con.execute("Select * from 'data/raw_data/match_info_2.parquet' limit 10").fetchdf()
+#    test()
+    con = duckdb.connect(r"C:\Code\Local Code\deadlock_match_prediction\\match_player_raw.duckdb")
+    result = con.execute("select count(*) from matches_for_training LIMIT 1").fetchone()
+    print(f" count matches_for_training  {result}")
+    result = con.execute("select * from matches_for_training  LIMIT 1").fetchdf()
+    print(f" columns for matches_for_training  {result.columns}")
+    #print(db.execute("SELECT COUNT(*)FROM (SELECT match_id, account_id FROM staging_cleaned GROUP BY match_id, account_id HAVING COUNT(*) > 1) AS duplicates;").fetchall())
+    #df = con.execute("Select * from 'data/raw_data/match_info_2.parquet' limit 10").fetchdf()

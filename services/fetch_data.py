@@ -14,6 +14,7 @@ def fetch_match_data(
     limit: int = 1000
     ) -> json:
 
+    logging.debug(f"Fetching match data..")
     base = "https://api.deadlock-api.com/v1/matches"
     # if a specific match ID is given, check player_data and just hit that endpoint
 
@@ -108,6 +109,50 @@ def fetch_player_match_history(p_id):
     if player_match_history.empty:
         logging.error(f"player_match_history is empty in fetch_player_match_history, p_id: {p_id}")
     return player_match_history
+
+def fetch_hero_synergy_trends(days=60, min_average_badge=85, min_matches=50):
+    """Fetches hero synergies for a given number of days and minimum average badge"""
+
+    min_unix_timestamp = str(u.get_unix_time(days))
+
+    site = "https://api.deadlock-api.com"
+    endpoint = f"/v1/analytics/hero-synergy-stats?min_unix_timestamp={min_unix_timestamp}&min_average_badge={min_average_badge}&min_matches={min_matches}"
+    url = site+endpoint
+    logging.debug(f"Getting hero synergies from full url: {url}")
+    
+    response = requests.get(url)
+    if response.status_code == 200:
+        hero_synergies = pd.DataFrame(response.json())
+    else:
+        logging.debug(f"Failed to retrieve data: {response.status_code}")
+    if hero_synergies is None:
+        logging.error(f"hero_synergies is None in fetch_hero_synergies")
+    if hero_synergies.empty:
+        logging.error(f"hero_synergies is empty in fetch_hero_synergies")
+    
+    return hero_synergies
+
+def fetch_hero_counter_trends(days=60, min_average_badge=85, min_matches=50):
+    """Fetches hero counters for a given number of days and minimum average badge"""
+
+    min_unix_timestamp = str(u.get_unix_time(days))
+
+    site = "https://api.deadlock-api.com"
+    endpoint = f"/v1/analytics/hero-counter-stats?min_unix_timestamp={min_unix_timestamp}&min_average_badge={min_average_badge}&min_matches={min_matches}"
+    url = site+endpoint
+    logging.debug(f"Getting hero counters from full url: {url}")
+    
+    response = requests.get(url)
+    if response.status_code == 200:
+        hero_counters = pd.DataFrame(response.json())
+    else:
+        logging.debug(f"Failed to retrieve data: {response.status_code}")
+    if hero_counters is None:
+        logging.error(f"hero_counters is None in fetch_hero_counters")
+    if hero_counters.empty:
+        logging.error(f"hero_counters is empty in fetch_hero_counters")
+    
+    return hero_counters
 
 def fetch_player_hero_stats(p_id,h_id=None):
     """Fetches players hero-stats, then filters by h_id if provided"""
