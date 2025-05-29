@@ -1,8 +1,8 @@
-import pandas as pd
 import logging
 import duckdb
 import time
 import datetime
+import pandas as pd
 from services import database_functions as dbf
 from services import fetch_data as fd
 from services import transform_and_load as tal
@@ -12,12 +12,15 @@ import data.db as db
 
 def run_etl_bulk_matches(max_days_fetch=2):
     """ETL for bulk match data, fetches, normalizes and loads into db"""
-    # Fetch data
+    
+    # Fetch data from API -> pd.DataFrame
     logging.info(f"*INFO* ETL: Fetching data")
     matches_grouped_by_day = fd.bulk_fetch_matches(max_days_fetch,min_days=1,max_days=0)
     logging.info(f"*INFO* ETL: Data fetched")
     
-    # Normalize data
+    # Normalize player and match data, splits into two DataFrames
+    # normalized_matches -> table matches
+    # normalized_players -> table player_matches
     logging.info(f"*INFO* ETL: Normalizing data")
     normalized_matches, normalized_players  = tal.normalize_bulk_matches(matches_grouped_by_day)
     logging.info(f"*INFO* ETL: Data normalized")
@@ -28,10 +31,8 @@ def run_etl_bulk_matches(max_days_fetch=2):
     logging.info(f"*INFO* ETL: Data loaded into database")
 
 def run_etl_hero_trends():
-    """ETL for 7-day and 30-day hero trends"""
-    logging.info("starting run_etl_hero_trends ETL without critical errors.")
-
-    """
+    """ETL for 7-day and 30-day hero trends
+    
     #ETL 7 day hero trends
     trend_window = 7
     logging.info(f"*INFO* ETL: Fetching hero trends for {trend_window} days")
@@ -39,15 +40,30 @@ def run_etl_hero_trends():
     hero_trends_7d = tal.build_hero_trends(trend_window,raw_hero_trends_7d)
     tal.save_hero_trends_to_db(hero_trends_7d)"""
 
+    logging.debug("starting run_etl_hero_trends ETL without critical errors.")
+
     #ETL 30d hero trends
     trend_window = 30
-    logging.info(f"*INFO* ETL: Fetching hero trends for {trend_window} days")
-    raw_hero_Trends_30d = fd.fetch_hero_trends(trend_window)
-    hero_trends_30d = tal.build_hero_trends(trend_window,raw_hero_Trends_30d)
-    tal.save_hero_trends_to_db(hero_trends_30d)
-    logging.info("completed 7d and 30d hero trends ETL without critical errors.")
+    logging.info(f"ETL: Fetching hero trends for {trend_window} days")
+    raw_hero_Trends_30d = fd.fetch_hero_trends(trend_window) #fetch from API
+    hero_trends_30d = tal.build_hero_trends(trend_window,raw_hero_Trends_30d) # build trends from raw data
+    tal.save_hero_trends_to_db(hero_trends_30d) #load into hero_trends table
+    logging.info(f"completed {trend_window} hero trends ETL without critical errors.")
 
 def batched_etl_player_hero_match_trends_from_db():
+    """ETL players histories in batches for players in player_matches table
+    
+    players_to_trend is distinct account_ids from player_matches not in player_trends table.
+    For each player, fetch their match history from player_matches_history table,
+    calculate player trends, calculate streaks and counts,
+    calculate player_hero trends, calculate recent match history,
+    save to player_rolling_stats and player_trends tables.
+
+    This function processes account_ids in batches to reduce the number of queries.
+    Further optimization possible by adjusting how trends are calculated to allow
+    bulking fetch of player match histories.
+    """
+
     logging.info("Starting run_etl_player_hero_match_trends_from_db tests")
     # pull distinct players from player_matches table
     start = time.time()
@@ -147,6 +163,7 @@ def run_etl_player_hero_match_trends_from_db(account_ids=None):
     calculates player trends, calculate streaks and counts,
     calculate player_hero trends, calcualte recent match history,
     and insert into approriate tables.
+    This function is for small tests or batches, use batch method for larger datasets.
     """
     logging.info("Starting run_etl_player_hero_match_trends_from_db tests")
     # pull distinct players from player_matches table
@@ -232,7 +249,14 @@ def run_etl_player_hero_match_trends_from_db(account_ids=None):
     return
 
 def run_etl_hero_synergy_trends_from_either(db=None, synergy=False, counter=False):
-    """ETL for hero synergy, db->fetch from db"""
+    """ETL for hero synergy statistics 
+    
+    key parameters:
+        db = True; fetch from duckdb database
+        db = None; fetch from API
+        synergy = True; fetch hero synergy trends -> save to hero_synergy_trends table
+        counter = True; fetch hero counter trends -> save to hero_counter_trends table
+    """
     if db is not None:
         #later logic here.
         pass
@@ -266,7 +290,9 @@ if __name__ == "__main__":
     pass
     
 def old_run_etl_player_hero_match_trends_from_db():
-    """ETL all players for a set of matches.
+    """DEPRECIATED DO NOT USE.
+    
+    ETL all players for a set of matches.
     
     Extracts distinct players from player matches table,
     for each player (account_id) fetch their match history

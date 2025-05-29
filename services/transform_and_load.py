@@ -10,6 +10,7 @@ from data import db
 def normalize_bulk_matches(
         matches_grouped_by_day: dict) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Normalizes bulk match data into two dataframes: matches and players."""
+
     logging.info("Normalizing bulk match data")
     matches = []
     players = []
@@ -154,24 +155,30 @@ def save_bulk_matches_to_db(
 def compute_hero_metrics(
         hero_trends: pd.DataFrame) -> pd.DataFrame:
     """Calculates additional hero_trend statistics."""
+
     logging.info("Calculating hero trends")
     match_total = hero_trends['matches'].sum()
 
     hero_trends['pick_rate'] = (
         hero_trends['matches'].replace(0,1)
         /match_total*100).round(2)
+    
     hero_trends['win_rate'] = (
         hero_trends['wins'].replace(0,1)
         /hero_trends['matches'].replace(0,1)*100).round(2)
+    
     hero_trends['average_kills'] = (
         hero_trends['total_kills'].replace(0,1)
         /hero_trends['matches'].replace(0,1)*100).round(2)
+    
     hero_trends['average_deaths'] = (
         hero_trends['total_deaths'].replace(0,1)
         /hero_trends['matches'].replace(0,1)*100).round(2)
+    
     hero_trends['average_assists'] = (
         hero_trends['total_assists'].replace(0,1)
         /hero_trends['matches'].replace(0,1)*100).round(2)
+    
     hero_trends['average_kd'] = (
         hero_trends['total_kills'].replace(0,1)
         /hero_trends['total_deaths'].replace(0,1)).round(2)
@@ -285,15 +292,17 @@ def save_hero_trends_to_db(
         logging.exception("Failed to load bulk match data")
         raise
 
-def calculate_won_column(df)->pd.DataFrame:
+def calculate_won_column(df: pd.DataFrame)->pd.DataFrame:
     """Calculates the 'won' column based on 'match_result' and 'player_team'."""
+
     logging.debug("Calculating 'won' column")
     if not df['won']:
         df['won'] = df['match_result'] == df['player_team']
     return df
 
-def compute_player_stats(player_match_history) -> pd.DataFrame:
+def compute_player_stats(player_match_history: pd.DataFrame) -> pd.DataFrame:
     """Calculates rolling win/loss % stats and inserts to player_rolling_stats table."""
+
     logging.debug("Calculating player stats for player %s", player_match_history['account_id'][0])
     if player_match_history.empty:
         logging.warning("Player history DataFrame is empty.")
@@ -327,22 +336,30 @@ def compute_player_stats(player_match_history) -> pd.DataFrame:
 def generate_player_performance_metrics(
         player_history: pd.DataFrame) -> pd.DataFrame:
     """Calculates additional hero_trend statistics."""
+
     logging.debug(f"Calculating player performance metrics for {player_history['account_id'][0]}")
     player_history = player_history.sort_values(by=['start_time'], ascending=True)
+
     p_stats = pd.Series()
+
     match_total = player_history['match_id'].nunique()
     total_kills = player_history['kills'].sum()
     total_deaths = player_history['deaths'].sum()
 
     p_stats['account_id'] = player_history['account_id'].iloc[0]
+
     p_stats['p_win_rate'] = (
         player_history['won'].sum()
         /match_total*100).round(2)
+    
     p_stats['p_average_kills'] = (
         total_kills/match_total).round(2)
+    
     p_stats['p_average_deaths'] = (
         total_deaths/match_total).round(2)
+    
     p_stats['p_avg_kd'] = (total_kills/total_deaths).round(2)
+
     p_stats['p_total_matches'] = match_total
 
     logging.debug(f"all perfomance metrics calculated, returning single row of p_stats= {p_stats}")
@@ -352,6 +369,7 @@ def count_player_streaks(player_history: pd.DataFrame)->pd.DataFrame:
     """counts player streaks from match history"""
     
     logging.debug(f"Counting player streaks for: {player_history['account_id'][0]}")
+
     # Check if the player history is empty
     if player_history is None:
         logging.warning("Player history is empty")
@@ -359,10 +377,13 @@ def count_player_streaks(player_history: pd.DataFrame)->pd.DataFrame:
     
     #calculate win from match_result and player_team
     player_history = player_history.sort_values(by='start_time', ascending=True)
+
     #creates unique identifier for each streak
     player_history['won_int'] = player_history['won'].astype(int)
-    player_history['streak_change'] = (player_history['won'] != player_history['won']
-                                    .shift()).astype(int)
+
+    player_history['streak_change'] = (
+        player_history['won'] != player_history['won'].shift()).astype(int)
+    
     player_history['streak_id'] = player_history['streak_change'].cumsum()
 
     #group by streak_id and win to count streaks
@@ -378,7 +399,7 @@ def count_player_streaks(player_history: pd.DataFrame)->pd.DataFrame:
     win_4 = (win_streaks >= 4).sum()
     win_5 = (win_streaks >= 5).sum()
 
-     # Loss streak stats
+    # Loss streak stats
     loss_streaks = streaks[streaks['won'] == False]['streak_len']
     loss_avg = loss_streaks.mean()
     loss_2 = (loss_streaks >= 2).sum()
@@ -399,12 +420,14 @@ def count_player_streaks(player_history: pd.DataFrame)->pd.DataFrame:
         "p_loss_streak_avg": loss_avg
         })
     logging.debug(f"all streaks calculated, returning single row of player_streak_trends= {player_streak_trends}")
+
     return player_streak_trends
 
 def compute_player_match_history(
         player_history: pd.DataFrame,
         streak_length=6)->pd.DataFrame:
     """Calculates player streak trends from player match history"""
+
     logging.debug("Calculating player streak trends.")
     # Check if the player history is empty
     if player_history.empty:
@@ -445,13 +468,12 @@ def compute_player_match_history(
             result_df.loc[result_df.index[i], f'p_loss_pct_{w}'] = loss_pct
 
     logging.debug(f"Calculated player streak trends for player {result_df['account_id'].iloc[0]}")
-    
     return result_df
 
-def process_player_hero_stats(match_history, hero_trends) -> pd.DataFrame:
+def process_player_hero_stats(match_history: pd.DataFrame, hero_trends: pd.DataFrame) -> pd.DataFrame:
     """Calculates player_hero trends"""
+
     logging.debug(f"Processing player_hero stats for {match_history['account_id']}")
-    
     if match_history.empty or hero_trends.empty:
         logging.warning("Player history or hero trends DataFrame is empty.")
         return pd.DataFrame()
@@ -465,7 +487,8 @@ def process_player_hero_stats(match_history, hero_trends) -> pd.DataFrame:
         #calc avg_kd for each hero
         hero_avg_kd = (
             match_history.groupby('hero_id')
-            .apply(lambda df: df['kills'].sum() / df['deaths'].sum() if df['deaths'].sum() > 0 else 0)
+            .apply(lambda df: df['kills'].sum() 
+            / df['deaths'].sum() if df['deaths'].sum() > 0 else 0)
             .round(2)).to_dict()
 
         # add per hero_kd to match_history
@@ -492,6 +515,7 @@ def process_player_hero_stats(match_history, hero_trends) -> pd.DataFrame:
 def save_player_trends_to_db(
         player_trends: pd.DataFrame) -> None:
     """Loads player trends data into the database."""
+
     logging.debug(f"Saving player trends to database: {player_trends}")
     # expected schema
     PLAYER_TRENDS_COLUMNS = {
@@ -562,6 +586,7 @@ def save_player_trends_to_db(
 def save_computed_player_match_data_to_db(
         roll_stats: pd.DataFrame) -> None:
     """Loads player rolling stats data into the database."""
+
     logging.debug(f"Saving player rolling stats to database: {roll_stats.head()}")
 
     # fill any nan columns with 0
@@ -624,6 +649,7 @@ def save_computed_player_match_data_to_db(
 
 def save_hero_synergy_to_db(
         hero_synergies: pd.DataFrame) -> None:
+    
     """save hero synergy trends to db"""
     logging.debug(f"Saving hero synergy trends to database: {hero_synergies}")
     # expected schema
@@ -700,6 +726,7 @@ def save_hero_synergy_to_db(
 
 def save_hero_counter_to_db(
         hero_counters: pd.DataFrame) -> None:
+    
     """save hero counter trends to db"""
     logging.debug(f"Saving hero counter trends to database: {hero_counters}")
     # expected schema

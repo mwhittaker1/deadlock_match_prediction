@@ -3,6 +3,12 @@ import os
 from pathlib import Path
 import time
 
+"""This script downlaods large parquet files from Miro server and saves to desktop for later moving
+
+Automatically retries with exponential backoff if there are connection issues.
+"""
+
+
 def download_large_file(url, filename, chunk_size=1024*1024, max_retries=10):
     """Download a file with resume capability and retries"""
     retry_count = 0

@@ -1,5 +1,7 @@
 import duckdb
 
+"""Insert raw match player data into DuckDB from parquet files."""
+
 
 def fetch_insert_match_players(db, table_name):
     """ reads match_player data from parquet files and inserts into DuckDB"""

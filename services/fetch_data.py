@@ -13,11 +13,23 @@ def fetch_match_data(
     include_player_info: bool = True,
     limit: int = 1000
     ) -> json:
+    """Fetches match data from the Deadlock API.
+    
+    Key Parameters:
+    - min_average_badge: Minimum average rank to return matches.
+    - max_unix_timestamp: Newest time to filter matches. i.e. matches before yesterday
+    - min_unix_timestamp: Oldest time to filter matches. i.e. matches 3 months ago -> max time
+    - m_id: Specific match ID to fetch metadata for.
+    - include_player_info: Whether to include player information in the response. this is required for match_player data
+    - limit: Maximum number of matches to return.
+    Returns:
+    - JSON response containing match metadata with 12 players per match.
+    """
 
     logging.debug(f"Fetching match data..")
     base = "https://api.deadlock-api.com/v1/matches"
-    # if a specific match ID is given, check player_data and just hit that endpoint
 
+    # if a specific match ID is given, check player_data and hit that endpoint
     if m_id:
         path = f"{base}/{m_id}/metadata"
         params = {}
@@ -27,7 +39,6 @@ def fetch_match_data(
         query = urlencode(params)
         full_url = f"{path}?{query}" if query else path
         return requests.get(full_url).json()
-
 
     # Bulk-metadata endpoint
     path = f"{base}/metadata"
@@ -46,14 +57,22 @@ def fetch_match_data(
 
     query = urlencode(params)
     full_url = f"{path}?{query}" if query else path
+
     return requests.get(full_url).json()
 
 def bulk_fetch_matches(max_days_fetch=90,min_days=1,max_days=0)->json:
     """fetches a batch of matches, 1 day per pull, returns json and exports.
 
     batch is unnormalized, 'players' contains a df of each matches 'players'
+    
     limit = max matches within a day to pull
-    max_days_fetch = how many days to cycle through for total fetch"""
+    min_days = most recent day to pull, i.e. 1 day ago
+    max_days_fetch = max days to fetch, i.e. 90 days ago
+    
+    example:
+    bulk_fetch_matches(max_days_fetch=30,min_days=7,max_days=0)
+    will fetch 30 days of matches, starting with 30 days ago, and going to 7 days ago.
+    """
 
     limit = 5000
     batch_matches = []
@@ -183,7 +202,8 @@ def fetch_player_hero_stats(p_id,h_id=None):
     return p_h_data
 
 def fetch_hero_info():
-    """Returns base information for heros, i.e. name, background"""
+    """Returns base information for heros, i.e. name, background info, etc."""
+    
     site = "https://assets.deadlock-api.com"
     endpoint = "/v2/heroes/"
     url = site+endpoint

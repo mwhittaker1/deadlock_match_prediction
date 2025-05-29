@@ -1,6 +1,8 @@
 import duckdb
 import pandas as pd
 
+"""Run SQL queries to insert raw match info into a raw_data database."""
+
 def insert_match_info():
     con = duckdb.connect(r"C:\Code\Local Code\deadlock_match_prediction\\match_player_raw.duckdb")
     con.execute("DROP TABLE IF EXISTS match_info_history")

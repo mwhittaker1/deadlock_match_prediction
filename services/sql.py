@@ -4,7 +4,7 @@ import logging
 import function_tools as u
 
 def run_checks(con):
-    """run sql queries to check data integrity"""
+    """run sql queries to return tables, and sample date + counts."""
     logging.info("Running data integrity checks")
 
     #check if tables exist
@@ -129,11 +129,13 @@ def run_checks(con):
         f"distinct_acccount_id in player_trends: {count_d_players_in_trend}\n"
         f"difference = {rdpddiff}\n"
     )
- 
-def check_newer_matches_in_raw(con):
-    """for each match_id, check if player count is correct"""
 
 def compare_raw_to_current():
+    """Compares data in raw staging table to current data in player_matches.
+    
+    This is used to check if there is data downloaded from parquet files that has not been processed
+    """
+
     con = duckdb.connect(r"C:\Code\Local Code\deadlock_match_prediction\\match_player_raw.duckdb")
     matches_df = duckdb.connect("c:/Code/Local Code/deadlock_match_prediction/data/deadlock.db") \
                        .execute("SELECT DISTINCT account_id FROM player_matches").fetchdf()
