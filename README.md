@@ -9,24 +9,21 @@ This repository contains a machine learning pipeline to predict match outcomes i
 * [Evaluation](#evaluation)
 * [Usage](#usage)
 * [Project Structure](#project-structure)
-* [Tests](#tests)
-* [Contributing](#contributing)
-* [License](#license)
 
 ---
 
 ## Data Pipeline
 
 1. **Fetch raw data**
-   Scripts in `services/` pull match and hero data from the Deadlock API and store it in a DuckDB file.
+   Scripts in `services/` pull match, player, and hero data from the Deadlock API and store it in a DuckDB file.
 2. **Preprocess & feature engineering**
    Transforms raw tables into a flat training set (e.g. `data/final_training_data.csv`).
 3. **Staging vs. live**
-   Toggle between using a staged CSV or querying the DuckDB directly via flags in `main.py`.
+   Toggle between using a staged CSV, calling API directly, or querying the DuckDB directly via flags in `main.py`.
 
 ---
 
-## Model Training
+## FastAI Model Training
 
 Run the main training script:
 
@@ -97,28 +94,3 @@ deadlock_match_prediction/
 └── .gitignore
 ```
 
----
-
-## Tests
-
-Run the function-level tests with:
-
-```bash
-pytest function_tests.py
-```
-
----
-
-## Contributing
-
-1. Fork this repo
-2. Create a feature branch
-3. Open a pull request
-
-Ensure any new scripts are covered by corresponding tests.
-
----
-
-## License
-
-This project is distributed under the MIT License. See [LICENSE](LICENSE) for details.
