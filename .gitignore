@@ -4,7 +4,7 @@
 norm_matches*
 non_normal_total_matches*
 *.db
-legacy/
+.legacy/
 *.parquet
 /test_data/
 *.duckdb

@@ -1,0 +1,60 @@
+Accuracy: 0.6910112359550562
+
+Classification Report:
+{
+  "N": {
+    "precision": 0.6601941747572816,
+    "recall": 0.7727272727272727,
+    "f1-score": 0.7120418848167539,
+    "support": 88.0
+  },
+  "Y": {
+    "precision": 0.7333333333333333,
+    "recall": 0.6111111111111112,
+    "f1-score": 0.6666666666666666,
+    "support": 90.0
+  },
+  "accuracy": 0.6910112359550562,
+  "macro avg": {
+    "precision": 0.6967637540453074,
+    "recall": 0.6919191919191919,
+    "f1-score": 0.6893542757417103,
+    "support": 178.0
+  },
+  "weighted avg": {
+    "precision": 0.6971746481946112,
+    "recall": 0.6910112359550562,
+    "f1-score": 0.689099358785811,
+    "support": 178.0
+  }
+}
+
+Confusion Matrix:
+[[68, 20], [35, 55]]
+
+Top Features:
+ph_win_rate_ratio_mean_Team0: 0.040994475837721686
+ph_win_rate_ratio_min_Team0: 0.02846236296837812
+ph_win_rate_ratio_max_Team0: 0.02791967887686181
+ph_win_rate_ratio_min_Team1: 0.026954587798312096
+ph_win_rate_ratio_max_Team1: 0.02680631023279651
+ph_win_rate_ratio_mean_Team1: 0.024834341429451415
+p_total_time_played_min_Team1: 0.01335074468307085
+ph_damage_per_min_std_Team0: 0.013276388346466514
+ph_damage_per_min_max_Team0: 0.012457620663214526
+p_total_time_played_mean_Team1: 0.012044250928704814
+ph_damage_per_min_mean_Team1: 0.011874038091108154
+ph_damage_per_min_min_Team0: 0.011758280189829797
+ph_win_rate_ratio_std_Team1: 0.01142930002867975
+p_total_time_played_std_Team0: 0.01111890484015418
+ph_damage_per_min_max_Team1: 0.010979664201093559
+ph_wins_min_Team1: 0.01056359867733017
+ph_total_kd_min_Team1: 0.010383850070111063
+ph_assists_ratio_mean_Team0: 0.010324128380818944
+ph_total_kd_mean_Team1: 0.010305388870391289
+match_id: 0.0102913795633464
+ph_kd_ratio_max_Team1: 0.010259435298014355
+ph_damage_per_min_ratio_max_Team0: 0.010184634607237916
+ph_damage_per_min_ratio_max_Team1: 0.01015842787499091
+ph_kd_ratio_min_Team0: 0.010031575394187819
+ph_kd_ratio_std_Team1: 0.009986484986707947
