@@ -1,0 +1,57 @@
+PERMUTATION IMPORTANCE ANALYSIS SUMMARY (GROUPED MODE)
+==================================================
+
+Models analyzed: ['8.14.25_rf_1_quantiles', '8.14.25_rf_1_quantiles_diff', '8.14.25_rf_1_std', '8.14.25_rf_1_std_diff']
+
+Feature Groups in all models (0):
+
+Feature Groups in some models (49):
+  p_total_time_played
+  p_total_time_played_mean
+  p_total_time_played_min
+  p_total_time_played_q75
+  p_total_time_played_std
+  ph_assists
+  ph_assists_min
+  ph_assists_ratio
+  ph_assists_ratio_median
+  ph_assists_std
+  ph_damage_per_min
+  ph_damage_per_min_max
+  ph_damage_per_min_mean
+  ph_damage_per_min_median
+  ph_damage_per_min_min
+  ph_damage_per_min_ratio
+  ph_damage_per_min_ratio_max
+  ph_damage_per_min_ratio_mean
+  ph_damage_per_min_ratio_q25
+  ph_damage_per_min_ratio_q75
+  ph_damage_per_min_ratio_std
+  ph_deaths
+  ph_deaths_std
+  ph_kd_ratio
+  ph_kd_ratio_max
+  ph_kd_ratio_mean
+  ph_kd_ratio_median
+  ph_kd_ratio_std
+  ph_kills
+  ph_kills_min
+  ph_time_played
+  ph_time_played_max
+  ph_time_played_mean
+  ph_time_played_median
+  ph_time_played_min
+  ph_time_played_ratio
+  ph_time_played_ratio_min
+  ph_total_kd
+  ph_total_kd_q25
+  ph_total_kd_q75
+  ph_win_rate_ratio
+  ph_win_rate_ratio_max
+  ph_win_rate_ratio_mean
+  ph_win_rate_ratio_median
+  ph_win_rate_ratio_min
+  ph_win_rate_ratio_q25
+  ph_wins
+  ph_wins_median
+  ph_wins_min
