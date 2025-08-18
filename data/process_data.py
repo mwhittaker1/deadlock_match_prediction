@@ -7,6 +7,7 @@ import logging
 from urllib.parse import urlencode
 import time
 from datetime import timedelta, datetime
+import fetch_data as fd
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -99,9 +100,10 @@ def separate_match_players(
 
     return df_matches, df_players
 
-def fetch_player_hero_stats(account_id) -> dict:
+def fetch_player_hero_stats(account_id, start_date=None, end_date=None) -> dict:
     """Fetches hero stats for a specific player from the Deadlock API.
-    Generally used in conjunction with process_player_stats_parallel
+    Generally used in conjunction with run_player_batches and 
+    process_player_stats_parallel
 
     - account_id: Player's account ID to fetch stats for (can be string or numeric)
     
@@ -111,19 +113,306 @@ def fetch_player_hero_stats(account_id) -> dict:
     
     base = "https://api.deadlock-api.com/v1/players"
     
-    # Convert to string if it's not already
+    if start_date is not None:
+        older_time = str(f"?min_unix_timestamp={fd.get_unix_time(start_date)}")
+
+
+    if end_date is not None:
+        newer_time = str(f"&max_unix_timestamp={fd.get_unix_time(end_date)}")
+
+    # Force acocunt_id to str
     account_id_str = str(account_id)
-    
-    path = f"{base}/{account_id_str}/hero-stats"
+
+    path = f"{base}/{account_id_str}/hero-stats{older_time}{newer_time}"
     
     try:
-        print(f"Fetching stats for player {account_id_str}")
+        logging.info(f"Fetching stats for player {account_id_str}")
         response = requests.get(path)
         if response.status_code != 200:
-            print(f"Error: API request failed for player {account_id_str} with status code {response.status_code}")
-            print(f"Response: {response.text}")
+            logging.error(f"API request failed for player {account_id_str} with status code {response.status_code}")
+            logging.error(f"Response: {response.text}")
             return {"error": f"API request failed with status code {response.status_code}"}
         return response.json()
     except Exception as e:
-        print(f"Exception fetching hero stats for player {account_id_str}: {e}")
+        logging.error(f"Exception fetching hero stats for player {account_id_str}: {e}")
         return {"error": str(e)}
+
+def process_player_stats_parallel(player_ids, max_workers=100, timeout=30):
+    """
+    Fetches and processes hero stats for multiple players in parallel
+    
+    Parameters:
+    - player_ids: List of player account IDs to fetch stats for
+    - max_workers: Maximum number of concurrent requests
+    - timeout: Timeout in seconds for each request
+    
+    Returns:
+    - Tuple of (player_stats_df, player_hero_stats_df)
+    """
+
+    import concurrent.futures
+    import time
+    from tqdm.notebook import tqdm
+
+    player_stats = []
+    player_hero_stats = []
+    error_count = 0
+    
+    # Define stats we want to aggregate
+    stats_columns = [
+        'matches_played', 'wins', 'kills', 'deaths', 'assists',
+        'damage_per_min', 'time_played'
+    ]
+    
+    # Convert all player IDs to strings
+    player_ids_str = [str(pid) for pid in player_ids]
+    
+    logging.info(f"Processing {len(player_ids_str)} players with {max_workers} workers")
+    
+    # Use ThreadPoolExecutor for parallel processing
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Submit all tasks and store futures
+        future_to_id = {
+            executor.submit(fetch_player_hero_stats, player_id): player_id 
+            for player_id in player_ids_str
+        }
+        
+        # Process results as they complete
+        for future in tqdm(concurrent.futures.as_completed(future_to_id), total=len(player_ids_str)):
+            player_id = future_to_id[future]
+            
+            try:
+                result = future.result(timeout=timeout)
+                
+                # Skip if error
+                if "error" in result:
+                    error_count += 1
+                    continue
+                
+                # Skip if empty response
+                if not result:
+                    logging.warning(f"Empty result for player {player_id}")
+                    continue
+                
+                # Calculate aggregate stats per player
+                player_matches_played = sum(hero_stat.get('matches_played', 0) for hero_stat in result)
+                if player_matches_played == 0:
+                    # Skip players with no matches
+                    logging.warning(f"Player {player_id} has no matches")
+                    continue
+                    
+                total_kills = sum(hero_stat.get('kills', 0) for hero_stat in result)
+                total_deaths = sum(hero_stat.get('deaths', 0) for hero_stat in result)
+                total_wins = sum(hero_stat.get('wins', 0) for hero_stat in result)
+                total_assists = sum(hero_stat.get('assists', 0) for hero_stat in result)
+                total_time_played = sum(hero_stat.get('time_played', 0) for hero_stat in result)
+                
+                # Calculate averages
+                avg_kd = total_kills / max(total_deaths, 1)  # Avoid division by zero
+                win_rate = total_wins / player_matches_played if player_matches_played > 0 else 0
+                
+                # Add to player stats dataframe
+                player_stats.append({
+                    'account_id': player_id,
+                    'matches_played': player_matches_played,
+                    'total_kills': total_kills,
+                    'total_deaths': total_deaths,
+                    'total_assists': total_assists,
+                    'avg_kd': avg_kd,
+                    'win_rate': win_rate,
+                    'total_time_played': total_time_played
+                })
+                
+                # Add hero-specific stats to player_hero_stats dataframe
+                for hero_stat in result:
+                    hero_id = hero_stat.get('hero_id')
+                    if hero_id is not None:
+                        # Extract valid stats, handling potential missing keys
+                        valid_stats = {
+                            col: hero_stat.get(col, 0) for col in stats_columns
+                        }
+                        
+                        # Add entry to hero stats
+                        player_hero_stats.append({
+                            'account_id': player_id,
+                            'hero_id': hero_id,
+                            **valid_stats
+                        })
+                
+            except Exception as e:
+                logging.error(f"Error processing player {player_id}: {e}")
+                error_count += 1
+
+    logging.info(f"Completed with {error_count} errors out of {len(player_ids_str)} players")
+
+    # Convert to DataFrames
+    df_player_stats = pd.DataFrame(player_stats) if player_stats else pd.DataFrame()
+    df_player_hero_stats = pd.DataFrame(player_hero_stats) if player_hero_stats else pd.DataFrame()
+    
+    return df_player_stats, df_player_hero_stats
+
+def run_player_batches(player_ids, batch_size=50, max_workers_per_batch=50, timeout=30):
+    """
+    Process all players in batches
+    
+    Parameters:
+    - player_ids: List of player IDs to process
+    - batch_size: Number of players to process in each batch
+    - max_workers_per_batch: Number of concurrent workers per batch
+    - timeout: Request timeout in seconds
+    
+    Returns:
+    - Tuple of (player_stats_df, player_hero_stats_df)
+    """
+
+    num_batches = (len(player_ids) + batch_size - 1) // batch_size  # Ceiling division
+
+    batched_player_stats = []
+    batched_player_hero_stats = []
+    successful_players = 0
+    failed_players = 0
+
+    logging.info(f"Processing {len(player_ids)} players in {num_batches} batches of {batch_size}")
+
+    total_start_time = time.time()
+
+    for batch_num in range(num_batches):
+        start_idx = batch_num * batch_size
+        end_idx = min(start_idx + batch_size, len(player_ids))
+        batch_players = player_ids[start_idx:end_idx]
+
+        logging.info(f"Processing batch {batch_num+1}/{num_batches} with {len(batch_players)} players")
+
+        batch_start_time = time.time()
+        
+        # Process batch
+        batch_player_stats, batch_player_hero_stats = process_player_stats_parallel(
+            batch_players, 
+            max_workers=max_workers_per_batch, 
+            timeout=timeout
+        )
+        
+        batch_end_time = time.time()
+        batch_duration = batch_end_time - batch_start_time
+
+        batch_successful = len(batch_player_stats) if not batch_player_stats.empty else 0
+        batch_failed = len(batch_players) - batch_successful
+        
+        successful_players += batch_successful
+        failed_players += batch_failed
+
+        logging.info(f"Batch {batch_num+1} completed in {batch_duration:.2f} seconds")
+        logging.info(f"  Players processed in batch: {batch_successful}/{len(batch_players)}")
+
+        # Add results to overall lists
+        if not batch_player_stats.empty:
+            batched_player_stats.append(batch_player_stats)
+            batched_player_hero_stats.append(batch_player_hero_stats)
+
+            logging.info(f"  Players processed in batch: {len(batch_player_stats)}")
+            logging.info(f"  Hero stats entries in batch: {len(batch_player_hero_stats)}")
+
+    # Combine all batches
+    if batched_player_stats:
+        combined_player_stats = pd.concat(batched_player_stats, ignore_index=True)
+        combined_player_hero_stats = pd.concat(batched_player_hero_stats, ignore_index=True)
+        
+        total_end_time = time.time()
+        total_duration = total_end_time - total_start_time
+        logging.info(f"Total processing completed in {total_duration:.2f} seconds")
+
+        # Display summary results
+        logging.info("\nPlayer Stats Summary:")
+        logging.info(f"Total players processed: {len(combined_player_stats)}")
+        logging.info(f"Total hero entries: {len(combined_player_hero_stats)}")
+        logging.info(f"Average K:D ratio: {combined_player_stats['avg_kd'].mean():.2f}")
+        logging.info(f"Average win rate: {combined_player_stats['win_rate'].mean():.2f}")
+
+        # Save test data
+        combined_player_stats.to_csv("v2_data/test_player_stats.csv", index=False)
+        combined_player_hero_stats.to_csv("v2_data/test_player_hero_stats.csv", index=False)
+        
+        return combined_player_stats, combined_player_hero_stats
+    
+    else:
+        logging.error("No player data was successfully processed")
+    
+    
+def retry_failed_players(original_player_set = "v2_data/players.csv", completed_player_stats = "v2_data/player_stats.csv"):
+    """
+    Identifies player IDs that failed to process and retries them
+    
+    This function:
+    1. Finds all player IDs in the original dataset that aren't in the processed results
+    2. Retries processing these failed players in smaller batches
+    3. Combines the retry results with the original results
+    4. Saves the updated complete dataset
+    """
+    print("Starting retry process for failed player IDs...")
+    
+
+    try:
+        # Load the original unique player IDs from the match data
+        original_players_df = pd.read_csv(original_player_set)
+        all_original_players = set(original_players_df['account_id'].astype(str).unique())
+        print(f"Total unique players in original data: {len(all_original_players)}")
+    
+        # load the processed player stats
+        processed_stats = pd.read_csv(completed_player_stats)
+        processed_player_ids = set(processed_stats['account_id'].astype(str))
+        print(f"Successfully processed players: {len(processed_player_ids)}")
+        
+        # Find failed players (in original set but not in processed set)
+        failed_player_ids = list(all_original_players - processed_player_ids)
+        print(f"Found {len(failed_player_ids)} failed player IDs to retry")
+        
+        if not failed_player_ids:
+            print("No failed players to retry. All players were processed successfully.")
+            return
+            
+        # Process the failed players with smaller batch size and more timeout
+        print("\n--- Retrying failed players ---")
+        retry_stats, retry_hero_stats = process_all_players(
+            failed_player_ids,
+            batch_size=50,            # Smaller batch size
+            max_workers_per_batch=10,  # Fewer concurrent workers
+            timeout=45                # Longer timeout
+        )
+        
+        # Check if retry was successful
+        if retry_stats.empty:
+            print("Retry process didn't yield any successful results")
+            return
+            
+        # Combine the retry results with the original results
+        print("\nCombining retry results with original results...")
+        
+        # Load original hero stats
+        processed_hero_stats = pd.read_csv("v2_data/player_hero_stats.csv")
+        
+        # Combine data
+        combined_stats = pd.concat([processed_stats, retry_stats], ignore_index=True)
+        combined_hero_stats = pd.concat([processed_hero_stats, retry_hero_stats], ignore_index=True)
+        
+        # Save the updated complete dataset
+        combined_stats.to_csv("v2_data/player_stats_with_retries.csv", index=False)
+        combined_hero_stats.to_csv("v2_data/player_hero_stats_with_retries.csv", index=False)
+        
+        # Calculate success rate
+        total_success_count = len(combined_stats)
+        success_rate = total_success_count / len(all_original_players) * 100
+        
+        print("\n--- Retry Summary ---")
+        print(f"Original successful players: {len(processed_player_ids)}")
+        print(f"Additional players from retry: {len(retry_stats)}")
+        print(f"Total successful players: {total_success_count}/{len(all_original_players)} ({success_rate:.1f}%)")
+        print(f"Total hero entries: {len(combined_hero_stats)}")
+        print("Updated data saved to v2_data/player_stats_with_retries.csv and v2_data/player_hero_stats_with_retries.csv")
+        
+        return combined_stats, combined_hero_stats
+
+    except FileNotFoundError:
+        print("Error: Processed data files not found. Make sure the main processing completed and saved files.")
+    except Exception as e:
+        print(f"Error during retry process: {e}")
+
