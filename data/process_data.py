@@ -7,7 +7,7 @@ import logging
 from urllib.parse import urlencode
 import time
 from datetime import timedelta, datetime
-import fetch_data as fd
+#import fetch_data as fd
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -116,7 +116,6 @@ def fetch_player_hero_stats(account_id, start_date=None, end_date=None) -> dict:
     if start_date is not None:
         older_time = str(f"?min_unix_timestamp={fd.get_unix_time(start_date)}")
 
-
     if end_date is not None:
         newer_time = str(f"&max_unix_timestamp={fd.get_unix_time(end_date)}")
 
@@ -137,7 +136,7 @@ def fetch_player_hero_stats(account_id, start_date=None, end_date=None) -> dict:
         logging.error(f"Exception fetching hero stats for player {account_id_str}: {e}")
         return {"error": str(e)}
 
-def process_player_stats_parallel(player_ids, max_workers=100, timeout=30):
+def process_player_stats_parallel(player_ids,start_date, end_date, max_workers=100, timeout=30):
     """
     Fetches and processes hero stats for multiple players in parallel
     
@@ -173,7 +172,7 @@ def process_player_stats_parallel(player_ids, max_workers=100, timeout=30):
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Submit all tasks and store futures
         future_to_id = {
-            executor.submit(fetch_player_hero_stats, player_id): player_id 
+            executor.submit(fetch_player_hero_stats, player_id, start_date, end_date): player_id
             for player_id in player_ids_str
         }
         
@@ -251,7 +250,7 @@ def process_player_stats_parallel(player_ids, max_workers=100, timeout=30):
     
     return df_player_stats, df_player_hero_stats
 
-def run_player_batches(player_ids, batch_size=50, max_workers_per_batch=50, timeout=30):
+def run_player_batches(player_ids, start_date, end_date, batch_size=50, max_workers_per_batch=50, timeout=30):
     """
     Process all players in batches
     
@@ -288,6 +287,8 @@ def run_player_batches(player_ids, batch_size=50, max_workers_per_batch=50, time
         # Process batch
         batch_player_stats, batch_player_hero_stats = process_player_stats_parallel(
             batch_players, 
+            start_date,
+            end_date,
             max_workers=max_workers_per_batch, 
             timeout=timeout
         )
@@ -416,3 +417,72 @@ def retry_failed_players(original_player_set = "v2_data/players.csv", completed_
     except Exception as e:
         print(f"Error during retry process: {e}")
 
+def merge_player_match_stats(players, player_stats):
+    """Merge player match statistics with player information."""
+    merged = players.merge(player_stats, on="account_id", how="left")
+    return merged
+
+def rename_match_stats(df):
+    """rename columns to specific data origin"""
+    df.rename(columns={
+        "kills": "pm_kills",
+        "deaths": "pm_deaths",
+        "assists": "pm_assists",
+        "damage_per_min": "pm_damage_per_min",
+        "denies": "pm_denies",
+        "net_worth": "pm_net_worth",
+        "win": "pm_win",
+        'matches_played': 'p_total_matches_played',
+        'total_kills': 'p_total_kills',
+        'total_deaths': 'p_total_deaths',
+        'total_assists': 'p_total_assists',
+        'avg_kd': 'p_total_avg_kd',
+        'win_rate': 'p_total_win_rate',
+        'total_time_played': 'p_total_time_played'
+    }, inplace=True)
+
+    return df
+
+def create_player_hero_stats(ph_stats_base: pd.DataFrame) -> pd.DataFrame:
+    """
+    Create player hero stats by aggregating the player_hero_stats DataFrame.
+    Checks for potential divide by zero errors and sets result to 0 if denominator is zero.
+    """
+    ph_stats = pd.DataFrame()
+    ph_stats = ph_stats_base.copy()
+
+    # Avoid divide by zero for deaths
+    ph_stats['ph_total_kd'] = np.where(ph_stats['deaths'] == 0, 0, ph_stats['kills'] / ph_stats['deaths'])
+
+    ph_stats['h_total_kd'] = (ph_stats.groupby('hero_id')['ph_total_kd'].transform("mean"))
+    # Avoid divide by zero for ph_total_kd
+    ph_stats['ph_kd_ratio'] = np.where(ph_stats['ph_total_kd'] == 0, 0, ph_stats['h_total_kd']/ ph_stats['ph_total_kd'])
+
+    ph_stats['h_avg_total_time_played'] = (ph_stats.groupby('hero_id')['time_played'].transform("mean"))
+    # Avoid divide by zero for h_avg_total_time_played
+    ph_stats['ph_time_played_ratio'] = np.where(ph_stats['h_avg_total_time_played'] == 0, 0, ph_stats['time_played']/ ph_stats['h_avg_total_time_played'])
+
+    ph_stats['h_total_damage_per_min'] = (ph_stats.groupby('hero_id')['damage_per_min'].transform("mean"))
+    # Avoid divide by zero for h_total_damage_per_min
+    ph_stats['ph_damage_per_min_ratio'] = np.where(ph_stats['h_total_damage_per_min'] == 0, 0, ph_stats['damage_per_min']/ ph_stats['h_total_damage_per_min'])
+
+    ph_stats['h_total_assists'] = (ph_stats.groupby('hero_id')['assists'].transform("mean"))
+    # Avoid divide by zero for h_total_assists
+    ph_stats['ph_assists_ratio'] = np.where(ph_stats['h_total_assists'] == 0, 0, ph_stats['assists']/ ph_stats['h_total_assists'])
+
+    # Avoid divide by zero for matches_played
+    ph_stats['ph_win_rate'] = np.where(ph_stats['matches_played'] == 0, 0, ph_stats['wins'] / ph_stats['matches_played'])
+    ph_stats['h_total_win_rate'] = (ph_stats.groupby('hero_id')['ph_win_rate'].transform("mean"))
+    # Avoid divide by zero for h_total_win_rate
+    ph_stats['ph_win_rate_ratio'] = np.where(ph_stats['h_total_win_rate'] == 0, 0, ph_stats['ph_win_rate'] / ph_stats['h_total_win_rate'])
+
+    ph_stats.rename(columns={
+        "wins": "ph_wins",
+        "kills": "ph_kills",
+        "deaths": "ph_deaths",
+        "assists": "ph_assists",
+        "damage_per_min": "ph_damage_per_min",
+        'time_played': 'ph_time_played'
+    }, inplace=True)
+
+    return ph_stats
