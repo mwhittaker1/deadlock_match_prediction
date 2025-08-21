@@ -122,7 +122,7 @@ def fetch_match_data(
     
     return response.json()
 
-def bulk_fetch_matches(max_days_fetch=90, min_days=3, max_days=0)->list:
+def bulk_fetch_matches(max_days_fetch=3, min_days=90, max_days=0)->list:
     """fetches a batch of matches, 1 day per pull, list of jsons, 1 element per batch.
 
     batch is unnormalized, 'players' contains a df of each matches 'players'
