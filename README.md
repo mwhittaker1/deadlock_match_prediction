@@ -1,6 +1,6 @@
 # Deadlock Match Prediction
 
-This repository contains a machine learning pipeline to predict match outcomes in the game **Deadlock** based on hero compositions. It leverages a Random Forest classifier and has achieved up to **85% accuracy on high-ranked matches**.
+This repository contains a machine learning pipeline to predict match outcomes in the game **Deadlock** based on hero compositions. It leverages a Random Forest classifier and has achieved up to **72% accuracy on high-ranked matches**.
 
 ## Table of Contents
 
