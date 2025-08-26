@@ -9,8 +9,8 @@ import pandas as pd
 import logging
 from urllib.parse import urlencode
 import time
-from datetime import timedelta, datetime
-from data.process_data import separate_match_players
+from datetime import timedelta, datetime, timezone
+#from data.process_data import separate_match_players
 
 
 """ About this script
@@ -157,7 +157,7 @@ def bulk_fetch_matches(start_date, end_date, limit=1000)->list:
 
     # For each unique player within raw_players, fetch player_hero and calculate player_stats
 
-def fetch_player_hero_stats(account_ids: List[int], fetch_till_date, fetch_from_date=None) -> dict:
+def fetch_player_hero_stats(account_ids: list[int], fetch_till_date, fetch_from_date=None) -> dict:
     """Fetches hero stats for a specific player from the Deadlock API.
     Generally used in conjunction with run_player_batches and 
     process_player_stats_parallel
@@ -201,7 +201,7 @@ def fetch_player_hero_stats(account_ids: List[int], fetch_till_date, fetch_from_
         return {"error": str(e)}
 
 # send players in batches of 1,000
-def fetch_player_hero_stats_batch(batch_size, account_ids: List[int], fetch_till_date, fetch_from_date=None) -> pd.DataFrame:
+def fetch_player_hero_stats_batch(batch_size, account_ids: list[int], fetch_till_date, fetch_from_date=None) -> pd.DataFrame:
     """Fetches hero stats for a batch of players from the Deadlock API.
     Generally used in conjunction with run_player_batches and
     process_player_stats_parallel
@@ -214,7 +214,7 @@ def fetch_player_hero_stats_batch(batch_size, account_ids: List[int], fetch_till
 
     results = []
     for i in range(0, len(account_ids), batch_size):
-        print(len(raw_players["account_id"].unique()))
+        print(len(account_ids))
         batch = account_ids[i:i + batch_size]
         response = fetch_player_hero_stats(batch, fetch_till_date=fetch_till_date, fetch_from_date=fetch_from_date)
         results.extend(format_player_hero_response(response))

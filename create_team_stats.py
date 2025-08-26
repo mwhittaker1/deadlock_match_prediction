@@ -72,10 +72,6 @@ def create_std_team_stats(stats_df: pd.DataFrame) -> pd.DataFrame:
 
     return phm_stats.reset_index()
 
-
-
-
-
 def create_training_data(team_stat_base:pd.DataFrame) -> pd.DataFrame:
     """
     Create training data by merging team stats with match outcomes.

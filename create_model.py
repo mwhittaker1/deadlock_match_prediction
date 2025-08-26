@@ -124,7 +124,7 @@ def evaluate_model(model, y_test, y_pred, X)-> dict:
         'feature_importance': feature_importance.to_dict(orient='records')
     }
 
-def save_model(model, params, folder, model_id,feature_names = X):
+def save_model(model, params, folder, model_id, feature_names):
     from sklearn.pipeline import Pipeline
     import joblib, json, platform, os
 
