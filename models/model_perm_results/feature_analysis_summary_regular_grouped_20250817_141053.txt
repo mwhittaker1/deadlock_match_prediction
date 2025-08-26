@@ -1,0 +1,42 @@
+PERMUTATION IMPORTANCE ANALYSIS SUMMARY - REGULAR MODELS (GROUPED MODE)
+==================================================
+
+Models analyzed: ['8.14.25_rf_1_quantiles', '8.14.25_rf_1_std']
+
+Feature Groups in all models (10):
+  p_total_time_played
+  ph_assists
+  ph_damage_per_min
+  ph_deaths
+  ph_kd
+  ph_kills
+  ph_time_played
+  ph_total_kd
+  ph_win_rate
+  ph_wins
+
+Feature Groups in some models (0):
+
+Most variable feature groups:
+  p_total_time_played: 0.00
+  ph_assists: 0.00
+  ph_damage_per_min: 0.00
+  ph_deaths: 0.00
+  ph_kd: 0.00
+  ph_kills: 0.00
+  ph_time_played: 0.00
+  ph_total_kd: 0.00
+  ph_win_rate: 0.00
+  ph_wins: 0.00
+
+Most consistent feature groups:
+  p_total_time_played: 0.00
+  ph_assists: 0.00
+  ph_damage_per_min: 0.00
+  ph_deaths: 0.00
+  ph_kd: 0.00
+  ph_kills: 0.00
+  ph_time_played: 0.00
+  ph_total_kd: 0.00
+  ph_win_rate: 0.00
+  ph_wins: 0.00

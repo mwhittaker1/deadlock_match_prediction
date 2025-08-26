@@ -1,0 +1,60 @@
+Accuracy: 0.6853932584269663
+
+Classification Report:
+{
+  "N": {
+    "precision": 0.66,
+    "recall": 0.75,
+    "f1-score": 0.7021276595744681,
+    "support": 88.0
+  },
+  "Y": {
+    "precision": 0.717948717948718,
+    "recall": 0.6222222222222222,
+    "f1-score": 0.6666666666666666,
+    "support": 90.0
+  },
+  "accuracy": 0.6853932584269663,
+  "macro avg": {
+    "precision": 0.688974358974359,
+    "recall": 0.6861111111111111,
+    "f1-score": 0.6843971631205674,
+    "support": 178.0
+  },
+  "weighted avg": {
+    "precision": 0.6892999135695765,
+    "recall": 0.6853932584269663,
+    "f1-score": 0.6841979440592876,
+    "support": 178.0
+  }
+}
+
+Confusion Matrix:
+[[66, 22], [34, 56]]
+
+Top Features:
+ph_win_rate_ratio_min_diff: 0.051094022634178476
+ph_win_rate_ratio_max_diff: 0.05106679235303657
+ph_win_rate_ratio_q25_diff: 0.0400817855896965
+ph_win_rate_ratio_median_diff: 0.03128522261879038
+ph_win_rate_ratio_q75_diff: 0.024453648680614837
+ph_total_kd_min_diff: 0.020387546618754037
+ph_damage_per_min_max_diff: 0.019204870116748846
+Unnamed: 0: 0.019161433336541425
+p_total_time_played_min_diff: 0.01864572614400763
+ph_damage_per_min_min_diff: 0.017959157903406454
+p_total_time_played_q25_diff: 0.01777347164203705
+ph_total_kd_q75_diff: 0.01675466633892044
+ph_damage_per_min_q25_diff: 0.01620829757742088
+match_id: 0.01604007751207179
+ph_kills_q25_diff: 0.015925083161350464
+p_total_time_played_median_diff: 0.015881742619813642
+ph_damage_per_min_ratio_max_diff: 0.01542401577032202
+ph_kd_ratio_min_diff: 0.015149126235912701
+ph_damage_per_min_q75_diff: 0.015138504857128159
+ph_deaths_q25_diff: 0.01500676902637173
+ph_damage_per_min_ratio_min_diff: 0.014908938128766421
+ph_kd_ratio_q75_diff: 0.014345741237313418
+p_total_time_played_max_diff: 0.014223225446615596
+ph_damage_per_min_median_diff: 0.014196748246556224
+ph_total_kd_q25_diff: 0.014096625135006924

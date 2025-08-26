@@ -4,7 +4,7 @@
 norm_matches*
 non_normal_total_matches*
 *.db
-legacy/
+.legacy/
 *.parquet
 /test_data/
 *.duckdb
@@ -15,3 +15,5 @@ logs.txt
 test.py
 notes.txt
 one_off.ipynb
+model_perm_results
+run_perm_importance.py

@@ -1,0 +1,79 @@
+PERMUTATION IMPORTANCE ANALYSIS SUMMARY
+==================================================
+
+Models analyzed: ['8.14.25_rf_1_quantiles', '8.14.25_rf_1_quantiles_diff', '8.14.25_rf_1_std', '8.14.25_rf_1_std_diff']
+
+Features in all models (0):
+
+Features in some models (71):
+  p_total_time_played_max_Team0
+  p_total_time_played_min_diff
+  p_total_time_played_q75_Team0
+  p_total_time_played_q75_diff
+  p_total_time_played_std_Team0
+  p_total_time_played_std_diff
+  ph_assists_max_diff
+  ph_assists_mean_diff
+  ph_assists_min_diff
+  ph_assists_ratio_std_diff
+  ph_assists_std_diff
+  ph_damage_per_min_max_Team0
+  ph_damage_per_min_max_Team1
+  ph_damage_per_min_max_diff
+  ph_damage_per_min_mean_Team1
+  ph_damage_per_min_mean_diff
+  ph_damage_per_min_median_Team1
+  ph_damage_per_min_median_diff
+  ph_damage_per_min_min_diff
+  ph_damage_per_min_ratio_max_Team0
+  ph_damage_per_min_ratio_max_Team1
+  ph_damage_per_min_ratio_max_diff
+  ph_damage_per_min_ratio_median_diff
+  ph_damage_per_min_ratio_min_Team0
+  ph_damage_per_min_ratio_q25_diff
+  ph_damage_per_min_std_diff
+  ph_deaths_max_Team1
+  ph_deaths_min_Team1
+  ph_deaths_q75_Team0
+  ph_deaths_q75_diff
+  ph_deaths_std_Team1
+  ph_deaths_std_diff
+  ph_kd_ratio_max_diff
+  ph_kd_ratio_median_diff
+  ph_kd_ratio_min_Team0
+  ph_kd_ratio_q25_Team1
+  ph_kills_max_Team0
+  ph_kills_median_Team0
+  ph_kills_std_Team1
+  ph_time_played_mean_diff
+  ph_time_played_median_diff
+  ph_time_played_min_diff
+  ph_time_played_q25_Team0
+  ph_time_played_q25_diff
+  ph_time_played_ratio_max_Team0
+  ph_time_played_ratio_min_Team0
+  ph_time_played_ratio_min_diff
+  ph_time_played_ratio_std_Team0
+  ph_total_kd_max_Team1
+  ph_total_kd_mean_Team0
+  ph_total_kd_median_diff
+  ph_total_kd_min_diff
+  ph_total_kd_q75_Team0
+  ph_total_kd_q75_diff
+  ph_win_rate_ratio_max_Team0
+  ph_win_rate_ratio_max_Team1
+  ph_win_rate_ratio_max_diff
+  ph_win_rate_ratio_mean_Team0
+  ph_win_rate_ratio_mean_Team1
+  ph_win_rate_ratio_mean_diff
+  ph_win_rate_ratio_median_Team1
+  ph_win_rate_ratio_median_diff
+  ph_win_rate_ratio_min_Team0
+  ph_win_rate_ratio_min_Team1
+  ph_win_rate_ratio_min_diff
+  ph_win_rate_ratio_q25_diff
+  ph_wins_mean_diff
+  ph_wins_median_Team0
+  ph_wins_min_Team1
+  ph_wins_min_diff
+  ph_wins_q25_Team0
