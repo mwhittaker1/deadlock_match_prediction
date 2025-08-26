@@ -17,7 +17,10 @@ import time
 from datetime import timedelta, datetime, timezone
 
 def create_training_data(start_date,end_date,name="test"):
-    """fetch player, match, and hero data to be used for training a model"""
+    """fetch player, match, and hero data to be used for training a model
+    Example launch command: python orchestrators.py 2025-08-01 2025-08-05 --name my_output_folder
+    
+    """
     # Ensure the output folder exists
     folder_name = f"v2_data//pred_data//test_pred_v2_{start_date}_{end_date}//{name}"
 
