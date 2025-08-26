@@ -1,20 +1,27 @@
-from data import fetch_data as fd
-from data import process_data as dp
+import argparse
+import json
+import logging
+import os
+import sys
+import time
+from datetime import datetime, timedelta, timezone
+from urllib.parse import urlencode
+
+import numpy as np
+import pandas as pd
+import pyparsing
+import requests
+
 import create_model as cm
 import create_team_stats as cts
 import run_predictions as rp
-import pandas as pd
-import numpy as np
-import json
-import requests
-import os
-import sys
-from datetime import timedelta, datetime
-from urllib.parse import urlencode
-import argparse
-import pyparsing
-import time
-from datetime import timedelta, datetime, timezone
+from data import fetch_data as fd
+from data import process_data as dp
+
+logging.basicConfig(level=logging.INFO)
+logging = logging.getLogger(__name__)
+
+
 
 def create_training_data(start_date,end_date,name="test"):
     """fetch player, match, and hero data to be used for training a model
