@@ -185,8 +185,6 @@ def fetch_player_hero_stats(account_ids: list[int], fetch_till_date, fetch_from_
     query = urlencode(params)
     full_url = f"{path}?{query}" if query else path
 
-    print(f"**DEBUG** params = {params},full_url = \n\n{full_url}")
-
     try:
         response = requests.get(full_url)
         if response.status_code != 200:

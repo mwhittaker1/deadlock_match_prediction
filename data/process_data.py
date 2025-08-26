@@ -15,22 +15,17 @@ logger = logging.getLogger(__name__)
 
 """Contains functions for processing data and creating statistics"""
 
-def prepare_match_stats(raw_matches: pd.DataFrame, p_stats: pd.DataFrame) -> pd.DataFrame:
+def prepare_match_stats(raw_players: pd.DataFrame, raw_matches: pd.DataFrame) -> pd.DataFrame:
     """Prepares match for future merging by creating win column, and adjusting columns"""
 
-    match_stats = match_stats[['account_id','match_id','team','winning_team','win','hero_id']]
-    player_match_stats = p_stats.merge(
-        raw_matches[['match_id', 'winning_team']],
-        on='match_id',
-        how='left'
-    )
+    match_players = pd.merge(raw_players[['account_id','match_id','team','hero_id']], raw_matches, on='match_id', how='left')
 
-    player_match_stats['win'] = player_match_stats.apply(
+    match_players['win'] = match_players.apply(
         lambda row: 'Y' if row['team'] == row['winning_team'] else 'N',
         axis=1
     )
 
-    return player_match_stats
+    return match_players
 
 def check_unique_naming(p_h_stats=None,
                         p_stats=None, 
@@ -115,7 +110,7 @@ def separate_match_players(
 
     return df_matches, df_players
 
-def merge_stats(player_stats, player_hero_stats, hero_stats)->pd.DataFrame:
+def merge_player_hero_stats(player_stats, player_hero_stats, hero_stats)->pd.DataFrame:
     p_ph_stats = player_stats.merge(player_hero_stats, on='account_id')
     p_ph_h_stats = p_ph_stats.merge(hero_stats, on='hero_id')
 

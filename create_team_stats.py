@@ -19,7 +19,7 @@ def create_std_team_stats(stats_df: pd.DataFrame) -> pd.DataFrame:
     phm_stats = pd.DataFrame()
     phm_stats = stats_df.copy()
 
-    # set the team stats to be set to quantiles
+    # set the team stats to be set for training
     team_stats = [
         'p_total_matches_played', 'p_total_time_played',
         'p_win_rate', 'ph_matches_played', 'ph_time_played',
@@ -69,6 +69,50 @@ def create_std_team_stats(stats_df: pd.DataFrame) -> pd.DataFrame:
             return f"{col}_{stat}"
 
     phm_stats.columns = [clean_columns(col) for col in phm_stats.columns]
+
+    return phm_stats.reset_index()
+
+def create_basic_team_stats(stats_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Create team-level stats based on player&player_hero stats in min, max, mean, and std.
+    """
+
+    phm_stats = pd.DataFrame()
+    phm_stats = stats_df.copy()
+
+    # set the team stats to be set for training
+    team_stats = [
+        'p_total_matches_played', 'p_total_time_played',
+        'p_win_rate', 'ph_matches_played', 'ph_time_played',
+        'ph_kills_per_min', 'ph_deaths_per_min', 'ph_accuracy',
+        'ph_total_kd', 'h_total_kd', 'ph_kd_ratio', 
+        'ph_hero_xp_ratio', 'ph_avg_match_length',
+        'ph_avg_damage_per_match', 'h_damage_per_match', 'ph_damage_ratio',
+        'ph_assists_ratio', 'ph_win_rate', 'h_total_win_rate',
+        'ph_win_rate_ratio'
+    ]
+
+    # check for missing columns
+    missing_cols = [col for col in team_stats if col not in phm_stats.columns]
+    if missing_cols:
+        print(f"*CRITICAL* Missing columns in team stats: {missing_cols}")
+        return pd.DataFrame()  # Return an empty DataFrame if missing columns are found
+
+    # for each columm, set min, max, and quantiles
+    agg_function = {
+        col: ["min", "max",
+                "mean",
+                "std"]
+        for col in team_stats
+    }
+
+    agg_function['win'] = 'first'
+    
+    # group by columns, using agg_function as the aggregation function
+    phm_stats = (phm_stats.groupby(
+        ['match_id','team']).agg(
+            agg_function))    
+
 
     return phm_stats.reset_index()
 
