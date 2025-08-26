@@ -15,6 +15,21 @@ logger = logging.getLogger(__name__)
 
 """Contains functions for processing data and creating statistics"""
 
+def prepare_match_stats(raw_matches: pd.DataFrame, raw_players: pd.DataFrame) -> pd.DataFrame:
+    """Prepares match for future merging by creating win column, and adjusting columns"""
+    players = raw_players.merge(
+        raw_matches[['match_id', 'winning_team']],
+        on='match_id',
+        how='left'
+    )
+
+    players['win'] = players.apply(
+        lambda row: 'Y' if row['team'] == row['winning_team'] else 'N',
+        axis=1
+    )
+
+    return players
+
 def check_unique_naming(p_h_stats=None,
                         p_stats=None, 
                         h_stats=None

@@ -38,7 +38,7 @@ def create_training_data(start_date,end_date,name="test"):
     raw_matches, raw_players = dp.separate_match_players(batch_matches)
     player_matches = raw_players[['account_id', 'match_id']]
 
-    bulk_player_hero_stats= fd.fetch_player_hero_stats_batch(
+    player_hero_stats= fd.fetch_player_hero_stats_batch(
     account_ids=raw_players["account_id"].unique().tolist(),
     fetch_till_date=start_date,
     fetch_from_date=None,
@@ -49,13 +49,17 @@ def create_training_data(start_date,end_date,name="test"):
     hero_stats = hero_stats.add_prefix('h_')
     hero_stats = hero_stats.rename(columns={'h_hero_id': 'hero_id'})
 
-    p_stats = fd.process_player_stats(bulk_player_hero_stats)
+    p_stats = fd.process_player_stats(player_hero_stats)
 
-    bulk_player_hero_stats.to_csv(f"{folder_name}/player_hero_stats.csv", index=False)
     raw_players.to_csv(f"{folder_name}/raw_players.csv", index=False)
     raw_matches.to_csv(f"{folder_name}/raw_matches.csv", index=False)
-    hero_stats.to_csv(f"{folder_name}/h_stats.csv", index=False)
+
     player_matches.to_csv(f"{folder_name}/player_matches.csv", index=False)
+    p_stats.to_csv(f"{folder_name}/p_stats.csv", index=False)
+    player_hero_stats.to_csv(f"{folder_name}/player_hero_stats.csv", index=False)
+    hero_stats.to_csv(f"{folder_name}/h_stats.csv", index=False)
+
+
 
 
 if __name__ == "__main__":
