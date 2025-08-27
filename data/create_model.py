@@ -137,7 +137,7 @@ def evaluate_model(model, y_test, y_pred, X)-> dict:
         'feature_importance': feature_importance.to_dict(orient='records')
     }
 
-def save_model(model, params, folder, model_id, feature_names):
+def save_model(model, params, folder, model_id, feature_names,X_train,X_test,y_train,y_test):
     from sklearn.pipeline import Pipeline
     import joblib, json, platform, os
 
@@ -157,12 +157,20 @@ def save_model(model, params, folder, model_id, feature_names):
     "random_state": params.get("random_state", 42),
     }, open(f"{folder}/meta.json","w"))
 
-def save_report(training_data, model_id, model_folder, results):
+    train = X_train.copy()
+    train["target"] = y_train
+    train.to_csv(f"{folder}/samples/Xy_train.csv", index=False)
+
+    test = X_test.copy()
+    test["target"] = y_test
+    test.to_csv(f"{folder}/samples/Xy_test.csv", index=False)
+
+def save_report(training_data, model_id, folder, results):
     import json
 
-    training_data.to_csv(f"{model_folder}/{model_id}_training_data.csv")
+    training_data.to_csv(f"{folder}/{model_id}_training_data.csv")
 
-    with open(f"{model_folder}/{model_id}_results.txt", "w") as f:
+    with open(f"{folder}/{model_id}_results.txt", "w") as f:
         f.write(f"Accuracy: {results['accuracy']}\n\n")
         f.write("Classification Report:\n")
         f.write(json.dumps(results['classification_report'], indent=2))
@@ -216,7 +224,7 @@ if __name__ == "__main__":
     
     features = X.tolist()
 
-    save_model(model, params, model_folder, model_id, features)
+    save_model(model, params, model_folder, model_id, features,X_train,X_test,y_train,y_test)
     save_report(training_data, model_id, model_folder, report)
 
     train = X_train.copy()

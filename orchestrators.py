@@ -167,7 +167,7 @@ def create_ml_model(
 
     results = cm.evaluate_model(model, y_test, y_pred, X_test)
 
-    cm.save_model(model, params, model_folder_name, model_id, X_test.columns)
+    cm.save_model(model, params, model_folder_name, model_id, X_test.columns,X_train,X_test,y_train,y_test)
 
     cm.save_report(training_data, model_id, model_folder_name, results)
 
