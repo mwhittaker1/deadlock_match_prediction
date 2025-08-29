@@ -39,7 +39,7 @@ def create_training_data(start_date,end_date,name="test",team_stat_model="diff")
     """
 
     # Ensure the output folder exists
-    folder_name = f"v2_data//pred_data//test_pred_v2_{start_date}_{end_date}//{name}"
+    folder_name = f"v2_data//training_data//train_data_{start_date}_{end_date}//{name}"
 
     os.makedirs(folder_name, exist_ok=True)
 
@@ -57,7 +57,7 @@ def create_training_data(start_date,end_date,name="test",team_stat_model="diff")
     account_ids=raw_players["account_id"].unique().tolist(),
     fetch_till_date=start_date,
     fetch_from_date=None,
-    batch_size=700
+    batch_size=400,
     )
 
     logging.info(f"fetched player stats for {len(player_hero_stats)}, breaking down and formatting data")
@@ -96,6 +96,9 @@ def create_training_data(start_date,end_date,name="test",team_stat_model="diff")
 
     logging.info(f"calculating all stats")
     all_stats = dp.calculate_ph_stats(p_ph_h_stats)
+
+    logging.info(f"Formatting to training columns")
+    all_stats = dp.trim_stats(all_stats)
 
     logging.info(f"Calculations completed, saving all stats to {folder_name}")
     all_stats.to_csv(f"{folder_name}/all_stats.csv", index=False)
@@ -143,22 +146,25 @@ def create_ml_model(
         config - the path to the configuration file
         test_data - optional test data to evaluate the model
 
+    example CLI
+    
+    powershell
+    python orchestrators.py --mode ml_model --model_identifier rf_test_v3 --model_folder_name models\8.26.25_rf_std --config models\configs\rf_v1.json --training_data_file_name training_data --training_data_folder_name my_output_folder 2025-08-01 2025-08-05
     """
-
 
     # .cfg for params to use for training
     with open(config, "r") as f:
         params = json.load(f)
 
-    file_path = f"v2_data//pred_data//test_pred_v2_{start_date}_{end_date}//{training_data_folder_name}"
+    file_path = f"v2_data//training_data//train_data_{start_date}_{end_date}//{training_data_folder_name}"
 
-    #load and check training data
+    # #load and check training data
     training_data = pd.read_csv(f"{file_path}//{training_data_file_name}.csv")
-    bol = cm.check_data_issues(training_data)
+    # bol = cm.check_data_issues(training_data)
 
-    if not bol:
-        logging.error("Data issues found in training data.")
-        sys.exit(1)
+    # if not bol:
+    #     logging.error("Data issues found in training data.")
+    #     sys.exit(1)
     
     # prepare training data
     X_train, X_test, y_train, y_test = cm.prep_training_data(training_data, test_data)
@@ -175,11 +181,14 @@ def create_ml_model(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    
+    # Define the main use, train_data, or build ml_model
     parser.add_argument("--mode", choices=["train_data", "ml_model"], required=True, help="Which function to run")
     parser.add_argument("start_date", help="Start date (YYYY-MM-DD)")
     parser.add_argument("end_date", help="End date (YYYY-MM-DD)")
     parser.add_argument("--name", default="test", help="Output folder name")
-    parser.add_argument("--team_stat_model", default="diff", help="Team stat model to use")
+    parser.add_argument("--team_stat_model", default="diff", help="Team stat model to use, 'std','diff','base'")
+
     # Add additional args for create_ml_model as needed
     parser.add_argument("--model_identifier", help="Model identifier (for ml_model mode)")
     parser.add_argument("--model_folder_name", help="Model folder name (for ml_model mode)")

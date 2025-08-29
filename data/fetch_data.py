@@ -199,7 +199,13 @@ def fetch_player_hero_stats(account_ids: list[int], fetch_till_date, fetch_from_
         return {"error": str(e)}
 
 # send players in batches of 1,000
-def fetch_player_hero_stats_batch(batch_size, account_ids: list[int], fetch_till_date, fetch_from_date=None) -> pd.DataFrame:
+def fetch_player_hero_stats_batch(
+        batch_size, 
+        account_ids: list[int], 
+        fetch_till_date, 
+        fetch_from_date=None,
+        max_retries=5,
+        wait_seconds=30) -> pd.DataFrame:
     """Fetches hero stats for a batch of players from the Deadlock API.
     Generally used in conjunction with run_player_batches and
     process_player_stats_parallel
@@ -212,10 +218,21 @@ def fetch_player_hero_stats_batch(batch_size, account_ids: list[int], fetch_till
 
     results = []
     for i in range(0, len(account_ids), batch_size):
-        print(len(account_ids))
+        logging.info(f"Fetching batch {i//batch_size + 1}: \ntotal players: {len(account_ids)} \nplayers remaining: {len(account_ids) - i}\n***     ***\n")
         batch = account_ids[i:i + batch_size]
-        response = fetch_player_hero_stats(batch, fetch_till_date=fetch_till_date, fetch_from_date=fetch_from_date)
-        results.extend(format_player_hero_response(response))
+        retries = 0
+        while retries < max_retries:
+            response = fetch_player_hero_stats(batch, fetch_till_date=fetch_till_date, fetch_from_date=fetch_from_date)
+            if "error" not in response:
+                results.extend(format_player_hero_response(response))
+                break
+            else:
+                logging.warning(f"Batch failed (attempt {retries+1}/{max_retries}): {response['error']}")
+                retries += 1
+                if retries < max_retries:
+                    time.sleep(wait_seconds)
+        else:
+            logging.error(f"Failed to fetch batch after {max_retries} attempts.")
     return pd.DataFrame(results)
 
 def format_player_hero_response(players_hero_data: list[Dict]):

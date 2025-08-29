@@ -170,6 +170,34 @@ def calculate_ph_stats(p_ph_h_stats: pd.DataFrame) -> pd.DataFrame:
     
     return all_stats
 
+def trim_stats(all_stats: pd.DataFrame) -> pd.DataFrame:
+    """
+    Trim the player hero stats DataFrame to only include relevant columns for training.
+    """
+    relevant_columns = [
+        'account_id', 'hero_id', 'ph_matches_played', 'ph_last_played',
+        'ph_time_played', 'ph_wins', 'ph_ending_level', 'ph_kills', 'ph_deaths',
+        'ph_assists', 'ph_denies_per_match', 'ph_kills_per_min',
+        'ph_deaths_per_min', 'ph_assists_per_min', 'ph_denies_per_min',
+        'ph_networth_per_min', 'ph_last_hits_per_min', 'ph_damage_per_min',
+        'ph_damage_mitigated_per_min', 'ph_damage_taken_per_min',
+        'ph_creeps_per_min', 'ph_obj_damage_per_min', 'ph_accuracy',
+        'ph_crit_shot_rate', 'p_total_matches_played', 'p_total_kills',
+        'p_total_deaths', 'p_total_wins', 'p_total_assists',
+        'p_total_time_played', 'p_avg_kills', 'p_win_rate', 'h_wins',
+        'h_losses', 'h_matches', 'h_matches_per_bucket', 'h_players',
+        'h_total_kills', 'h_total_deaths', 'h_total_assists',
+        'h_total_net_worth', 'h_total_last_hits', 'h_total_denies',
+        'h_total_player_damage', 'h_total_player_damage_taken',
+        'h_total_boss_damage', 'h_total_creep_damage', 'h_total_neutral_damage',
+        'h_total_max_health', 'h_total_shots_hit', 'h_total_shots_missed',
+        'ph_total_kd', 'h_total_kd', 'ph_kd_ratio', 'ph_hero_xp_ratio',
+        'ph_avg_match_length', 'ph_avg_damage_per_match', 'h_damage_per_match',
+        'ph_damage_ratio', 'ph_assists_ratio', 'ph_win_rate',
+        'h_total_win_rate', 'ph_win_rate_ratio'
+    ]
+    return all_stats[relevant_columns]
+
 if __name__ == "__main__":
     start_date = "2025-08-19"
     end_date = "2025-08-21"

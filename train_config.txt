@@ -1,0 +1,12 @@
+# Training process
+
+Example cli execution
+python orchestrators.py --mode train_data 2025-07-01 2025-08-01 --name training_data_vL1 --team_stat_model diff
+
+start_date - Match_fetch start date
+end_date - Match_fetch end date
+unique_name - Unique identifier or name to tag folder/files
+team_stat_model - base - raw stats, std - standard deviation stats, diff - standard deviation, unqiue for each team, differential of the two teams
+
+
+

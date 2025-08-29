@@ -1,0 +1,60 @@
+Accuracy: 0.5341409691629956
+
+Classification Report:
+{
+  "N": {
+    "precision": 0.5118434603501545,
+    "recall": 0.571921749136939,
+    "f1-score": 0.5402173913043479,
+    "support": 869.0
+  },
+  "Y": {
+    "precision": 0.5597633136094674,
+    "recall": 0.49947201689545934,
+    "f1-score": 0.5279017857142857,
+    "support": 947.0
+  },
+  "accuracy": 0.5341409691629956,
+  "macro avg": {
+    "precision": 0.5358033869798109,
+    "recall": 0.5356968830161992,
+    "f1-score": 0.5340595885093168,
+    "support": 1816.0
+  },
+  "weighted avg": {
+    "precision": 0.5368325027711729,
+    "recall": 0.5341409691629956,
+    "f1-score": 0.5337951013848605,
+    "support": 1816.0
+  }
+}
+
+Confusion Matrix:
+[[497, 372], [474, 473]]
+
+Top Features:
+h_total_win_rate_mean_Team0: 0.010220758263642193
+h_total_kd_mean_Team0: 0.008989351395109526
+h_total_win_rate_mean_Team1: 0.008679393692609618
+ph_avg_match_length_mean_Team0: 0.008544830768530383
+h_total_kd_mean_Team1: 0.00801540354593788
+ph_kills_per_min_max_Team0: 0.00792958126337257
+ph_damage_ratio_min_Team1: 0.007780172992538219
+ph_kills_per_min_std_Team0: 0.007737804303697023
+ph_accuracy_min_Team0: 0.007660146440254034
+ph_damage_ratio_min_Team0: 0.0076048009913158385
+h_total_win_rate_std_Team1: 0.007592024203790527
+ph_avg_match_length_max_Team0: 0.007589795557055028
+ph_accuracy_mean_Team1: 0.007562539792428991
+ph_kd_ratio_min_Team0: 0.0075442351862554415
+ph_kills_per_min_max_Team1: 0.007511993213460647
+ph_avg_match_length_min_Team1: 0.007511075365544288
+ph_kd_ratio_min_Team1: 0.007440362793554471
+h_total_win_rate_std_Team0: 0.007408372119112354
+ph_accuracy_mean_Team0: 0.007387249911322461
+ph_damage_ratio_std_Team0: 0.007380414336655871
+ph_kills_per_min_mean_Team1: 0.007375369822144163
+ph_kills_per_min_mean_Team0: 0.007364598505948407
+ph_damage_ratio_mean_Team0: 0.00730016447025042
+ph_accuracy_min_Team1: 0.007255227102937767
+ph_accuracy_max_Team0: 0.007242769955847316
