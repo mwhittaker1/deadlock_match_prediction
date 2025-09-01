@@ -131,13 +131,15 @@ def bulk_fetch_matches(start_date, end_date, limit=1000)->list:
     while current_start <= current_end:
         fetch_from = current_start.strftime("%Y-%m-%d")
         fetch_till = current_start.strftime("%Y-%m-%d")
+        detail_from = current_start.strftime("%Y-%m-%d %H:%M:%S")
+        detail_till = current_start.strftime("%Y-%m-%d %H:%M:%S")
 
-        logging.debug(f"\nBatch {batch_num} of {total_batches}: fetching day from {fetch_from} to {fetch_till}")
+        logging.debug(f"\nBatch {batch_num} of {total_batches}: fetching day {fetch_from}")
 
         # Note: API expects min_unix_timestamp to be OLDER than max_unix_timestamp
         fetched_matches = fetch_match_data(
-            fetch_till_date=fetch_from,  # Older timestamp (more days ago)
-            fetch_from_date=fetch_till,  # Newer timestamp (fewer days ago)
+            fetch_till_date=fetch_till,  # Only this day
+            fetch_from_date=fetch_from,  # Only this day
             limit=limit
         )
         
@@ -149,7 +151,7 @@ def bulk_fetch_matches(start_date, end_date, limit=1000)->list:
         else:
             batch_matches.append(fetched_matches)
             
-        # Move backward in time by one day
+        # Move forward in time by one day
         current_start += timedelta(days=1)
         batch_num += 1
 

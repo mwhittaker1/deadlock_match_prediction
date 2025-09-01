@@ -62,15 +62,21 @@ def check_data_issues(df):
 
 def prep_training_data(training_data, test_data):
     """ Split training data into features and targets"""
+    """Split training data into features and targets. If test_data is provided, use it; otherwise, split training_data."""
+    X = training_data.drop(columns=['team_0_win', 'match_id']).copy()
     y = training_data['team_0_win']
-    X = training_data.drop(columns=['team_0_win','match_id']).copy()
 
-    if test_data:
+    # If test_data is a string, treat as file path and read CSV
+    if isinstance(test_data, str):
+        import pandas as pd
+        test_data = pd.read_csv(test_data)
+
+    if test_data is not None:
+        X_test = test_data.drop(columns=['team_0_win', 'match_id']).copy()
         y_test = test_data['team_0_win']
-        X_test = test_data.drop(columns=['team_0_win','match_id']).copy()
-        return X, X_test, y, y_test
+        X_train = X
+        y_train = y
     else:
-        # Split  data
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
     return X_train, X_test, y_train, y_test

@@ -57,7 +57,7 @@ def create_training_data(start_date,end_date,name="test",team_stat_model="diff")
     account_ids=raw_players["account_id"].unique().tolist(),
     fetch_till_date=start_date,
     fetch_from_date=None,
-    batch_size=400,
+    batch_size=99,
     )
 
     logging.info(f"fetched player stats for {len(player_hero_stats)}, breaking down and formatting data")
@@ -187,7 +187,7 @@ if __name__ == "__main__":
     parser.add_argument("start_date", help="Start date (YYYY-MM-DD)")
     parser.add_argument("end_date", help="End date (YYYY-MM-DD)")
     parser.add_argument("--name", default="test", help="Output folder name")
-    parser.add_argument("--team_stat_model", default="diff", help="Team stat model to use, 'std','diff','base'")
+    parser.add_argument("--team_stat_model", default="std", help="Team stat model to use, 'std','diff','base'")
 
     # Add additional args for create_ml_model as needed
     parser.add_argument("--model_identifier", help="Model identifier (for ml_model mode)")
